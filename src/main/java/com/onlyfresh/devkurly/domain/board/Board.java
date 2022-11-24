@@ -1,41 +1,45 @@
 package com.onlyfresh.devkurly.domain.board;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.onlyfresh.devkurly.domain.member.Member;
+import com.onlyfresh.devkurly.domain.product.Product;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Getter
-@Setter
-public class Board {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn
+@Getter @Setter @ToString
+public abstract class Board {
 
     @Id
     @GeneratedValue
     private Integer bbs_id;
 
-    private Integer pdt_id;
-    private Integer user_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pdt_id")
+    private Product product;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Member member;
+
+    @Column(length = 60)
     private String bbs_title;
+
+    @Temporal(TemporalType.DATE)
     private Date wrt_dt;
-    private String user_nm;
-    private String bbs_clsf_cd;
-    private char notice;
 
-
-
+    @Lob
     private String bbs_cn;
-    private Integer revw_like;
-    private Integer like_no;
-    private String revw_img;
-    private boolean is_secret;
-    private boolean is_replied;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date in_date;
     private String in_user;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date up_date;
     private String up_user;
+
 }
