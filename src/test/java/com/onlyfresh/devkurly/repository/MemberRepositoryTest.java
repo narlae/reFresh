@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -33,6 +34,7 @@ class MemberRepositoryTest {
         memberRepository.delete(member);
         long count = memberRepository.count();
         assertEquals(0, count);
+
 
     }
 

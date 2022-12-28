@@ -20,12 +20,12 @@
                     </p>
                 </div>
                 <select id="sort-option" name="option">
-                    <option value="latest" ${selectLatest}>최근등록순</option>
-                    <option value="like" ${selectLike}>추천</option>
+                    <option value="latest">최근등록순</option>
+                    <option value="like">추천</option>
                 </select>
             </div>
         </div>
-        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <table>
             <colgroup>
                 <col style="width:70px;">
                 <col style="width:auto;">
@@ -60,23 +60,20 @@
             <p class="like_button">추천</p>
         </div>
     </div>
-    </p>
-<!--    <div class="ph"><div class="paging">-->
-<!--        <c:if test="${totalCnt==null || totalCnt==0}">-->
-<!--            <div> 게시물이 없습니다. </div>-->
-<!--        </c:if>-->
-<!--        <c:if test="${totalCnt!=null && totalCnt!=0}">-->
-<!--            <c:if test="${ph.showPrev}">-->
-<!--                <a class="page" href="<c:url value='/boardlist?pdt_id=${pdt_id}&bbs_clsf_cd=${bbs_clsf_cd}&page=${ph.beginPage-1}&pageSize=${ph.pageSize}&sortType=${param.sortType}'/>"><</a>-->
-<!--            </c:if>-->
-<!--            <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">-->
-<!--                <a class="page ${i==ph.page? "paging-active" : ""}" href="<c:url value="/boardlist?pdt_id=${pdt_id}&bbs_clsf_cd=${bbs_clsf_cd}&page=${i}&pageSize=${ph.pageSize}&sortType=${param.sortType}"/>">${i}</a>-->
-<!--            </c:forEach>-->
-<!--            <c:if test="${ph.showNext}">-->
-<!--                <a class="page" href="<c:url value='/boardlist?pdt_id=${pdt_id}&bbs_clsf_cd=${bbs_clsf_cd}&page=${ph.endPage+1}&pageSize=${ph.pageSize}&sortType=${param.sortType}'/>">&gt;</a>-->
-<!--            </c:if>-->
-<!--        </c:if>-->
-<!--    </div>-->
+    <div class="ph"><div class="paging">
+<!--        <div th:if=""> 게시물이 없습니다. </div>-->
+        <!--        <c:if test="${totalCnt!=null && totalCnt!=0}">-->
+        <!--            <c:if test="${ph.showPrev}">-->
+        <!--                <a class="page" href="<c:url value='/boardlist?pdt_id=${pdt_id}&bbs_clsf_cd=${bbs_clsf_cd}&page=${ph.beginPage-1}&pageSize=${ph.pageSize}&sortType=${param.sortType}'/>"><</a>-->
+        <!--            </c:if>-->
+        <!--            <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">-->
+        <!--                <a class="page ${i==ph.page? "paging-active" : ""}" href="<c:url value="/boardlist?pdt_id=${pdt_id}&bbs_clsf_cd=${bbs_clsf_cd}&page=${i}&pageSize=${ph.pageSize}&sortType=${param.sortType}"/>">${i}</a>-->
+        <!--            </c:forEach>-->
+        <!--            <c:if test="${ph.showNext}">-->
+        <!--                <a class="page" href="<c:url value='/boardlist?pdt_id=${pdt_id}&bbs_clsf_cd=${bbs_clsf_cd}&page=${ph.endPage+1}&pageSize=${ph.pageSize}&sortType=${param.sortType}'/>">&gt;</a>-->
+        <!--            </c:if>-->
+        <!--        </c:if>-->
+    </div>
     </div>
     <!-- Modal -->
     <div class="modal" id="myModal" role="dialog">
@@ -116,6 +113,6 @@
         </div>
     </div>
 </div>
-<script src="/product_detail/js/board.js"></script>
+<script type="module" src="/js/board/board.js"></script>
 </body>
 </html>
