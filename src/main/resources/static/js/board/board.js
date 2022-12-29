@@ -12,7 +12,7 @@ import {$} from "../utils/dom.js";
 function App(){
 
     this.list = {
-        page : 0,
+        page : 1,
         cat_code : 0,
         sort_option : 'bbs_id',
     }
@@ -24,7 +24,9 @@ function App(){
     }
 
     const render = async () => {
-        this.page = await Api.getBoardList(this.list.cat_code, this.list.page, this.list.sort_option);
+        this.list.page = searchParam('page');
+
+        this.page = await Api.getBoardList(this.list.cat_code, this.list.page - 1, this.list.sort_option);
         const template =  this.page.content.map((item)=> {
 
             return `<table class="tb1" width="100%">
@@ -53,12 +55,42 @@ function App(){
 
         $("#board").innerHTML = template;
 
+        const pagingNav = () => {
+            let temp = '';
+            let page = this.list.page;
+            let naviSize = 10;
+            let beginPage = parseInt((page - 1 )/ naviSize) * naviSize + 1;
+            let totalPage = this.page.totalPages;
+            let endPage = Math.min(beginPage + naviSize - 1, totalPage);
+            if (!this.page.empty) {
+                if (beginPage !=1) {
+                    temp += `<a class="page" href="/board?page=${beginPage-1}"><</a>`
+                }
+                for (let i = beginPage; i <= endPage; i++) {
+                    temp += `<a class="page ${i==page ? 'paging-active' : ''}" href="/board?page=${i}" >${i}</a>`
+                }
+                if (totalPage != endPage) {
+                    temp += `<a class="page" href="/board?page=${endPage+1}">></a>`
+                }
+
+            }
+            else{
+                temp += `<div>게시물이 없습니다.</div>`;
+            }
+
+            return temp;
+        };
+        $(".paging").innerHTML = pagingNav();
 
     }
 
     const initEventListeners = () => {
 
     }
+
+    function searchParam(key) {
+        return new URLSearchParams(location.search).get(key);
+    };
 
 }
 

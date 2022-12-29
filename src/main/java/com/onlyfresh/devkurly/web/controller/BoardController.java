@@ -27,7 +27,7 @@ public class BoardController {
 
 
     @GetMapping("/board")
-    public String boardList(Integer totalCnt, Integer page ,Model m) {
+    public String boardList(Integer page, String sort_option) {
 
         return "board/board";
     }
