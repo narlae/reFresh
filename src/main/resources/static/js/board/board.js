@@ -5,7 +5,6 @@ import {$} from "../utils/dom.js";
  * Board
  * Page render
  *
- * paging
  * 글 읽기
  */
 
@@ -19,7 +18,7 @@ function App(){
     this.page={};
 
     this.init = async () => {
-        render();
+        await render();
         initEventListeners();
     }
 
@@ -43,6 +42,16 @@ function App(){
         <td class="no">${item.bbs_id}</td>
         <td class="title">
         <div class="title_btn" data-bbs_id ="${item.bbs_id}"><dt class="title_cn">${item.bbs_title}</dt></div>
+        <div id="review_view" style="display: none" data-open=close>
+            <div>
+            <div class="review_content">${item.bbs_cn}</div>
+            </div>
+             <div id="buttons">
+                <p class="mod_btn">수정</p>
+                <p class="del_btn">삭제</p>
+                <p class="like_button">추천</p>
+            </div>
+        </div>
         </td>
         <td class="grade" ></td>
         <td class="writer">${item.user_nm}</td>
@@ -85,7 +94,34 @@ function App(){
     }
 
     const initEventListeners = () => {
+        $("#board").addEventListener("click", (e) =>{
+            if (e.target.classList.contains("title_cn")) {
+                openCn(e)
+                return;
+            }
+        });
 
+        $(".border_write_btn").addEventListener("click",(e) => {
+            if (e.target.classList.contains("p_write_btn")) {
+                openModal();
+                return;
+            }
+        })
+    }
+
+    const openModal = () =>{
+        $(".modal").style.display = 'block';
+    }
+
+    const openCn = (e) =>{
+        const $reviewCn = e.target.closest("td").querySelector("#review_view");
+        if ($reviewCn.dataset.open == 'close') {
+            $reviewCn.style.display = 'block';
+            $reviewCn.dataset.open = 'open';
+        } else {
+            $reviewCn.style.display = 'none';
+            $reviewCn.dataset.open = 'close';
+        }
     }
 
     function searchParam(key) {
@@ -96,3 +132,4 @@ function App(){
 
 const app = new App();
 app.init();
+
