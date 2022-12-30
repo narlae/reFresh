@@ -5,16 +5,18 @@ import {$} from "../utils/dom.js";
  * Board
  * Page render
  *
- * 글 읽기
+ * 글쓰기 수정 삭제
  */
 
 function App(){
 
     this.list = {
         page : 1,
-        cat_code : 0,
+        pdt_id : 1,
         sort_option : 'bbs_id',
+
     }
+    this.board ={};
     this.page={};
 
     this.init = async () => {
@@ -25,7 +27,7 @@ function App(){
     const render = async () => {
         this.list.page = searchParam('page');
 
-        this.page = await Api.getBoardList(this.list.cat_code, this.list.page - 1, this.list.sort_option);
+        this.page = await Api.getBoardList(this.list.pdt_id, this.list.page - 1, this.list.sort_option);
         const template =  this.page.content.map((item)=> {
 
             return `<table class="tb1" width="100%">
@@ -40,9 +42,9 @@ function App(){
         <tbody>
         <tr class="tr1">
         <td class="no">${item.bbs_id}</td>
-        <td class="title">
-        <div class="title_btn" data-bbs_id ="${item.bbs_id}"><dt class="title_cn">${item.bbs_title}</dt></div>
-        <div id="review_view" style="display: none" data-open=close>
+        <td class="title" data-bbs_id ="${item.bbs_id}">
+        <div class="title_btn" ><dt class="title_cn">${item.bbs_title}</dt></div>
+        <div id="review_view" class="review_in" style="display: none" data-open=close>
             <div>
             <div class="review_content">${item.bbs_cn}</div>
             </div>
@@ -94,23 +96,96 @@ function App(){
     }
 
     const initEventListeners = () => {
-        $("#board").addEventListener("click", (e) =>{
+        $("#board").addEventListener("click", async (e) =>{
             if (e.target.classList.contains("title_cn")) {
                 openCn(e)
                 return;
             }
+
+            if (e.target.classList.contains("del_btn")) {
+                if (!confirm("정말로 글을 삭제하시겠습니까?")) {
+                    return;
+                }
+                deleteBoard(e);
+            }
+
+            if (e.target.classList.contains("mod_btn")) {
+
+                this.board['bbs_title'] = e.target.closest("td").querySelector(".title_cn").innerText;
+                this.board['bbs_cn'] = e.target.closest("td").querySelector(".review_content").innerText;
+                this.board['bbs_id'] = e.target.closest("td").dataset.bbs_id;
+                $("#bbs_title").value = this.board.bbs_title;
+                $("#contents").value = this.board.bbs_cn;
+
+                $(".btn-write").innerText = "수정하기";
+                $(".btn-write").className = 'btn-modify';
+
+                openModal('block');
+
+            }
+
         });
 
         $(".border_write_btn").addEventListener("click",(e) => {
             if (e.target.classList.contains("p_write_btn")) {
-                openModal();
+                openModal('block');
                 return;
             }
-        })
+        });
+
+        $("#myModal").addEventListener("click", async (e) => {
+
+            if (e.target.classList.contains("btn-cancel")) {
+                openModal('none');
+                return;
+            }
+            if (e.target.classList.contains("btn-write")) {
+                sendBoard();
+            }
+
+            if (e.target.classList.contains("btn-modify")) {
+                this.board['bbs_title'] =  $("#bbs_title").value;
+                this.board['bbs_cn'] = $("#contents").value;
+                await Api.updateBoard(this.list.pdt_id, this.board);
+                alert("수정되었습니다.");
+
+                $(".btn-modify").innerText = '등록';
+                $(".btn-modify").className = 'btn-write';
+
+                openModal('none');
+                await render();
+                $("#bbs_title").value = '';
+                $("#contents").value = '';
+
+            }
+        });
+
     }
 
-    const openModal = () =>{
-        $(".modal").style.display = 'block';
+
+    const sendBoard = async () => {
+        let board = {};
+
+        board['bbs_title'] = $("#bbs_title").value;
+        board['bbs_cn'] = $("#contents").value;
+
+        await Api.writeBoard(this.list.pdt_id, board);
+        openModal('none');
+        await render();
+        $("#bbs_title").value = '';
+        $("#contents").value = '';
+    }
+
+    const deleteBoard = async (e) => {
+        const bbs_id = e.target.closest("td").dataset.bbs_id;
+
+        await Api.deleteBoard(this.list.pdt_id, bbs_id);
+        alert("글이 삭제되었습니다.");
+        await render();
+    }
+
+    const openModal = (display) =>{
+        $(".modal").style.display = display;
     }
 
     const openCn = (e) =>{

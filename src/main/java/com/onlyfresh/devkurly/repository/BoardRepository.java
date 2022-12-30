@@ -10,5 +10,5 @@ import org.springframework.data.jpa.repository.Query;
 public interface BoardRepository extends JpaRepository<Board, Integer> {
     @Query(value = "select b from Board b",
             countQuery = "select count(b) from Board b")
-    Page<Board> findByCat_code(String cat_code, Pageable pageable);
+    Page<Board> findByPdt_id(Integer pdt_id, Pageable pageable);
 }
