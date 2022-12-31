@@ -117,9 +117,7 @@ function App(){
                 $("#bbs_title").value = this.board.bbs_title;
                 $("#contents").value = this.board.bbs_cn;
 
-                $(".btn-write").innerText = "수정하기";
-                $(".btn-write").className = 'btn-modify';
-
+                $("#modal-btn").className = 'btn-modify';
                 openModal('block');
 
             }
@@ -128,13 +126,13 @@ function App(){
 
         $(".border_write_btn").addEventListener("click",(e) => {
             if (e.target.classList.contains("p_write_btn")) {
+                $("#modal-btn").className = 'btn-write';
                 openModal('block');
                 return;
             }
         });
 
-        $("#myModal").addEventListener("click", async (e) => {
-
+        $(".modal-footer").addEventListener("click", async (e) => {
             if (e.target.classList.contains("btn-cancel")) {
                 openModal('none');
                 return;
@@ -148,16 +146,12 @@ function App(){
                 this.board['bbs_cn'] = $("#contents").value;
                 await Api.updateBoard(this.list.pdt_id, this.board);
                 alert("수정되었습니다.");
-
-                $(".btn-modify").innerText = '등록';
-                $(".btn-modify").className = 'btn-write';
-
                 openModal('none');
                 await render();
                 $("#bbs_title").value = '';
                 $("#contents").value = '';
-
             }
+
         });
 
     }
