@@ -118,7 +118,7 @@ function App(){
                 $("#contents").value = this.board.bbs_cn;
 
                 $("#modal-btn").className = 'btn-modify';
-                openModal('block');
+                openModal();
 
             }
 
@@ -127,14 +127,14 @@ function App(){
         $(".border_write_btn").addEventListener("click",(e) => {
             if (e.target.classList.contains("p_write_btn")) {
                 $("#modal-btn").className = 'btn-write';
-                openModal('block');
+                openModal();
                 return;
             }
         });
 
         $(".modal-footer").addEventListener("click", async (e) => {
             if (e.target.classList.contains("btn-cancel")) {
-                openModal('none');
+                closeModal();
                 return;
             }
             if (e.target.classList.contains("btn-write")) {
@@ -146,7 +146,7 @@ function App(){
                 this.board['bbs_cn'] = $("#contents").value;
                 await Api.updateBoard(this.list.pdt_id, this.board);
                 alert("수정되었습니다.");
-                openModal('none');
+                closeModal();
                 await render();
                 $("#bbs_title").value = '';
                 $("#contents").value = '';
@@ -164,7 +164,7 @@ function App(){
         board['bbs_cn'] = $("#contents").value;
 
         await Api.writeBoard(this.list.pdt_id, board);
-        openModal('none');
+        closeModal();
         await render();
         $("#bbs_title").value = '';
         $("#contents").value = '';
@@ -178,8 +178,12 @@ function App(){
         await render();
     }
 
-    const openModal = (display) =>{
-        $(".modal").style.display = display;
+    const openModal = () =>{
+        $(".modal").classList.remove('hide');
+    }
+
+    const closeModal = () => {
+        $(".modal").classList.add('hide');
     }
 
     const openCn = (e) =>{
