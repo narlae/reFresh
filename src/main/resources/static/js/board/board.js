@@ -30,38 +30,28 @@ function App(){
         this.page = await Api.getBoardList(this.list.pdt_id, this.list.page - 1, this.list.sort_option);
         const template =  this.page.content.map((item)=> {
 
-            return `<table class="tb1" width="100%">
-        <colgroup>
-        <col style="width:70px;">
-        <col style="width:auto;">
-        <col style="width:51px;">
-        <col style="width:93px;">
-        <col style="width:85px;">
-        <col style="width:90px;">
-        </colgroup>
-        <tbody>
-        <tr class="tr1">
-        <td class="no">${item.bbs_id}</td>
-        <td class="title" data-bbs_id ="${item.bbs_id}">
-        <div class="title_btn" ><dt class="title_cn">${item.bbs_title}</dt></div>
-        <div id="review_view" class="review_in" style="display: none" data-open=close>
-            <div>
-            <div class="review_content">${item.bbs_cn}</div>
+            return `
+        <div class="tr1">
+            <div id="no" class="th">${item.bbs_id}</div>
+            <div id="title" class="th" data-bbs_id ="${item.bbs_id}">
+                <div class="title_btn" ><dt class="title_cn">${item.bbs_title}</dt></div>
+                <div id="review_view" class="review_in" style="display: none" data-open=close>
+                    <div>
+                        <div class="review_content">${item.bbs_cn}</div>
+                    </div>
+                    <div id="buttons">
+                        <p class="mod_btn">수정</p>
+                        <p class="del_btn">삭제</p>
+                        <p class="like_button">추천</p>
+                    </div>
+                </div>
             </div>
-             <div id="buttons">
-                <p class="mod_btn">수정</p>
-                <p class="del_btn">삭제</p>
-                <p class="like_button">추천</p>
-            </div>
+            <div id="grade" class="th" ></div>
+            <div id="writer" class="th">${item.user_nm}</div>
+            <div id="reg_date" class="th">${item.wrt_dt}</div>
+            <div id="like_cnt" class="th">${item.revw_like}</div>
         </div>
-        </td>
-        <td class="grade" ></td>
-        <td class="writer">${item.user_nm}</td>
-        <td class="reg_date">${item.wrt_dt}</td>
-        <td class="like_cnt">${item.revw_like}</td>
-        </tr>
-        </tbody>
-        </table>`;
+        `;
         }).join("");
 
         $("#board").innerHTML = template;
@@ -111,9 +101,9 @@ function App(){
 
             if (e.target.classList.contains("mod_btn")) {
 
-                this.board['bbs_title'] = e.target.closest("td").querySelector(".title_cn").innerText;
-                this.board['bbs_cn'] = e.target.closest("td").querySelector(".review_content").innerText;
-                this.board['bbs_id'] = e.target.closest("td").dataset.bbs_id;
+                this.board['bbs_title'] = e.target.closest("#title").querySelector(".title_cn").innerText;
+                this.board['bbs_cn'] = e.target.closest("#title").querySelector(".review_content").innerText;
+                this.board['bbs_id'] = e.target.closest("#title").dataset.bbs_id;
                 $("#bbs_title").value = this.board.bbs_title;
                 $("#contents").value = this.board.bbs_cn;
 
@@ -171,7 +161,7 @@ function App(){
     }
 
     const deleteBoard = async (e) => {
-        const bbs_id = e.target.closest("td").dataset.bbs_id;
+        const bbs_id = e.target.closest("#title").dataset.bbs_id;
 
         await Api.deleteBoard(this.list.pdt_id, bbs_id);
         alert("글이 삭제되었습니다.");
@@ -187,7 +177,7 @@ function App(){
     }
 
     const openCn = (e) =>{
-        const $reviewCn = e.target.closest("td").querySelector("#review_view");
+        const $reviewCn = e.target.closest("#title").querySelector("#review_view");
         if ($reviewCn.dataset.open == 'close') {
             $reviewCn.style.display = 'block';
             $reviewCn.dataset.open = 'open';

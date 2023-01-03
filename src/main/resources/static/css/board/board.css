@@ -16,21 +16,48 @@
     flex-basis: 100%;
 }
 
+#title_desc_filter_container{
+    width: 80%;
+}
+
 .board {
     flex-direction: column;
     flex-wrap: wrap;
     display: flex;
+    width: 80%;
 }
 
 #board {
     display: flex;
     flex-direction: column;
-    /*min-width: 1200px;*/
+    min-width: 1200px;
 }
 
 #board_footer {
     display: flex;
     flex-direction: column;
+    width: 80%;
+}
+
+.th {
+    padding-top: 18px;
+    padding-bottom: 18px;
+    flex-basis: 100px;
+    text-align: center;
+    border-bottom: 1px solid rgba(212, 212, 212, 1);
+}
+
+.title_cn, .review_content{
+    text-align: left;
+}
+
+#title{
+    flex-grow: 1;
+}
+
+.tr1{
+    display: flex;
+    flex-direction: row;
 }
 
 
@@ -43,18 +70,12 @@
     flex-direction: row;
 }
 
-.th {
-    padding-top: 18px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid rgba(244, 244, 244, 0.18);
-}
+
 
 .title_cn{
     cursor:pointer;
 }
-.no, .grade, .writer, .reg_date, .like_cnt{
-    text-align: center;
-}
+
 #review_view {
     display: none;
     padding: 10px 10px 11px;
