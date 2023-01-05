@@ -14,7 +14,8 @@ import java.util.Optional;
 public class LoginCheckInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+                             Object handler) throws Exception {
         Optional.ofNullable(request.getSession().getAttribute(SessionConst.LOGIN_MEMBER))
                 .orElseThrow(() ->
                         new SignInException("로그인이 필요합니다."));

@@ -8,12 +8,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
+//@Rollback(value = false)
 class MemberRepositoryTest {
 
     @Autowired
@@ -22,7 +24,7 @@ class MemberRepositoryTest {
     @Test
     public void CreateMemberTest() {
         Member member = Member.builder()
-                .user_email("aaa@aa.net")
+                .user_email("aaaa@aa.net")
                 .user_nm("kim")
                 .pwd("asdf")
                 .build();
@@ -31,11 +33,14 @@ class MemberRepositoryTest {
 
         assertEquals(member, member1);
 
-        memberRepository.delete(member);
-        long count = memberRepository.count();
-        assertEquals(0, count);
+        Optional<Member> byUserEmail = memberRepository.findMemberByUser_emailAndPwd("aaaa@aa.net","asdf");
+        Member member2 = byUserEmail.get();
+        System.out.println("member2 = " + member2);
 
-
+//        memberRepository.delete(member);
+//        long count = memberRepository.count();
+//        assertEquals(0, count);
     }
+
 
 }

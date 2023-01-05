@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
         log.error("[exceptionHandler] ex", e);
         ErrorResult errorResult = new ErrorResult("SignIn-EX", e.getMessage());
         String requestURI = request.getRequestURI();
-        response.sendRedirect("/login?redirectURL=" + requestURI);
+        response.sendRedirect("/login?toURL=" + requestURI);
         return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
     }
 }

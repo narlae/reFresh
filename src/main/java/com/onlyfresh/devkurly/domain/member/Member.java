@@ -3,6 +3,7 @@ package com.onlyfresh.devkurly.domain.member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @Getter
+@ToString
 public class Member {
 
     @Id
