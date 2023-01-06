@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 
 @ControllerAdvice
@@ -16,8 +17,7 @@ import java.io.IOException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResult> SignInExHandler(HttpServletResponse response, HttpServletRequest request, SignInException e) throws IOException {
-        log.error("[exceptionHandler] ex", e);
+    public ResponseEntity<ErrorResult> signInExHandler(HttpServletResponse response, HttpServletRequest request, SignInException e) throws IOException {
         ErrorResult errorResult = new ErrorResult("SignIn-EX", e.getMessage());
         String requestURI = request.getRequestURI();
         response.sendRedirect("/login?toURL=" + requestURI);

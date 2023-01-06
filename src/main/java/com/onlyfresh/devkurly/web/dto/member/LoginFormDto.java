@@ -1,4 +1,4 @@
-package com.onlyfresh.devkurly.web.dto;
+package com.onlyfresh.devkurly.web.dto.member;
 
 import lombok.Data;
 

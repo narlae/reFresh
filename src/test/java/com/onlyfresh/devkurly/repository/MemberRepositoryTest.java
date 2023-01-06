@@ -33,7 +33,7 @@ class MemberRepositoryTest {
 
         assertEquals(member, member1);
 
-        Optional<Member> byUserEmail = memberRepository.findMemberByUser_emailAndPwd("aaaa@aa.net","asdf");
+        Optional<Member> byUserEmail = memberRepository.findMemberByUser_emailAndPwd("aaaa@aa.net");
         Member member2 = byUserEmail.get();
         System.out.println("member2 = " + member2);
 

@@ -1,8 +1,8 @@
 package com.onlyfresh.devkurly.web.controller;
 
-import com.onlyfresh.devkurly.domain.member.Member;
 import com.onlyfresh.devkurly.repository.MemberRepository;
-import com.onlyfresh.devkurly.web.dto.LoginFormDto;
+import com.onlyfresh.devkurly.web.dto.member.LoginFormDto;
+import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
 import com.onlyfresh.devkurly.web.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Optional;
 
 @Controller
 public class LoginController {
@@ -36,8 +35,12 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute LoginFormDto form, String toURL, HttpServletRequest request) {
-        memberService.checkMember(form.getUser_email(), form.getPwd());
+    public String login(@Valid @ModelAttribute LoginFormDto loginFormDto, String toURL, HttpServletRequest request) {
+        MemberMainResponseDto memberMainResponseDto = memberService.checkMember(loginFormDto);
+
+        HttpSession session = request.getSession();
+        session.setAttribute("loginMember", memberMainResponseDto);
+
 
         return "redirect:" + toURL;
     }

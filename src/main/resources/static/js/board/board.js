@@ -1,13 +1,6 @@
 import Api from "../api/index.js";
 import {$} from "../utils/dom.js";
 
-/**
- * Board
- * Page render
- *
- * 글쓰기 수정 삭제
- */
-
 function App(){
 
     this.list = {
@@ -25,8 +18,9 @@ function App(){
     }
 
     const render = async () => {
-        this.list.page = searchParam('page');
-
+        if (searchParam('page') !== null) {
+            this.list.page = searchParam('page');
+        }
         this.page = await Api.getBoardList(this.list.pdt_id, this.list.page - 1, this.list.sort_option);
         const template =  this.page.content.map((item)=> {
 
