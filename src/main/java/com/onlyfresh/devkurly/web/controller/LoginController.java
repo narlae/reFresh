@@ -28,7 +28,7 @@ public class LoginController {
     @GetMapping("/login")
     public String loginForm(HttpSession session, Model model) {
         model.addAttribute("loginForm", new LoginFormDto());
-        if (session.getAttribute("memberResponse") == null) {
+        if (session.getAttribute("loginMember") == null) {
             return "members/login";
         }
         return "redirect:/";
@@ -43,5 +43,14 @@ public class LoginController {
 
 
         return "redirect:" + toURL;
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return "redirect:/";
     }
 }

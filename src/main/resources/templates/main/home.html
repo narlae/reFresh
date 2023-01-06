@@ -1,0 +1,116 @@
+<html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnlyFresh :: 로그인</title>
+    <link rel="icon" href="/icon/only-fresh-favicon.svg" />
+    <link rel="stylesheet" type="text/css" href="/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/css/navigation.css">
+    <link rel="stylesheet" type="text/css" href="/css/payment/payment.css">
+    <link rel="stylesheet" type="text/css" href="/css/footer.css">
+    <style>
+        #whole_container {
+            width: 100%;
+            height: 100vh;
+        }
+        button {
+            width: 200px;
+            height: 100px;
+        }
+        a {
+            text-decoration: none;
+        }
+        #search_first a {
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+<div id="whole_container">
+    <div id="navigation">
+        <div id="signup_signin_container">
+            <div id="signup_signin">
+                <a id="signup" th:href="${session.loginMember==null ? '/register' : '/mypage'}"
+                th:text="${session.loginMember==null ? '회원가입' : session.loginMember.user_nm}"></a>
+                <div></div>
+                <a id="signin" th:href="${session.loginMember==null ? '/login' : '/logout'}"
+                   th:text="${session.loginMember==null ? '로그인' : '로그아웃'}"></a>
+                <div></div>
+                <a id="cust">고객센터</a>
+            </div>
+        </div>
+        <div id="search">
+            <div id="search_first">
+                <a href="/">
+                    <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
+                        <image href="/icon/logo.svg" height="60" width="60"/>
+                    </svg>
+                </a>
+                <a href="/">Only 프레쉬</a>
+            </div>
+            <div id="input_container">
+                <input placeholder="검색어를 입력해주세요"/>
+                <img src="/imgs/cart/loupe.png" style="width: 20px; height: 20px"/>
+            </div>
+            <div id="icon_container">
+                <a href="/address/list"><img src="/imgs/cart/location.png"/></a>
+                <a href="/mypage"><img src="/imgs/cart/heart.png"/></a>
+                <a href="/carts"><img src="/imgs/cart/shopping-cart.png"/></a>
+            </div>
+        </div>
+        <div id="menubar">
+            <div id="category_container">
+                <img src=""/>
+                <p style="width: 80px;" id="show_category_button">카테고리</p>
+            </div>
+            <div id="menus">
+                <a href="/product/newlist?sort=1&page=1&pageSize=12&order_sc=in_date">신상품</a>
+                <a href="/product/newlist?sort=2&page=1&pageSize=12&order_sc=sales_rate">베스트</a>
+                <a href="/product/newlist?sort=3&page=1&pageSize=12">알뜰쇼핑</a>
+                <a href="/event/main">특가/혜택</a>
+            </div>
+            <div id="deli_info">
+                <span id="purple_deli_info">새벽·낮</span>
+                <span id="gray_deli_info">배송안내</span>
+            </div>
+        </div>
+    </div>
+    <div id="cat_wrapper">
+        <div id="main_cat_container">
+        </div>
+        <div id="sub_cat_container">
+        </div>
+    </div>
+    <div id="content">
+
+    </div>
+    <footer>
+        <img src="/icon/logo.svg" alt="logo">
+        <div id="member_container">
+            <a href="https://github.com/dr94406">
+                <p class="mem_row"><img src="/imgs/githubLogo.png">김형민</p>
+            </a>
+            <a href="https://github.com/PGRRR">
+                <p class="mem_row"><img src="/imgs/githubLogo.png">이선우</p>
+            </a>
+            <a href="https://github.com/Riiver-J">
+                <p class="mem_row"><img src="/imgs/githubLogo.png">정여경</p>
+            </a>
+            <a href="https://github.com/narlae">
+                <p class="mem_row"><img src="/imgs/githubLogo.png">김영준</p>
+            </a>
+            <a href="https://github.com/xpmxf4">
+                <p class="mem_row"><img src="/imgs/githubLogo.png">박채훈</p>
+            </a>
+            <a href="https://github.com/didqksrla">
+                <p class="mem_row"><img src="/imgs/githubLogo.png">김경빈</p>
+            </a>
+        </div>
+    </footer>
+</div>
+<script type="module" src="/js/utils/header.js"></script>
+</body>
+</html>

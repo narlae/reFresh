@@ -4,6 +4,7 @@ import com.onlyfresh.devkurly.domain.member.Member;
 import com.onlyfresh.devkurly.repository.MemberRepository;
 import com.onlyfresh.devkurly.web.dto.member.LoginFormDto;
 import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
+import com.onlyfresh.devkurly.web.dto.member.RegisterFormDto;
 import com.onlyfresh.devkurly.web.exception.LoginException;
 import com.onlyfresh.devkurly.web.exception.SignInException;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,24 @@ public class MemberService {
         Member member = optionalMember.get();
         checkPwd(member, loginFormDto.getPwd());
         return new MemberMainResponseDto(member);
+    }
+
+    public MemberMainResponseDto registerMember(RegisterFormDto formDto) {
+        Member member = memberBuild(formDto);
+        memberRepository.save(member);
+        return new MemberMainResponseDto(member);
+    }
+
+    private Member memberBuild(RegisterFormDto formDto) {
+        return Member.builder()
+                .user_email(formDto.getUser_email())
+                .pwd(formDto.getPwd())
+                .user_nm(formDto.getUser_nm())
+                .telno(formDto.getTelno())
+                .rcmdr_email(formDto.getRcmdr_email())
+                .gender(formDto.getGender())
+                .prvc_arge(formDto.getPrvc_arge())
+                .build();
     }
 
     private void checkPwd(Member member, String pwd) {

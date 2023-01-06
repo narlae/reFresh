@@ -1,9 +1,6 @@
 package com.onlyfresh.devkurly.domain.member;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,9 +10,10 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @Entity
-@NoArgsConstructor
 @Getter
 @ToString
+@Builder
+@AllArgsConstructor
 public class Member {
 
     @Id
@@ -42,10 +40,7 @@ public class Member {
     private String rcmdr_email; //추천인 이메일
     private Integer pnt; //페이 포인트
 
-    @Builder
-    public Member(String user_nm, String user_email, String pwd) {
-        this.user_nm = user_nm;
-        this.user_email = user_email;
-        this.pwd = pwd;
+    public Member() {
+
     }
 }
