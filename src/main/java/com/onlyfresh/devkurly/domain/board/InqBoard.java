@@ -11,6 +11,6 @@ import javax.persistence.Entity;
 @Getter @Setter
 public class InqBoard extends Board{
 
-    private boolean is_secret;
-    private boolean is_replied;
+    private boolean isSecret;
+    private boolean isReplied;
 }

@@ -1,4 +1,4 @@
-package com.onlyfresh.devkurly.web;
+package com.onlyfresh.devkurly.web.utils;
 
 public interface SessionConst {
 

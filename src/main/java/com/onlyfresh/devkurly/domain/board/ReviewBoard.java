@@ -8,11 +8,11 @@ import javax.persistence.Entity;
 @Entity
 @NoArgsConstructor
 @DiscriminatorValue("Rev")
-@Getter
+@Getter @Setter
 public class ReviewBoard extends Board{
 
-    private Integer revw_like;
-    private Integer like_no;
-    private String revw_img;
+    private Integer revwLike;
+    private Integer likeNo;
+    private String revwImg;
 
 }

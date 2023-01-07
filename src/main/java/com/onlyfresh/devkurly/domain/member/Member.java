@@ -18,26 +18,26 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer user_id;
+    private Long userId;
 
     @NotEmpty
-    private String user_nm;
+    private String userNm;
 
     @NotEmpty
-    private String user_email;
+    private String userEmail;
 
     @NotEmpty
     private String pwd;
 
     private String telno;
 
-    private Date subs_dt;
+    private Date subsDt;
 
     private String gender;
     //    private Date bryr;
-    private Character prvc_arge; //선택 이용 약관 동의
-    private Character user_cls_cd; //유저 분류 코드
-    private String rcmdr_email; //추천인 이메일
+    private Character prvcArge; //선택 이용 약관 동의
+    private Character userClsCd; //유저 분류 코드
+    private String rcmdrEmail; //추천인 이메일
     private Integer pnt; //페이 포인트
 
     public Member() {

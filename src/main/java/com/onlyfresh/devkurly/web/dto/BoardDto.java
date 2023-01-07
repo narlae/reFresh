@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class BoardDto {
-    private String cat_code;
-    private String sort_option;
+    private String catCode;
+    private String sortOption;
     private int page = 0;
 
 }

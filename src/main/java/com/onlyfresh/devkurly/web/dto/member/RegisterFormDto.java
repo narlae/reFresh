@@ -7,18 +7,18 @@ import javax.validation.constraints.NotEmpty;
 @Data
 public class RegisterFormDto {
     @NotEmpty
-    private String user_email;
+    private String userEmail;
     @NotEmpty
     private String pwd;
     @NotEmpty
-    private String user_nm;
+    private String userNm;
     @NotEmpty
     private String telno;
 
 
-    private String rcmdr_email;
+    private String rcmdrEmail;
     private String gender;
-    private Character prvc_arge; //선택 이용 약관 동의
+    private Character prvcArge; //선택 이용 약관 동의
 
 
 }

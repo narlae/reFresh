@@ -24,7 +24,7 @@ public class MemberService {
 
     public MemberMainResponseDto checkMember(LoginFormDto loginFormDto) {
         Optional<Member> optionalMember =
-                memberRepository.findMemberByUser_emailAndPwd(loginFormDto.getUser_email());
+                memberRepository.findMemberByUserEmailAndPwd(loginFormDto.getUserEmail());
         optionalMember.orElseThrow(() -> new SignInException("존재하지 않는 회원입니다."));
         Member member = optionalMember.get();
         checkPwd(member, loginFormDto.getPwd());
@@ -39,13 +39,13 @@ public class MemberService {
 
     private Member memberBuild(RegisterFormDto formDto) {
         return Member.builder()
-                .user_email(formDto.getUser_email())
+                .userEmail(formDto.getUserEmail())
                 .pwd(formDto.getPwd())
-                .user_nm(formDto.getUser_nm())
+                .userNm(formDto.getUserNm())
                 .telno(formDto.getTelno())
-                .rcmdr_email(formDto.getRcmdr_email())
+                .rcmdrEmail(formDto.getRcmdrEmail())
                 .gender(formDto.getGender())
-                .prvc_arge(formDto.getPrvc_arge())
+                .prvcArge(formDto.getPrvcArge())
                 .build();
     }
 

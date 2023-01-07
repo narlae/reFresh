@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OnlyFresh :: 회원가입</title>
+    <link rel="stylesheet" type="text/css" href="/css/member/login.css">
     <style></style>
 </head>
 
@@ -34,7 +35,7 @@
                             <input
                                     class="member-input"
                                     type="text"
-                                    th:field="*{user_email}"
+                                    th:field="*{userEmail}"
                                     placeholder="이메일을 입력해주세요"
                             />
                             <div class="form-error" id="email-error" hidden><img
@@ -74,7 +75,7 @@
                             <input
                                     class="member-input"
                                     type="text"
-                                    th:field="*{user_nm}"
+                                    th:field="*{userNm}"
                                     placeholder="이름을 입력해 주세요"
                             />
                             <div class="form-error" id="name-error" hidden><img
@@ -117,7 +118,7 @@
                             <input
                                     class="member-input"
                                     type="text"
-                                    th:field="*{rcmdr_email}"
+                                    th:field="*{rcmdrEmail}"
                                     placeholder="추천인 이메일을 입력해주세요."
                             />
                             <div class="form-error" id="rcmdr-email-error" hidden><img

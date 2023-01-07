@@ -15,31 +15,31 @@ public abstract class Board {
 
     @Id
     @GeneratedValue
-    private Integer bbs_id;
+    private Long bbsId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pdt_id")
+    @JoinColumn(name = "pdtId")
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     private Member member;
 
     @Column(length = 60)
-    private String bbs_title;
+    private String bbsTitle;
 
     @Temporal(TemporalType.DATE)
-    private Date wrt_dt;
+    private Date wrtDt;
 
     @Lob
-    private String bbs_cn;
+    private String bbsCn;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date in_date;
-    private String in_user;
+    private Date inDate;
+    private String inUser;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date up_date;
-    private String up_user;
+    private Date upDate;
+    private String upUser;
 
 }

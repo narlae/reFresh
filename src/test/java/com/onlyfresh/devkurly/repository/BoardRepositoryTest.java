@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
+//@Rollback(value = false)
 class BoardRepositoryTest {
 
     @Autowired BoardRepository boardRepository;
@@ -66,6 +66,8 @@ class BoardRepositoryTest {
             Board board = new ReviewBoard();
             board.setBbs_title("제목입니다." + i);
             board.setBbs_cn("내용입니다." + i);
+
+
             boardRepository.save(board);
         }
 //
@@ -87,6 +89,15 @@ class BoardRepositoryTest {
 //        assertThat(page.getTotalPages()).isEqualTo(2);
 //        assertThat(page.isFirst()).isTrue();
 //        assertThat(page.hasNext()).isTrue();
+
+    }
+    @Test
+    public void BoardAllDelete() {
+        boardRepository.deleteAll();
+    }
+
+    @Test
+    public void ReviewTest(){
 
     }
 

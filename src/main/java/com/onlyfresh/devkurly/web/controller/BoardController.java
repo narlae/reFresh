@@ -4,6 +4,7 @@ import com.onlyfresh.devkurly.domain.board.Board;
 import com.onlyfresh.devkurly.domain.board.ReviewBoard;
 import com.onlyfresh.devkurly.repository.BoardRepository;
 import com.onlyfresh.devkurly.web.dto.ReviewBoardDto;
+import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
 import com.onlyfresh.devkurly.web.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 
 @Controller
@@ -30,27 +33,24 @@ public class BoardController {
 
 
     @GetMapping
-    public String boardList(Integer page, String sort_option) {
+    public String boardList(Long page, String sort_option) {
 
         return "board/board";
     }
 
-    @GetMapping("/{pdt_id}/{page}")
+    @GetMapping("/{pdtId}/{page}")
     @ResponseBody
-    public Page<ReviewBoardDto> getBoardList(@PathVariable Integer pdt_id, @PathVariable Integer page, String sort_option) {
+    public Page<ReviewBoardDto> getBoardList(@PathVariable Long pdtId, @PathVariable int page, String sort_option) {
 
-        return getList(pdt_id, sort_option, page, 10);
+        return getList(pdtId, sort_option, page, 10);
     }
 
-    @PostMapping("/{pdt_id}")
+    @PostMapping("/{pdtId}")
     @ResponseBody
-    public ResponseEntity<String> write(@PathVariable Integer pdt_id, @RequestBody ReviewBoardDto reviewBoardDto) {
-        Board board = new ReviewBoard();
-//        board.getProduct().setPdt_id(pdt_id);
-        board.setBbs_title(reviewBoardDto.getBbs_title());
-        board.setBbs_cn(reviewBoardDto.getBbs_cn());
+    public ResponseEntity<String> write(@PathVariable Long pdtId, @RequestBody ReviewBoardDto reviewBoardDto,
+                                        HttpSession session) {
         try {
-            boardRepository.save(board);
+            boardService.write(session, reviewBoardDto);
             return new ResponseEntity<>("WRT_OK", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,12 +58,12 @@ public class BoardController {
         }
     }
 
-    @PutMapping("/{pdt_id}")
+    @PutMapping("/{pdtId}")
     @ResponseBody
-    public ResponseEntity<String> modify(@PathVariable("pdt_id") Integer pdt_id,
+    public ResponseEntity<String> modify(@PathVariable("pdtId") Long pdtId,
                                          @RequestBody ReviewBoardDto dto) {
         try {
-            boardService.updateBoard(dto.getBbs_id(), dto.getBbs_title(), dto.getBbs_cn());
+            boardService.updateBoard(dto.getBbsId(), dto.getBbsTitle(), dto.getBbsCn());
             return new ResponseEntity<>("MOD_OK", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,13 +71,13 @@ public class BoardController {
         }
     }
 
-    @DeleteMapping("/{pdt_id}/{bbs_id}")
+    @DeleteMapping("/{pdtId}/{bbsId}")
     @ResponseBody
-    public ResponseEntity<String> delete(@PathVariable("pdt_id") Integer pdt_id,
-                                         @PathVariable("bbs_id") Integer bbs_id) {
+    public ResponseEntity<String> delete(@PathVariable("pdtId") Long pdtId,
+                                         @PathVariable("bbsId") Long bbsId) {
 
         Board board = new ReviewBoard();
-        board.setBbs_id(bbs_id);
+        board.setBbsId(bbsId);
 
         try {
             boardRepository.delete(board);
@@ -88,17 +88,16 @@ public class BoardController {
         }
     }
 
-
-
-
-    private Page<ReviewBoardDto> getList(Integer pdt_id, String sort_option, int page, int pageSize) {
+    private Page<ReviewBoardDto> getList(Long pdtId, String sort_option, int page, int pageSize) {
 
         PageRequest pageRequest = PageRequest.of(page, pageSize,
                 Sort.by(Sort.Direction.DESC, sort_option));
 
-        Page<Board> boardPage = boardRepository.findByPdt_id(pdt_id, pageRequest);
-        Page<ReviewBoardDto> dtoPage = boardPage.map(m -> new ReviewBoardDto(m.getBbs_id(), m.getBbs_title(), m.getBbs_cn()));
+        Page<ReviewBoard> boardPage = boardRepository.findByPdt_id(pdtId, pageRequest);
 
+        Page<ReviewBoardDto> dtoPage = boardPage.map(m ->
+                new ReviewBoardDto(m.getBbsId(), m.getBbsTitle(), m.getBbsCn(),
+                        m.getRevwLike()));
         return dtoPage;
     }
 }

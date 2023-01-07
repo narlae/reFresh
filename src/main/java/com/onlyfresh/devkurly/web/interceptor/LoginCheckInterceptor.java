@@ -1,13 +1,12 @@
 package com.onlyfresh.devkurly.web.interceptor;
 
-import com.onlyfresh.devkurly.web.SessionConst;
+import com.onlyfresh.devkurly.web.utils.SessionConst;
 import com.onlyfresh.devkurly.web.exception.SignInException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @Slf4j

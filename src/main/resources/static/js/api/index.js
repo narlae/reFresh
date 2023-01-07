@@ -47,17 +47,17 @@ const requestWithoutJson = async (url, option) => {
 }
 
 const Api = {
-    getBoardList(pdt_id, page, sort_option) {
-        return request(`${BASE_URL}/board/${pdt_id}/${page}`+'?sort_option='+sort_option);
+    getBoardList(pdtId, page, sort_option) {
+        return request(`${BASE_URL}/board/${pdtId}/${page}`+'?sort_option='+sort_option);
     },
-    writeBoard(pdt_id, board) {
-        return requestWithoutJson(`${BASE_URL}/board/${pdt_id}`, HTTP_METHOD.POST(board));
+    writeBoard(pdtId, board) {
+        return requestWithoutJson(`${BASE_URL}/board/${pdtId}`, HTTP_METHOD.POST(board));
     },
-    deleteBoard(pdt_id, bbs_id) {
-        return requestWithoutJson(`${BASE_URL}/board/${pdt_id}/${bbs_id}`, HTTP_METHOD.DELETE());
+    deleteBoard(pdtId, bbsId) {
+        return requestWithoutJson(`${BASE_URL}/board/${pdtId}/${bbsId}`, HTTP_METHOD.DELETE());
     },
-    updateBoard(pdt_id, board) {
-        return requestWithoutJson(`${BASE_URL}/board/${pdt_id}`, HTTP_METHOD.PUT(board));
+    updateBoard(pdtId, board) {
+        return requestWithoutJson(`${BASE_URL}/board/${pdtId}`, HTTP_METHOD.PUT(board));
     },
 
 }

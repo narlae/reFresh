@@ -5,8 +5,8 @@ function App(){
 
     this.list = {
         page : 1,
-        pdt_id : 1,
-        sort_option : 'bbs_id',
+        pdtId : 1,
+        sort_option : 'bbsId',
 
     }
     this.board ={};
@@ -21,17 +21,17 @@ function App(){
         if (searchParam('page') !== null) {
             this.list.page = searchParam('page');
         }
-        this.page = await Api.getBoardList(this.list.pdt_id, this.list.page - 1, this.list.sort_option);
+        this.page = await Api.getBoardList(this.list.pdtId, this.list.page - 1, this.list.sort_option);
         const template =  this.page.content.map((item)=> {
 
             return `
         <div class="tr1">
-            <div id="no" class="th">${item.bbs_id}</div>
-            <div id="title" class="th" data-bbs_id ="${item.bbs_id}">
-                <div class="title_btn" ><dt class="title_cn">${item.bbs_title}</dt></div>
+            <div id="no" class="th">${item.bbsId}</div>
+            <div id="title" class="th" data-bbsId ="${item.bbsId}">
+                <div class="title_btn" ><dt class="title_cn">${item.bbsTitle}</dt></div>
                 <div id="review_view" class="review_in" style="display: none" data-open=close>
                     <div>
-                        <div class="review_content">${item.bbs_cn}</div>
+                        <div class="review_content">${item.bbsCn}</div>
                     </div>
                     <div id="buttons">
                         <p class="mod_btn">수정</p>
@@ -41,9 +41,9 @@ function App(){
                 </div>
             </div>
             <div id="grade" class="th" ></div>
-            <div id="writer" class="th">${item.user_nm}</div>
-            <div id="reg_date" class="th">${item.wrt_dt}</div>
-            <div id="like_cnt" class="th">${item.revw_like}</div>
+            <div id="writer" class="th">${item.userNm}</div>
+            <div id="reg_date" class="th">${item.wrtDt}</div>
+            <div id="like_cnt" class="th">${item.revwLike}</div>
         </div>
         `;
         }).join("");
@@ -95,17 +95,15 @@ function App(){
 
             if (e.target.classList.contains("mod_btn")) {
 
-                this.board['bbs_title'] = e.target.closest("#title").querySelector(".title_cn").innerText;
-                this.board['bbs_cn'] = e.target.closest("#title").querySelector(".review_content").innerText;
-                this.board['bbs_id'] = e.target.closest("#title").dataset.bbs_id;
-                $("#bbs_title").value = this.board.bbs_title;
-                $("#contents").value = this.board.bbs_cn;
+                this.board['bbsTitle'] = e.target.closest("#title").querySelector(".title_cn").innerText;
+                this.board['bbsCn'] = e.target.closest("#title").querySelector(".review_content").innerText;
+                this.board['bbsId'] = e.target.closest("#title").dataset.bbsid;
+                $("#bbs_title").value = this.board.bbsTitle;
+                $("#contents").value = this.board.bbsCn;
 
                 $("#modal-btn").className = 'btn-modify';
                 openModal();
-
             }
-
         });
 
         $(".border_write_btn").addEventListener("click",(e) => {
@@ -126,9 +124,9 @@ function App(){
             }
 
             if (e.target.classList.contains("btn-modify")) {
-                this.board['bbs_title'] =  $("#bbs_title").value;
-                this.board['bbs_cn'] = $("#contents").value;
-                await Api.updateBoard(this.list.pdt_id, this.board);
+                this.board['bbsTitle'] =  $("#bbs_title").value;
+                this.board['bbsCn'] = $("#contents").value;
+                await Api.updateBoard(this.list.pdtId, this.board);
                 alert("수정되었습니다.");
                 closeModal();
                 await render();
@@ -144,10 +142,10 @@ function App(){
     const sendBoard = async () => {
         let board = {};
 
-        board['bbs_title'] = $("#bbs_title").value;
-        board['bbs_cn'] = $("#contents").value;
+        board['bbsTitle'] = $("#bbs_title").value;
+        board['bbsCn'] = $("#contents").value;
 
-        await Api.writeBoard(this.list.pdt_id, board);
+        await Api.writeBoard(this.list.pdtId, board);
         closeModal();
         await render();
         $("#bbs_title").value = '';
@@ -155,9 +153,9 @@ function App(){
     }
 
     const deleteBoard = async (e) => {
-        const bbs_id = e.target.closest("#title").dataset.bbs_id;
+        const bbsId = e.target.closest("#title").dataset.bbsid;
 
-        await Api.deleteBoard(this.list.pdt_id, bbs_id);
+        await Api.deleteBoard(this.list.pdtId, bbsId);
         alert("글이 삭제되었습니다.");
         await render();
     }
