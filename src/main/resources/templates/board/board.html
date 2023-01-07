@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::#review_board}, ~{::script})"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>OnlyFresh :: 리뷰 게시판</title>
     <link rel="icon" href="/only-fresh-favicon.svg" />
     <link rel="stylesheet" type="text/css" href="/css/board/board.css">
-    <style>
-    </style>
+    <style></style>
 </head>
 <body>
 <div id="review_board">

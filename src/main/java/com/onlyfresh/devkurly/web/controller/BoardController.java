@@ -3,7 +3,6 @@ package com.onlyfresh.devkurly.web.controller;
 import com.onlyfresh.devkurly.domain.board.Board;
 import com.onlyfresh.devkurly.domain.board.ReviewBoard;
 import com.onlyfresh.devkurly.repository.BoardRepository;
-import com.onlyfresh.devkurly.web.dto.BoardDto;
 import com.onlyfresh.devkurly.web.dto.ReviewBoardDto;
 import com.onlyfresh.devkurly.web.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @Controller
 @Slf4j
