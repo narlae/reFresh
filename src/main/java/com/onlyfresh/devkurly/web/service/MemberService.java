@@ -6,6 +6,7 @@ import com.onlyfresh.devkurly.web.dto.member.LoginFormDto;
 import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
 import com.onlyfresh.devkurly.web.dto.member.RegisterFormDto;
 import com.onlyfresh.devkurly.web.exception.LoginException;
+import com.onlyfresh.devkurly.web.exception.MemberListException;
 import com.onlyfresh.devkurly.web.exception.SignInException;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,10 @@ public class MemberService {
         Member member = memberBuild(formDto);
         memberRepository.save(member);
         return new MemberMainResponseDto(member);
+    }
+
+    public Member findMemberById(Long userId) {
+        return memberRepository.findById(userId).orElseThrow(() -> new MemberListException("존재하지 않는 회원입니다."));
     }
 
     private Member memberBuild(RegisterFormDto formDto) {

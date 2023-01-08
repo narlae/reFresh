@@ -23,4 +23,10 @@ public class GlobalExceptionHandler {
         response.sendRedirect("/login?toURL=" + requestURI);
         return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResult> alreadyPush(HttpServletResponse response, HttpServletRequest request, LikeNoException e ) {
+        ErrorResult errorResult = new ErrorResult("likeNo-Ex", e.getMessage());
+        return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
+    }
 }

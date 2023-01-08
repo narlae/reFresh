@@ -10,11 +10,13 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 
-public interface BoardRepository extends JpaRepository<Board, Integer> {
+public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query(value = "select b from Board b",
             countQuery = "select count(b) from Board b")
     Page<ReviewBoard> findByPdt_id(Long pdtId, Pageable pageable);
 
-    Optional<Board> findBoardByBbsId(Long bbsId);
+    Optional<ReviewBoard> findBoardByBbsId(Long bbsId);
+
+
 
 }

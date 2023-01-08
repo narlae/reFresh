@@ -3,6 +3,8 @@ package com.onlyfresh.devkurly.domain.board;
 import com.onlyfresh.devkurly.domain.member.Member;
 import com.onlyfresh.devkurly.domain.product.Product;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.Date;

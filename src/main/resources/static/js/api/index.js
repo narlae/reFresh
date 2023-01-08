@@ -29,19 +29,18 @@ const HTTP_METHOD = {
 }
 
 const request = async (url, option) => {
-    const response = await fetch(url, option);
-    if (!response.ok) {
-        alert("에러가 발생했습니다.");
-        console.error(e);
-    }
-    return response.json();
+        const response = await fetch(url, option);
+        if (!response.ok) {
+            response.json().then((body) => alert(body.message));
+            return;
+        }
+        return response.json();
 }
 
 const requestWithoutJson = async (url, option) => {
     const response = await fetch(url, option);
     if (!response.ok) {
-        alert("에러가 발생했습니다.");
-        console.error(e);
+        alert(response);
     }
     return response;
 }
@@ -58,6 +57,9 @@ const Api = {
     },
     updateBoard(pdtId, board) {
         return requestWithoutJson(`${BASE_URL}/board/${pdtId}`, HTTP_METHOD.PUT(board));
+    },
+    upBoardLike(pdtId, bbsId) {
+        return request(`${BASE_URL}/board/like/${pdtId}/${bbsId}`);
     },
 
 }

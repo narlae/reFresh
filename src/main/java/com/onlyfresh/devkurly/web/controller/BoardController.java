@@ -87,6 +87,15 @@ public class BoardController {
             return new ResponseEntity<>("DEL_ERR", HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/like/{pdtId}/{bbsId}")
+    @ResponseBody
+    public ResponseEntity<String> boardLike(@PathVariable("pdtId") Long pdtId,
+                                            @PathVariable("bbsId") Long bbsId,
+                                            HttpSession session) {
+        boardService.makeLikeNo(session, bbsId).pushLike();
+        boardService.likeUp(bbsId);
+        return new ResponseEntity<>("LIK_OK", HttpStatus.OK);
+    }
 
     private Page<ReviewBoardDto> getList(Long pdtId, String sort_option, int page, int pageSize) {
 

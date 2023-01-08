@@ -104,6 +104,10 @@ function App(){
                 $("#modal-btn").className = 'btn-modify';
                 openModal();
             }
+
+            if (e.target.classList.contains("like_button")) {
+                likeBtn(e);
+            }
         });
 
         $(".border_write_btn").addEventListener("click",(e) => {
@@ -177,6 +181,13 @@ function App(){
             $reviewCn.style.display = 'none';
             $reviewCn.dataset.open = 'close';
         }
+    }
+
+    const likeBtn = async (e) =>{
+        const bbsId = e.target.closest("#title").dataset.bbsid;
+
+        await Api.upBoardLike(this.list.pdtId, bbsId);
+        await render();
     }
 
     function searchParam(key) {
