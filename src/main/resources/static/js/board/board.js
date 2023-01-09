@@ -23,7 +23,7 @@ function App(){
         }
         this.page = await Api.getBoardList(this.list.pdtId, this.list.page - 1, this.list.sort_option);
         const template =  this.page.content.map((item)=> {
-
+            let wrtDt = dateToString(item.wrtDt);
             return `
         <div class="tr1">
             <div id="no" class="th">${item.bbsId}</div>
@@ -42,7 +42,7 @@ function App(){
             </div>
             <div id="grade" class="th" ></div>
             <div id="writer" class="th">${item.userNm}</div>
-            <div id="reg_date" class="th">${item.wrtDt}</div>
+            <div id="reg_date" class="th">${wrtDt}</div>
             <div id="like_cnt" class="th">${item.revwLike}</div>
         </div>
         `;
@@ -193,6 +193,28 @@ function App(){
     function searchParam(key) {
         return new URLSearchParams(location.search).get(key);
     };
+
+    let dateToString = function(ms=0) {
+        let addZero = function(value=1){
+            return value > 9 ? value : "0"+value;
+        }
+        let date = new Date(ms);
+
+        let yyyy = date.getFullYear();
+        let mm = addZero(date.getMonth() + 1);
+        let dd = addZero(date.getDate());
+
+        let HH = addZero(date.getHours());
+        let MM = addZero(date.getMinutes());
+        let ss = addZero(date.getSeconds());
+
+        let today = new Date().getDate();
+        if (date.getDate() === today) {
+            return HH + ":" + MM;
+        } else {
+            return yyyy + "." + mm + "." + dd + ".";
+        }
+    }
 
 }
 

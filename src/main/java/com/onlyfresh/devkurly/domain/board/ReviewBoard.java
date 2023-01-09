@@ -14,7 +14,6 @@ import javax.persistence.Entity;
 public class ReviewBoard extends Board{
 
     private Integer revwLike;
-    private Integer likeNo;
     private String revwImg;
 
     public void increaseRevwLike() {

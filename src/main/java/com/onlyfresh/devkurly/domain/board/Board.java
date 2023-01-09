@@ -3,10 +3,11 @@ package com.onlyfresh.devkurly.domain.board;
 import com.onlyfresh.devkurly.domain.member.Member;
 import com.onlyfresh.devkurly.domain.product.Product;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -30,16 +31,18 @@ public abstract class Board {
     @Column(length = 60)
     private String bbsTitle;
 
-    @Temporal(TemporalType.DATE)
-    private Date wrtDt;
+    @CreationTimestamp
+    private LocalDateTime wrtDt;
 
     @Lob
     private String bbsCn;
 
+    @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date inDate;
     private String inUser;
 
+    @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date upDate;
     private String upUser;
