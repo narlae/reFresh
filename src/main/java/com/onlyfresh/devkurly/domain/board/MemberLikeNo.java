@@ -18,7 +18,7 @@ public class MemberLikeNo {
     @Column(name = "likeId")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bbsId")
     private Board board;
 

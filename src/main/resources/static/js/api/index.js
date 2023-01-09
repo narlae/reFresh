@@ -40,7 +40,8 @@ const request = async (url, option) => {
 const requestWithoutJson = async (url, option) => {
     const response = await fetch(url, option);
     if (!response.ok) {
-        alert(response);
+        response.json().then((body) => alert(body.message));
+        return;
     }
     return response;
 }
@@ -59,7 +60,7 @@ const Api = {
         return requestWithoutJson(`${BASE_URL}/board/${pdtId}`, HTTP_METHOD.PUT(board));
     },
     upBoardLike(pdtId, bbsId) {
-        return request(`${BASE_URL}/board/like/${pdtId}/${bbsId}`);
+        return requestWithoutJson(`${BASE_URL}/board/like/${pdtId}/${bbsId}`);
     },
 
 }

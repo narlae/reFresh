@@ -9,11 +9,14 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 public abstract class Board {
 
     @Id
@@ -47,4 +50,6 @@ public abstract class Board {
     private Date upDate;
     private String upUser;
 
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<MemberLikeNo> memberLikeNoList;
 }

@@ -76,9 +76,7 @@ public class BoardController {
     public ResponseEntity<String> delete(@PathVariable("pdtId") Long pdtId,
                                          @PathVariable("bbsId") Long bbsId) {
 
-        Board board = new ReviewBoard();
-        board.setBbsId(bbsId);
-
+        Board board = boardService.findBoardById(bbsId);
         try {
             boardRepository.delete(board);
             return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
