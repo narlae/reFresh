@@ -187,7 +187,6 @@ function App(){
         const bbsId = e.target.closest("#title").dataset.bbsid;
 
         await Api.upBoardLike(this.list.pdtId, bbsId);
-        alert("추천완료");
         await render();
     }
 

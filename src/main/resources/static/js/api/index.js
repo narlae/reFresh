@@ -37,13 +37,16 @@ const request = async (url, option) => {
         return response.json();
 }
 
-const requestWithoutJson = async (url, option) => {
+const requestWithoutJson = async (url, option, message) => {
     const response = await fetch(url, option);
     if (!response.ok) {
         response.json().then((body) => alert(body.message));
         return;
     }
-    return response;
+    if (message) {
+        alert(message);
+        return response;
+    }
 }
 
 const Api = {
@@ -60,7 +63,7 @@ const Api = {
         return requestWithoutJson(`${BASE_URL}/board/${pdtId}`, HTTP_METHOD.PUT(board));
     },
     upBoardLike(pdtId, bbsId) {
-        return requestWithoutJson(`${BASE_URL}/board/like/${pdtId}/${bbsId}`);
+        return requestWithoutJson(`${BASE_URL}/board/like/${pdtId}/${bbsId}`, null,"추천완료");
     },
 
 }

@@ -10,6 +10,7 @@ import com.onlyfresh.devkurly.repository.MemberRepository;
 import com.onlyfresh.devkurly.web.dto.ReviewBoardDto;
 import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
 import com.onlyfresh.devkurly.web.exception.BoardListException;
+import com.onlyfresh.devkurly.web.exception.LikeNoException;
 import com.onlyfresh.devkurly.web.exception.MemberListException;
 import com.onlyfresh.devkurly.web.exception.SignInException;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +55,9 @@ public class BoardService {
         Long userId = extractDto(session).getUserId();
         Member member = memberService.findMemberById(userId);
         Board board = findBoardById(bbsId);
+        if (userId.equals(board.getMember().getUserId())) {
+            throw new LikeNoException("자신의 글에 추천할 수 없습니다.");
+        }
         MemberLikeNo memberLikeNo = likeNoRepository.findByBoardAndMember(board, member)
                 .orElseGet(() -> new MemberLikeNo(board, member));
         likeNoRepository.save(memberLikeNo);
