@@ -10,6 +10,7 @@ import com.onlyfresh.devkurly.web.exception.MemberListException;
 import com.onlyfresh.devkurly.web.exception.SignInException;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotEmpty;
 import java.util.Optional;
 
@@ -40,6 +41,10 @@ public class MemberService {
 
     public Member findMemberById(Long userId) {
         return memberRepository.findById(userId).orElseThrow(() -> new MemberListException("존재하지 않는 회원입니다."));
+    }
+
+    public MemberMainResponseDto extractDto(HttpSession session) {
+        return ((MemberMainResponseDto) session.getAttribute("loginMember"));
     }
 
     private Member memberBuild(RegisterFormDto formDto) {

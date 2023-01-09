@@ -8,16 +8,13 @@ import com.onlyfresh.devkurly.repository.BoardRepository;
 import com.onlyfresh.devkurly.repository.MemberLikeNoRepository;
 import com.onlyfresh.devkurly.repository.MemberRepository;
 import com.onlyfresh.devkurly.web.dto.ReviewBoardDto;
-import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
 import com.onlyfresh.devkurly.web.exception.BoardListException;
 import com.onlyfresh.devkurly.web.exception.LikeNoException;
 import com.onlyfresh.devkurly.web.exception.MemberListException;
-import com.onlyfresh.devkurly.web.exception.SignInException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +27,7 @@ public class BoardService {
 
 
     public void write(HttpSession session, ReviewBoardDto boardDto) {
-        Long user_id = extractDto(session).getUserId();
+        Long user_id = memberService.extractDto(session).getUserId();
         Member member = memberRepository.findById(user_id)
                 .orElseThrow(() -> new MemberListException("존재하지 않는 회원입니다."));
         ReviewBoard board = getBoard(boardDto, user_id, member);
@@ -39,9 +36,11 @@ public class BoardService {
     }
 
     @Transactional
-    public void updateBoard(Long bbsId, String bbsTitle, String bbsCn) {
-        Board board = boardRepository.findBoardByBbsId(bbsId)
-                .orElseThrow(() -> new BoardListException("해당 글이 존재하지 않습니다."));
+    public void updateBoard(Long bbsId, String bbsTitle, String bbsCn, Long userId) {
+        Board board = findBoardById(bbsId);
+        if (!userId.equals(board.getMember().getUserId())) {
+            throw new MemberListException("자신의 글만 수정할 수 있습니다.");
+        }
         board.setBbsTitle(bbsTitle);
         board.setBbsCn(bbsCn);
     }
@@ -52,7 +51,7 @@ public class BoardService {
 
     @Transactional
     public MemberLikeNo makeLikeNo(HttpSession session, Long bbsId) {
-        Long userId = extractDto(session).getUserId();
+        Long userId = memberService.extractDto(session).getUserId();
         Member member = memberService.findMemberById(userId);
         Board board = findBoardById(bbsId);
         if (userId.equals(board.getMember().getUserId())) {
@@ -71,9 +70,6 @@ public class BoardService {
         board.increaseRevwLike();
     }
 
-    private MemberMainResponseDto extractDto(HttpSession session) {
-        return ((MemberMainResponseDto) session.getAttribute("loginMember"));
-    }
 
     private ReviewBoard getBoard(ReviewBoardDto reviewBoardDto, Long user_id, Member member) {
         ReviewBoard board = new ReviewBoard();

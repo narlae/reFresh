@@ -25,7 +25,7 @@ public class ReviewBoardDto {
         this.userNm = reviewBoard.getMember().getUserNm();
         this.bbsTitle = reviewBoard.getBbsTitle();
         this.wrtDt = reviewBoard.getWrtDt();
-        this.bbsCn = bbsCn;
+        this.bbsCn = reviewBoard.getBbsCn();
         this.revwLike = reviewBoard.getRevwLike();
         this.revwImg = reviewBoard.getRevwImg();
     }

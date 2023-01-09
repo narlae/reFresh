@@ -18,15 +18,23 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<ErrorResult> signInExHandler(HttpServletResponse response, HttpServletRequest request, SignInException e) throws IOException {
-        ErrorResult errorResult = new ErrorResult("SignIn-EX", e.getMessage());
         String requestURI = request.getRequestURI();
         response.sendRedirect("/login?toURL=" + requestURI);
-        return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
+        return getResponseEntity("SignIn-EX", e);
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResult> alreadyPush(HttpServletResponse response, HttpServletRequest request, LikeNoException e ) {
-        ErrorResult errorResult = new ErrorResult("likeNo-Ex", e.getMessage());
+    public ResponseEntity<ErrorResult> alreadyPush(LikeNoException e ) {
+        return getResponseEntity("LikeNo-Ex", e);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResult> memberListExHandler(MemberListException e) {
+        return getResponseEntity("Mem-Ex", e);
+    }
+
+    private ResponseEntity<ErrorResult> getResponseEntity(String code, Exception e) {
+        ErrorResult errorResult = new ErrorResult(code, e.getMessage());
         return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
     }
 }

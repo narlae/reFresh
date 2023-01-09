@@ -57,10 +57,10 @@ const Api = {
         return requestWithoutJson(`${BASE_URL}/board/${pdtId}`, HTTP_METHOD.POST(board));
     },
     deleteBoard(pdtId, bbsId) {
-        return requestWithoutJson(`${BASE_URL}/board/${pdtId}/${bbsId}`, HTTP_METHOD.DELETE());
+        return requestWithoutJson(`${BASE_URL}/board/${pdtId}/${bbsId}`, HTTP_METHOD.DELETE(), "글이 삭제되었습니다.");
     },
     updateBoard(pdtId, board) {
-        return requestWithoutJson(`${BASE_URL}/board/${pdtId}`, HTTP_METHOD.PUT(board));
+        return requestWithoutJson(`${BASE_URL}/board/${pdtId}`, HTTP_METHOD.PUT(board), "수정되었습니다.");
     },
     upBoardLike(pdtId, bbsId) {
         return requestWithoutJson(`${BASE_URL}/board/like/${pdtId}/${bbsId}`, null,"추천완료");

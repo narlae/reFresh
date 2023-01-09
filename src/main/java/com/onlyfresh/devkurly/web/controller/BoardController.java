@@ -4,8 +4,10 @@ import com.onlyfresh.devkurly.domain.board.Board;
 import com.onlyfresh.devkurly.domain.board.ReviewBoard;
 import com.onlyfresh.devkurly.repository.BoardRepository;
 import com.onlyfresh.devkurly.web.dto.ReviewBoardDto;
-import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
+import com.onlyfresh.devkurly.web.exception.MemberListException;
 import com.onlyfresh.devkurly.web.service.BoardService;
+import com.onlyfresh.devkurly.web.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,16 +22,14 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @Slf4j
+@RequiredArgsConstructor
 @RequestMapping("/board")
 public class BoardController {
 
     private final BoardRepository boardRepository;
     private final BoardService boardService;
+    private final MemberService memberService;
 
-    public BoardController(BoardRepository boardRepository, BoardService boardService) {
-        this.boardRepository = boardRepository;
-        this.boardService = boardService;
-    }
 
 
     @GetMapping
@@ -61,22 +61,23 @@ public class BoardController {
     @PutMapping("/{pdtId}")
     @ResponseBody
     public ResponseEntity<String> modify(@PathVariable("pdtId") Long pdtId,
-                                         @RequestBody ReviewBoardDto dto) {
-        try {
-            boardService.updateBoard(dto.getBbsId(), dto.getBbsTitle(), dto.getBbsCn());
-            return new ResponseEntity<>("MOD_OK", HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("MOD_ERR", HttpStatus.BAD_REQUEST);
-        }
+                                         @RequestBody ReviewBoardDto dto,
+                                         HttpSession session) {
+        Long userId = getUserId(session);
+        boardService.updateBoard(dto.getBbsId(), dto.getBbsTitle(), dto.getBbsCn(), userId);
+        return new ResponseEntity<>("MOD_OK", HttpStatus.OK);
     }
 
     @DeleteMapping("/{pdtId}/{bbsId}")
     @ResponseBody
     public ResponseEntity<String> delete(@PathVariable("pdtId") Long pdtId,
-                                         @PathVariable("bbsId") Long bbsId) {
-
+                                         @PathVariable("bbsId") Long bbsId,
+                                         HttpSession session) {
+        Long userId = getUserId(session);
         Board board = boardService.findBoardById(bbsId);
+        if (!userId.equals(board.getMember().getUserId())) {
+            throw new MemberListException("자신의 글만 삭제할 수 있습니다.");
+        }
         try {
             boardRepository.delete(board);
             return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
@@ -93,6 +94,10 @@ public class BoardController {
         boardService.makeLikeNo(session, bbsId).pushLike();
         boardService.likeUp(bbsId);
         return new ResponseEntity<>("LIK_OK", HttpStatus.OK);
+    }
+
+    private Long getUserId(HttpSession session) {
+        return memberService.extractDto(session).getUserId();
     }
 
     private Page<ReviewBoardDto> getList(Long pdtId, String sort_option, int page, int pageSize) {

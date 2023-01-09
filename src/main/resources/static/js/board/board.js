@@ -7,7 +7,6 @@ function App(){
         page : 1,
         pdtId : 1,
         sort_option : 'bbsId',
-
     }
     this.board ={};
     this.page={};
@@ -21,6 +20,7 @@ function App(){
         if (searchParam('page') !== null) {
             this.list.page = searchParam('page');
         }
+        getSortOption.call(this);
         this.page = await Api.getBoardList(this.list.pdtId, this.list.page - 1, this.list.sort_option);
         const template =  this.page.content.map((item)=> {
             let wrtDt = dateToString(item.wrtDt);
@@ -131,7 +131,6 @@ function App(){
                 this.board['bbsTitle'] =  $("#bbs_title").value;
                 this.board['bbsCn'] = $("#contents").value;
                 await Api.updateBoard(this.list.pdtId, this.board);
-                alert("수정되었습니다.");
                 closeModal();
                 await render();
                 $("#bbs_title").value = '';
@@ -140,6 +139,11 @@ function App(){
 
         });
 
+        $("#sort-option").addEventListener("change", async () =>{
+            let value = $("#sort-option").value;
+            localStorage.setItem("sortOption", value);
+            await render();
+        });
     }
 
 
@@ -160,7 +164,6 @@ function App(){
         const bbsId = e.target.closest("#title").dataset.bbsid;
 
         await Api.deleteBoard(this.list.pdtId, bbsId);
-        alert("글이 삭제되었습니다.");
         await render();
     }
 
@@ -213,6 +216,13 @@ function App(){
             return HH + ":" + MM;
         } else {
             return yyyy + "." + mm + "." + dd + ".";
+        }
+    }
+
+    let getSortOption = () => {
+        if (localStorage.getItem("sortOption")) {
+            this.list.sort_option = localStorage.getItem("sortOption");
+            $("#sort-option").value = this.list.sort_option;
         }
     }
 
