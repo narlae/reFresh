@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
@@ -24,6 +25,7 @@ public class Member {
     private String userNm;
 
     @NotEmpty
+    @Email
     private String userEmail;
 
     @NotEmpty

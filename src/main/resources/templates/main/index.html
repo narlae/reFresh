@@ -1,0 +1,45 @@
+<html>
+<html th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::#content}, ~{::script})"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnlyFresh :: HOME</title>
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <style></style>
+</head>
+
+<body>
+<div id="whole_container">
+    <div id="content">
+        <div id="min" style="display: flex; flex-direction: column; align-items: center;">
+
+            <div class="main_title">
+                <span class="title">건강을 위한 식료품 모음집</span>
+                <p class="subtitle">비건인들을 위한 오늘의 만찬</p>
+            </div>
+            <div id="product" style="display: flex;">
+            </div>
+
+
+            <div class="main_title">
+                <span class="title">달콤한 하루를 위한 과일 모음집</span>
+                <p class="subtitle">과일을 사랑하는 사람들을 위한 사랑방</p>
+            </div>
+            <div id="product2" style="display: flex;">
+            </div>
+
+
+            <div class="main_title">
+                <span class="title">바다의 참맛을 누리기 위한 해산물 모음집</span>
+                <p class="subtitle">귀하디 귀한 바다의 보배를 누리세요</p>
+            </div>
+            <div id="product3" style="display: flex;">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="module" src="/js/utils/header.js"></script>
+</body>
+</html>

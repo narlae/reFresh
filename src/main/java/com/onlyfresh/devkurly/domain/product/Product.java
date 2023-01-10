@@ -1,35 +1,48 @@
 package com.onlyfresh.devkurly.domain.product;
 
+import com.onlyfresh.devkurly.domain.CategoryProduct;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.UniqueElements;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter @Setter
+@Table(uniqueConstraints =
+        @UniqueConstraint(name = "pdtDId_unique", columnNames = "pdtDId")
+)
 public class Product {
     @Id
     @GeneratedValue
     private Long pdtId;
 
-    private String catCode; //카테고리 코드
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "pdtDId")
+    private ProductDetail productDetail;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<CategoryProduct> categoryProducts = new ArrayList<>();
+
+    @NotNull
     private Integer price; //가격
     private String image;
 
-    private Integer dsRate; //할인율
+    private Integer dsRate = 0; //할인율
     private Integer selPrice; //판매가격
 
+    @NotNull
     private String title; //제목
     private String subTitle; //소제목
     private String recInfo; //입고안내
     private boolean adtSts; // 성인인증여부
     private Integer stock; //재고
-
-
 
     private Integer salesRate; //판매량
     private boolean deType; //배송유형
@@ -40,8 +53,13 @@ public class Product {
     private String cdTypeName;
     private Integer cdNameNum;
 
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date inDate;
     private String inUser;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date upDate;
     private String upUser;
 }
