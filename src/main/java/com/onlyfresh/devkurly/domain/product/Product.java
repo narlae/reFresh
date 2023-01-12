@@ -1,8 +1,7 @@
 package com.onlyfresh.devkurly.domain.product;
 
 import com.onlyfresh.devkurly.domain.CategoryProduct;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.UniqueElements;
@@ -14,7 +13,10 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
+@Builder
+@AllArgsConstructor
+@ToString
 @Table(uniqueConstraints =
         @UniqueConstraint(name = "pdtDId_unique", columnNames = "pdtDId")
 )
@@ -27,19 +29,23 @@ public class Product {
     @JoinColumn(name = "pdtDId")
     private ProductDetail productDetail;
 
+    @Builder.Default
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<CategoryProduct> categoryProducts = new ArrayList<>();
+
+    @NotNull
+    private String title; //제목
+    private String subTitle; //소제목
 
     @NotNull
     private Integer price; //가격
     private String image;
 
+    @Builder.Default
     private Integer dsRate = 0; //할인율
     private Integer selPrice; //판매가격
 
-    @NotNull
-    private String title; //제목
-    private String subTitle; //소제목
+
     private String recInfo; //입고안내
     private boolean adtSts; // 성인인증여부
     private Integer stock; //재고
@@ -48,10 +54,6 @@ public class Product {
     private boolean deType; //배송유형
     private String tagName; //태그명
     private String company; //제조사
-
-    private String cdName;
-    private String cdTypeName;
-    private Integer cdNameNum;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -62,4 +64,12 @@ public class Product {
     @Temporal(TemporalType.TIMESTAMP)
     private Date upDate;
     private String upUser;
+
+    public void setCategoryProducts(CategoryProduct categoryProduct) {
+        this.categoryProducts.add(categoryProduct);
+    }
+
+    public Product() {
+
+    }
 }

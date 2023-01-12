@@ -24,8 +24,8 @@ class MemberRepositoryTest {
     @Test
     public void CreateMemberTest() {
         Member member = Member.builder()
-                .user_email("aaaa@aa.net")
-                .user_nm("kim")
+                .userEmail("aaaa@aa.net")
+                .userNm("kim")
                 .pwd("asdf")
                 .build();
 
@@ -33,7 +33,7 @@ class MemberRepositoryTest {
 
         assertEquals(member, member1);
 
-        Optional<Member> byUserEmail = memberRepository.findMemberByUser_emailAndPwd("aaaa@aa.net");
+        Optional<Member> byUserEmail = memberRepository.findMemberByUserEmailAndPwd("aaaa@aa.net");
         Member member2 = byUserEmail.get();
         System.out.println("member2 = " + member2);
 

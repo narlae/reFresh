@@ -3,6 +3,7 @@ package com.onlyfresh.devkurly.domain;
 import com.onlyfresh.devkurly.domain.product.Product;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -32,5 +33,23 @@ public class Category {
     public void addChildCategory(Category child) {
         this.child.add(child);
         child.setParent(this);
+    }
+
+    public void addCategoryProducts(CategoryProduct categoryProduct) {
+        categoryProducts.add(categoryProduct);
+        categoryProduct.setCategory(this);
+    }
+
+    public static Category createCategory(CategoryProduct... categoryProducts) {
+        Category category = new Category();
+        for (CategoryProduct categoryProduct : categoryProducts) {
+            category.addCategoryProducts(categoryProduct);
+        }
+        return category;
+    }
+
+    @Override
+    public String toString() {
+        return this.catId + "." + this.catName + ": ";
     }
 }

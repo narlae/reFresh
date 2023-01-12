@@ -28,8 +28,8 @@ class BoardRepositoryTest {
     public void BoardTest() {
         for (int i = 0; i < 10; i++) {
             Board board = new ReviewBoard();
-            board.setBbs_title("제목" + i);
-            board.setBbs_cn("내용입니다." + i);
+            board.setBbsTitle("제목" + i);
+            board.setBbsCn("내용입니다." + i);
 
             boardRepository.save(board);
         }
@@ -48,11 +48,11 @@ class BoardRepositoryTest {
     @Test
     public void BoardUpdateTest() {
         Board board = new ReviewBoard();
-        board.setBbs_title("제목");
-        board.setBbs_cn("내용입니다.");
+        board.setBbsTitle("제목");
+        board.setBbsCn("내용입니다.");
 
         boardRepository.save(board);
-        board.setBbs_title("수정된 제목");
+        board.setBbsTitle("수정된 제목");
 
         long count = boardRepository.count();
         assertEquals(1, count);
@@ -64,8 +64,8 @@ class BoardRepositoryTest {
 
         for (int i = 0; i < 120; i++) {
             Board board = new ReviewBoard();
-            board.setBbs_title("제목입니다." + i);
-            board.setBbs_cn("내용입니다." + i);
+            board.setBbsTitle("제목입니다." + i);
+            board.setBbsCn("내용입니다." + i);
 
 
             boardRepository.save(board);
