@@ -30,4 +30,8 @@ public class CategoryProduct {
         return categoryProduct;
     }
 
+    @Override
+    public String toString() {
+        return "id: " + this.id + " catId:" + this.category.getCatId() + " pdtId:" + this.product.getPdtId();
+    }
 }

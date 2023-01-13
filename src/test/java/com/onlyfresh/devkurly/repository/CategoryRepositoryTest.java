@@ -35,9 +35,11 @@ class CategoryRepositoryTest {
 
             for (int i = 1; i < list.size(); i++) {
                 Category child = new Category();
-                child.setCatName(list.get(i));
-                parentCategory.addChildCategory(child);
-                categoryRepository.save(child);
+                if (!list.get(i).equals("")) {
+                    child.setCatName(list.get(i));
+                    parentCategory.addChildCategory(child);
+                    categoryRepository.save(child);
+                }
             }
         }
 

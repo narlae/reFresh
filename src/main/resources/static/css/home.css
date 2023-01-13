@@ -135,7 +135,7 @@ a:visited {
     margin: auto;
 }
 
-#img {
+.mainImg {
     width: 249px;
     height: 320px;
 }

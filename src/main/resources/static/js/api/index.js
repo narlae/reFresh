@@ -65,6 +65,9 @@ const Api = {
     upBoardLike(pdtId, bbsId) {
         return requestWithoutJson(`${BASE_URL}/board/like/${pdtId}/${bbsId}`, null,"추천완료");
     },
+    getHomeProducts() {
+        return request(`${BASE_URL}/home`);
+    },
 
 }
 

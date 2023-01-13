@@ -25,8 +25,6 @@ public class CsvReader {
                 aLine = Arrays.asList(lineArr);
                 csvList.add(aLine);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
