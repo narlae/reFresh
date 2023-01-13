@@ -1,6 +1,9 @@
 package com.onlyfresh.devkurly.domain.product;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -8,7 +11,12 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Getter
+@Getter @Setter
+@Builder
+@AllArgsConstructor
+@Table(uniqueConstraints =
+@UniqueConstraint(name = "pdtId_unique", columnNames = "pdtId")
+)
 public class ProductDetail {
 
     @Id
@@ -16,7 +24,8 @@ public class ProductDetail {
     @Column(name = "pdtDId")
     private Long pdtDId;
 
-    @OneToOne(mappedBy = "productDetail", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "pdtId")
     private Product product;
 
     private String packCd; //포장타입(상온, 냉장,냉동)
@@ -41,4 +50,7 @@ public class ProductDetail {
     private Date upDate;
     private String upUser;
 
+    public ProductDetail() {
+
+    }
 }

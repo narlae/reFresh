@@ -3,6 +3,8 @@ package com.onlyfresh.devkurly.repository;
 import com.onlyfresh.devkurly.domain.Category;
 import com.onlyfresh.devkurly.domain.CategoryProduct;
 import com.onlyfresh.devkurly.domain.product.Product;
+import com.onlyfresh.devkurly.domain.product.ProductDetail;
+import com.onlyfresh.devkurly.web.dto.ProductDetailDto;
 import com.onlyfresh.devkurly.web.utils.CsvReader;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +60,6 @@ class ProductRepositoryTest {
             CategoryProduct categoryProduct = CategoryProduct.createCategoryProduct(product);
             Category category = categoryRepository.findCategoryByCatName(list.get(13));
             category.addCategoryProducts(categoryProduct);
-
             productRepository.save(product);
         }
     }
@@ -93,4 +94,9 @@ class ProductRepositoryTest {
         assertEquals(product1, product2);
     }
 
+    @Test
+    public void getPdtIdTest() {
+        List<Long> pdtIds = productRepository.findPdtIds();
+        System.out.println("pdtIds = " + pdtIds);
+    }
 }

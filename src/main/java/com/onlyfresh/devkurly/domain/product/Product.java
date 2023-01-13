@@ -17,16 +17,12 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @ToString
-@Table(uniqueConstraints =
-        @UniqueConstraint(name = "pdtDId_unique", columnNames = "pdtDId")
-)
 public class Product {
     @Id
     @GeneratedValue
     private Long pdtId;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "pdtDId")
+    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY)
     private ProductDetail productDetail;
 
     @Builder.Default
@@ -69,6 +65,9 @@ public class Product {
         this.categoryProducts.add(categoryProduct);
     }
 
+    public void setPdtD(ProductDetail productDetail) {
+        this.productDetail = productDetail;
+    }
     public Product() {
 
     }
