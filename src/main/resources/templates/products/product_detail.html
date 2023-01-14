@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OnlyFresh :: [${productDetailDto.company}] ${productDetailDto.title}</title>
+    <title>OnlyFresh :: [[${dto.title}]]</title>
     <link rel="icon" href="/only-fresh-favicon.svg" />
-    <link rel="stylesheet" type="text/css" href="/product_detail/product_detail.css?after">
+    <link rel="stylesheet" type="text/css" href="/css/product/product_detail.css">
     <style>
         #whole_container {
             width: 100%;
-            height: 100vh;
+            position: relative;
         }
 
         button {
@@ -22,11 +22,9 @@
             margin-bottom: 70px;
         }
 
-        #content {
+        #detail_container {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 30 200 160 200;
+            justify-content: space-between;
         }
         #review_board{
             position: relative;
@@ -57,28 +55,27 @@
 <div id="whole_container">
     <div id="content">
         <div id="detail_container">
-            <img id="pdt_img"
-                 src="${productDetailDto.image}" />
+            <img id="pdt_img" th:src="${dto.image}"/>
             <div id="detail_price_button_container">
-                <p id="is_early_deli">${productDetailDto.de_type==true ? '새벽배송':'낮배송'}</p>
-                <h2>[${productDetailDto.company}] ${productDetailDto.title}</h2>
-                <p id="sub_title">${productDetailDto.sub_title}</p>
+                <p id="is_early_deli" th:text="${dto.deType ? '새벽배송':'낮배송'}"></p>
+                <h2 th:text="${dto.title}"></h2>
+                <p id="sub_title" th:text="${subTitle}"></p>
                 <div style="margin-bottom: 10px;">
-                    <span id="ds_rate">${productDetailDto.ds_rate}%</span>
-                    <span id="sel_price"></span>
+                    <span id="ds_rate">[[${dto.dsRate}]]%</span>
+                    <span id="sel_price">[[${dto.selPrice}]]</span>
                     <span id="won">원</span>
                 </div>
                 <div>
-                    <span id="price"></span>
+                    <span id="price">[[${dto.price}]]</span>
                 </div>
-                <%--        <p id="mileage_except">적립 제외 상품입니다.</p> <!-- 여기에 border-bottom 넣기 -->--%>
+                <p id="mileage_except">적립 제외 상품입니다.</p>
                 <div class ="coupon_btn"><button id="add_coupon">쿠폰 지급</button>
-                    <img id="down_icon" src="/product_detail/imgs/download_icon.svg"/>
+                    <img id="down_icon" src="/imgs/product/download_icon.svg"/>
                 </div>
                 <div class="detail_column">
                     <div class="column_title">배송</div>
                     <div>
-                        <p class="main_desc">${productDetailDto.de_type==true ? '새벽배송':'낮배송'}</p>
+                        <p class="main_desc" th:text="${dto.deType ? '새벽배송':'낮배송'}"></p>
                         <p class="sub_desc">23시 전 주문 시 내일 아침 7시 전 도착</p>
                     </div>
                 </div>
@@ -91,39 +88,39 @@
                 <div class="detail_column">
                     <div class="column_title">포장타입</div>
                     <div>
-                        <p class="main_desc">${productDetailDto.pack_cd}</p>
+                        <p class="main_desc" th:text="${dto.packCd}"></p>
                         <p class="sub_desc">택배배송은 에코 포장이 스티로폼으로 대체됩니다.</p>
                     </div>
                 </div>
                 <div class="detail_column">
                     <div class="column_title">판매단위</div>
                     <div>
-                        <p class="main_desc">${productDetailDto.sell_cd}</p>
+                        <p class="main_desc" th:text="${dto.sellCd}"></p>
                     </div>
                 </div>
                 <div class="detail_column">
                     <div class="column_title">중량/용량</div>
                     <div>
-                        <p class="main_desc">${productDetailDto.weca_cd}</p>
+                        <p class="main_desc" th:text="${dto.wecaCd}"></p>
                     </div>
                 </div>
                 <div class="detail_column">
                     <div class="column_title">알레르기정보</div>
                     <div>
-                        <p class="main_desc">${productDetailDto.allg_dt}</p>
+                        <p class="main_desc" th:text="${dto.allgDt}"></p>
                         <p class="sub_desc"></p>
                     </div>
                 </div>
                 <div class="detail_column">
                     <div class="column_title">유통기한정보</div>
                     <div>
-                        <p class="main_desc">${productDetailDto.ex_dt}</p>
+                        <p class="main_desc" th:text="${dto.exDt}"></p>
                     </div>
                 </div>
                 <div class="detail_column">
                     <div class="column_title">안내사항</div>
                     <div>
-                        <p class="main_desc">${productDetailDto.notice}</p>
+                        <p class="main_desc" th:text="${dto.notice}"></p>
                     </div>
                 </div>
                 <div class="detail_column">
@@ -143,12 +140,11 @@
                         <span id="unit">원</span>
                     </div>
                     <div id="mileage">
-                        <%--            구매 시 0원 적립--%>
                     </div>
                 </div>
                 <div id="button_container">
-                    <%--          <button><img src="/product_detail/imgs/purpleheart.svg"/></button>--%>
-                    <%--          <button><img src="/product_detail/imgs/bell.svg"/></button>--%>
+                    <button><img src="/imgs/product/purpleheart.svg"/></button>
+                    <button><img src="/imgs/product/bell.svg"/></button>
                     <button id="addCart">장바구니 담기</button>
                 </div>
             </div>
@@ -161,27 +157,28 @@
                 <span class="navs">상세정보</span></a>
             </div>
             <div class="navi" value="#review_board_i">
-                <span class="navs">후기 (${reviewCnt})</span></a>
+                <span class="navs">후기 ([[${reviewCnt}]])</span></a>
             </div>
             <div class="navi" value="#inquiry_board_i">
                 <span class="navs">문의</span></a>
             </div>
         </nav>
-        <img id="des1" src="${productDetailDto.prt_image}"/>
-        <img id="des2" src="${productDetailDto.prt_info}" />
-
-        <div id ="board_container">
-            <div class="board_margin" id="review_board_i"></div>
-            <div id="review_board">
-                <iframe src="/board">
-                </iframe>
-            </div>
-            <div class="board_margin" id="inquiry_board_i"></div>
-            <div id="inquiry_board">
-                <iframe src="/boardlist?pdt_id=${param.pdt_id}&bbs_clsf_cd=2&page=1&pageSize=10">
-                </iframe>
-            </div>
+        <div>
+            <img id="des1" th:src="${dto.prtImage}"/>
+            <img id="des2" th:src="${dto.prtInfo}"/>
         </div>
+        <!--        <div id ="board_container">-->
+        <!--            <div class="board_margin" id="review_board_i"></div>-->
+        <!--            <div id="review_board">-->
+        <!--                <iframe src="/board">-->
+        <!--                </iframe>-->
+        <!--            </div>-->
+        <!--            <div class="board_margin" id="inquiry_board_i"></div>-->
+        <!--            <div id="inquiry_board">-->
+        <!--                <iframe src="/boardlist?pdt_id=${param.pdt_id}&bbs_clsf_cd=2&page=1&pageSize=10">-->
+        <!--                </iframe>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
 </div>
 <script></script>

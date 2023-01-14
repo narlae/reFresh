@@ -15,7 +15,7 @@ function App(){
                 let selPrice = (result[i][j].selPrice).toLocaleString();
                 let price = (result[i][j].price).toLocaleString();
                 template += `
-                            <div class="products"><a href="/detail?pdt_id=${result[i][j].pdtId}">
+                            <div class="products"><a href="/product/${result[i][j].pdtId}">
                             <img class="mainImg" src="${result[i][j].image}"/></a>
                             <h3 class="product_title">${result[i][j].title}<h3/>
                             <div class="product"><span class="product_ds_rate">${result[i][j].dsRate}%</span>

@@ -8,7 +8,6 @@
     <link rel="icon" href="/icon/only-fresh-favicon.svg" />
     <link rel="stylesheet" type="text/css" href="/css/reset.css">
     <link rel="stylesheet" type="text/css" href="/css/navigation.css">
-    <link rel="stylesheet" type="text/css" href="/css/payment/payment.css">
     <link rel="stylesheet" type="text/css" href="/css/footer.css">
     <th:block th:replace="${links}"/>
     <style>
@@ -31,51 +30,60 @@
 
 <body>
 <div id="whole_container">
-    <div id="navigation">
-        <div id="signup_signin_container">
+    <div>
+        <div id="navigation">
             <div id="signup_signin">
                 <a id="signup" th:href="${session.loginMember==null ? '/register' : '/mypage'}"
                    th:text="${session.loginMember==null ? '회원가입' : session.loginMember.userNm}"></a>
-                <div></div>
+                <div class="css-bar"></div>
                 <a id="signin" th:href="${session.loginMember==null ? '/login' : '/logout'}"
                    th:text="${session.loginMember==null ? '로그인' : '로그아웃'}"></a>
-                <div></div>
+                <div class="css-bar"></div>
                 <a id="cust">고객센터</a>
             </div>
-        </div>
-        <div id="search">
-            <div id="search_first">
-                <a href="/">
-                    <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
-                        <image href="/icon/logo.svg" height="60" width="60"/>
-                    </svg>
-                </a>
-                <a href="/">Only 프레쉬</a>
-            </div>
-            <div id="input_container">
-                <input placeholder="검색어를 입력해주세요"/>
-                <img src="/imgs/cart/loupe.png" style="width: 20px; height: 20px"/>
-            </div>
-            <div id="icon_container">
-                <a href="/address/list"><img src="/imgs/cart/location.png"/></a>
-                <a href="/mypage"><img src="/imgs/cart/heart.png"/></a>
-                <a href="/carts"><img src="/imgs/cart/shopping-cart.png"/></a>
+            <div id="search">
+                <div id="search_first">
+                    <a href="/">
+                        <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
+                            <image href="/icon/logo.svg" height="60" width="60"/>
+                        </svg>
+                    </a>
+                    <a href="/">Only 프레쉬</a>
+                </div>
+                <div id="css-input1">
+                    <div id="input_container">
+                        <input placeholder="검색어를 입력해주세요"/>
+                        <img src="/imgs/cart/loupe.png" style="width: 20px; height: 20px"/>
+                    </div>
+                </div>
+                <div id="css-icon1">
+                    <div id="icon_container">
+                        <a class="css-location" href="/address/list"><img src="/imgs/cart/location.png"/></a>
+                        <a class="css-heart" href="/mypage"><img src="/imgs/cart/heart.png"/></a>
+                        <a class="css-cart" href="/carts"><img src="/imgs/cart/shopping-cart.png"/></a>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="menubar">
-            <div id="category_container">
-                <img src=""/>
-                <p style="width: 80px;" id="show_category_button">카테고리</p>
-            </div>
-            <div id="menus">
-                <a href="/product/newlist?sort=1&page=1&pageSize=12&order_sc=in_date">신상품</a>
-                <a href="/product/newlist?sort=2&page=1&pageSize=12&order_sc=sales_rate">베스트</a>
-                <a href="/product/newlist?sort=3&page=1&pageSize=12">알뜰쇼핑</a>
-                <a href="/event/main">특가/혜택</a>
-            </div>
-            <div id="deli_info">
-                <span id="purple_deli_info">새벽·낮</span>
-                <span id="gray_deli_info">배송안내</span>
+            <div class="css-menubar">
+                <div id="category_container">
+                    <img src=""/>
+                    <p style="width: 80px;" id="show_category_button">카테고리</p>
+                </div>
+                <div id="menus">
+                    <a class="css-a" href="/product/newlist?sort=1&page=1&pageSize=12&order_sc=in_date">신상품</a>
+                    <a class="css-a" href="/product/newlist?sort=2&page=1&pageSize=12&order_sc=sales_rate">베스트</a>
+                    <a class="css-a" href="/product/newlist?sort=3&page=1&pageSize=12">알뜰쇼핑</a>
+                    <a class="css-a" href="/event/main">특가/혜택</a>
+                </div>
+                <div id="deli_info">
+                    <a href="">
+                        <div class="css-deli">
+                            <span id="purple_deli_info">새벽·낮</span> 배송안내
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

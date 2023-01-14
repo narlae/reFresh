@@ -13,7 +13,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class ProductController {
+public class AdminPdtController {
     private final ProductRepository productRepository;
     private final ProductService productService;
 

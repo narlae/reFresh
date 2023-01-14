@@ -1,6 +1,5 @@
 package com.onlyfresh.devkurly.web.service;
 
-import com.onlyfresh.devkurly.domain.Category;
 import com.onlyfresh.devkurly.domain.product.Product;
 import com.onlyfresh.devkurly.domain.product.ProductDetail;
 import com.onlyfresh.devkurly.repository.ProductDetailRepository;
@@ -86,7 +85,7 @@ public class ProductService {
                 .build();
     }
 
-    private ProductDetail updateDetail(ProductDetail productDetail, ProductDetailDto dto) {
+    private void updateDetail(ProductDetail productDetail, ProductDetailDto dto) {
         productDetail.setSellCd(dto.getSellCd());
         productDetail.setWecaCd(dto.getWecaCd());
         productDetail.setAllgDt(dto.getAllgDt());
@@ -96,7 +95,6 @@ public class ProductService {
         productDetail.setPrtInfo(dto.getPrtInfo());
         productDetail.setPrtImage(dto.getPrtImage());
         productDetail.setDeType(dto.isDeType());
-        return productDetail;
     }
 
 

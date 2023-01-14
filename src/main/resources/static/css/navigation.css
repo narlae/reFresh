@@ -1,35 +1,47 @@
+*{
+    box-sizing: border-box;
+}
+
 #navigation {
     display: flex;
     flex-direction:column;
     justify-content: space-between;
     /* align-items: center; */
-    width: 100%;
-    height: 140px;
-    box-shadow: rgb(0 0 0 / 7%) 0px 3px 4px 0px;
-    /* border: 1px solid red; */
+    width: 1050px;
+    margin: 0px auto;
+    position: relative;
+    height: 100px;
     padding-bottom: 20px;
 }
 
 #signup_signin {
+    position: absolute;
+    right: 0px;
+    top: 10px;
+    z-index: 20;
     display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-    padding-right: 190px;
-}
-
-#signup_signin_container {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-}
-
-#signup_signin a,div {
+    -webkit-box-align: center;
+    align-items: center;
     font-size: 12px;
-    margin-right: 8px;
 }
 
-#signup {
+#signup, #signin{
+    display: block;
+    cursor: pointer;
+    vertical-align: middle;
     color: #5f0080
+}
+
+.css-bar {
+    width: 1px;
+    height: 13px;
+    margin: 0px 12px;
+    background-color: rgb(217, 217, 217);
+}
+
+#cust {
+    line-height: 35px;
+    position: relative;
 }
 
 #signup_signin div {
@@ -39,18 +51,15 @@
 
 /* nav 두 번째 div */
 #search {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-top: 20px;
+    height: 100px;
+    padding-top: 36px;
 }
 
 #search_first {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding-left: 200px;
+    -webkit-box-align: center;
+    height: 63px;
 }
 
 #search_first > * {
@@ -68,15 +77,31 @@
     border: 1px solid #d9d9d9;
 }
 
+#css-input1{
+    position: relative;
+    width: 1050px;
+    margin: 0px auto;
+}
+
+#css-icon1 {
+    position: relative;
+    width: 1050px;
+    margin: 0px auto;
+}
+
 #input_container {
     display: flex;
+    -webkit-box-align: center;
     align-items: center;
     justify-content: space-between;
+    position: absolute;
+    left: 325px;
+    top: -55px;
     width: 400px;
     height: 48px;
+    padding-left: 14px;
     border: 1px solid #333333;
     border-radius: 6px;
-    margin-right: 80px;
 }
 
 #input_container input, input:focus {
@@ -93,23 +118,57 @@
 
 #icon_container {
     display: flex;
-    justify-content: space-between;
-    width: 148px;
+    -webkit-box-align: center;
     align-items: center;
-    padding-right: 200px;
+    position: absolute;
+    right: 0px;
+    top: -49px;
 }
 
-#icon_container img {
-    width: 26px;
+.css-location {
+    width: 36px;
+    height: 36px;
+    margin-right: 20px;
+}
+.css-heart {
+    width: 36px;
+    height: 36px;
+}
+.css-cart {
+    position: relative;
+    margin-left: 20px;
 }
 
 #menubar {
+    min-width: 1050px;
+    letter-spacing: -0.3px;
+    background-color: rgb(255, 255, 255);
+    position: relative;
+    box-shadow: rgb(0 0 0 / 7%) 0px 3px 4px 0px;
+    width: 100%;
+    z-index: 10;
+}
+
+.css-menubar {
+    position: relative;
     display: flex;
+    -webkit-box-pack: justify;
     justify-content: space-between;
-    align-items: center;
-    padding: 0 200 0 200;
-    margin-top: 28px;
-    margin-bottom: 28px;
+    width: 1050px;
+    height: 56px;
+    margin: 0px auto;
+}
+
+.css-a {
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: 150px;
+    height: 55px;
+    padding-top: 18px;
+    line-height: 20px;
+    text-align: center;
+    color: rgb(51, 51, 51);
 }
 
 #menubar > * {
@@ -124,29 +183,29 @@
 
 #menus {
     display: flex;
-    justify-content: space-between;
-    width: 600px;
-    padding: 0 200 0 200;
+    margin-left: 30px;
 }
 
 #deli_info {
     display: flex;
-    justify-content: center;
+    -webkit-box-align: center;
     align-items: center;
-    border: 1px solid #666666;
-    width: 121px;
-    height: 16px;
-    padding: 6 12;
-    font-size: 13px;
-    line-height: 16px;
+}
+
+.css-deli{
+    height: 32px;
+    padding: 6px 16px;
     border-radius: 18px;
-    white-space: nowrap;
+    border: 1px solid rgb(238, 238, 238);
+    color: rgb(102, 102, 102);
+    font-size: 13px;
+    line-height: 20px;
+    letter-spacing: -0.32px;
 }
 
 #purple_deli_info {
     color:#5f0080;
-    margin-right: 4px;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 /*카테고리*/
