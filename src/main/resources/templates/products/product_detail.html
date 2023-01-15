@@ -8,6 +8,7 @@
     <title>OnlyFresh :: [[${dto.title}]]</title>
     <link rel="icon" href="/only-fresh-favicon.svg" />
     <link rel="stylesheet" type="text/css" href="/css/product/product_detail.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <style>
         #whole_container {
             width: 100%;
@@ -61,15 +62,16 @@
                 <h2 th:text="${dto.title}"></h2>
                 <p id="sub_title" th:text="${subTitle}"></p>
                 <div style="margin-bottom: 10px;">
-                    <span id="ds_rate">[[${dto.dsRate}]]%</span>
-                    <span id="sel_price">[[${dto.selPrice}]]</span>
+                    <span id="ds_rate"></span>
+                    <span id="sel_price"></span>
                     <span id="won">원</span>
                 </div>
                 <div>
-                    <span id="price">[[${dto.price}]]</span>
+                    <span id="price"></span>
                 </div>
                 <p id="mileage_except">적립 제외 상품입니다.</p>
-                <div class ="coupon_btn"><button id="add_coupon">쿠폰 지급</button>
+                <div class ="coupon_btn">
+                    <button id="add_coupon">쿠폰 지급</button>
                     <img id="down_icon" src="/imgs/product/download_icon.svg"/>
                 </div>
                 <div class="detail_column">
@@ -181,6 +183,11 @@
         <!--        </div>-->
     </div>
 </div>
-<script></script>
+<script type="module" src="/js/products/product_detail.js" th:inline="javascript"></script>
+<script th:inline="javascript">
+    let selPrice = [[${dto.selPrice}]];
+    let price = [[${dto.price}]];
+    let dsRate = [[${dto.dsRate}]];
+</script>
 </body>
 </html>

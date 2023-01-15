@@ -262,5 +262,7 @@ nav div {
     cursor: pointer;
 }
 .coupon_btn{
+    width: auto;
+    display: inline-block;
     cursor: pointer;
 }
