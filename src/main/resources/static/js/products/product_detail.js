@@ -5,6 +5,9 @@ function App(){
     this.init = async () =>{
         localeString()
         dsRatePercent()
+        fixMenuNav();
+        menuNav();
+        updateQty();
     }
 
     const localeString = () =>{
@@ -24,35 +27,43 @@ function App(){
         }
     }
 
-    // let offsetTop = $(".menu_nav").offsetTop;
-    // window.scroll( function() {
-    //     if ($(document).scrollTop() > offsetTop) {
-    //         $(".menu_nav").css({"position":"fixed","top":"0px","left":"50%","transform":"translateX(-50%)"});
-    //     }
-    //     else {
-    //         $(".menu_nav").css({"position":'relative'});
-    //     }
-    // });
+    const fixMenuNav = () =>{
+        const target = $(".menu_nav");
+        const menuNavY = target.offsetTop
 
+        window.addEventListener("scroll", ()=>{
+            if (window.scrollY > menuNavY) {
+                target.style.cssText = `
+            position: fixed; top: 0px; left: 50%; transform: translateX(-50%);
+            `;
+            } else {
+                target.style.position = 'relative';
+            }
+        })
+    }
 
-    $(".menu_nav").addEventListener("click", (e)=>{
-        e.preventDefault();
-        let x = e.target.getAttribute("value");
-        $(x).scrollIntoView({block: "start"});
-    })
+    const menuNav = () =>{
+        $(".menu_nav").addEventListener("click", (e)=>{
+            e.preventDefault();
+            let x = e.target.getAttribute("value");
+            $(x).scrollIntoView({block: "start"});
+        })
+    }
 
-    const $pdt_qty = $("#pdt_qty");
+    const updateQty = () => {
+        const $pdt_qty = $("#pdt_qty");
 
-    $("#down_qty").addEventListener("click", () =>{
-        if(parseInt($pdt_qty.innerText)>1)
-            $pdt_qty.innerText = parseInt($pdt_qty.innerText)-1;
-        $("#actual_price").innerText = (parseInt($pdt_qty.innerText)*selPrice).toLocaleString();
-    })
+        $("#down_qty").addEventListener("click", () =>{
+            if(parseInt($pdt_qty.innerText)>1)
+                $pdt_qty.innerText = parseInt($pdt_qty.innerText)-1;
+            $("#actual_price").innerText = (parseInt($pdt_qty.innerText)*selPrice).toLocaleString();
+        })
 
-    $("#up_qty").addEventListener("click", ()=>{
-        $pdt_qty.innerText = parseInt($pdt_qty.innerText)+1;
-        $("#actual_price").innerText = (parseInt($pdt_qty.innerText)*selPrice).toLocaleString();
-    });
+        $("#up_qty").addEventListener("click", ()=>{
+            $pdt_qty.innerText = parseInt($pdt_qty.innerText)+1;
+            $("#actual_price").innerText = (parseInt($pdt_qty.innerText)*selPrice).toLocaleString();
+        });
+    }
 }
 const app = new App();
 app.init();
