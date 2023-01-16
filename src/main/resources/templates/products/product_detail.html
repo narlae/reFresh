@@ -8,6 +8,7 @@
     <title>OnlyFresh :: [[${dto.title}]]</title>
     <link rel="icon" href="/only-fresh-favicon.svg" />
     <link rel="stylesheet" type="text/css" href="/css/product/product_detail.css">
+    <link th:replace="~{board/reviewBoard :: link}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <style>
         #whole_container {
@@ -168,26 +169,20 @@
         <div>
             <img id="des1" th:src="${dto.prtImage}"/>
             <img id="des2" th:src="${dto.prtInfo}"/>
+            <div id="review" class="board" th:insert="~{board/reviewBoard :: board}">
+
+            </div>
         </div>
-        <!--        <div id ="board_container">-->
-        <!--            <div class="board_margin" id="review_board_i"></div>-->
-        <!--            <div id="review_board">-->
-        <!--                <iframe src="/board">-->
-        <!--                </iframe>-->
-        <!--            </div>-->
-        <!--            <div class="board_margin" id="inquiry_board_i"></div>-->
-        <!--            <div id="inquiry_board">-->
-        <!--                <iframe src="/boardlist?pdt_id=${param.pdt_id}&bbs_clsf_cd=2&page=1&pageSize=10">-->
-        <!--                </iframe>-->
-        <!--            </div>-->
-        <!--        </div>-->
     </div>
 </div>
 <script type="module" src="/js/products/product_detail.js" th:inline="javascript"></script>
+<script th:replace="~{board/reviewBoard :: script}"></script>
 <script th:inline="javascript">
-    let selPrice = [[${dto.selPrice}]];
-    let price = [[${dto.price}]];
-    let dsRate = [[${dto.dsRate}]];
+    const selPrice = [[${dto.selPrice}]];
+    const price = [[${dto.price}]];
+    const dsRate = [[${dto.dsRate}]];
+    const loginMember = [[${session.loginMember}]];
+    const pdtId = [[${pdtId}]];
 </script>
 </body>
 </html>

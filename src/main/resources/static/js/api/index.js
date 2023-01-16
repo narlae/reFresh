@@ -40,6 +40,7 @@ const request = async (url, option) => {
 const requestWithoutJson = async (url, option, message) => {
     const response = await fetch(url, option);
     if (!response.ok) {
+        console.log(response);
         response.json().then((body) => alert(body.message));
         return;
     }

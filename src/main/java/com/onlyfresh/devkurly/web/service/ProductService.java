@@ -55,6 +55,11 @@ public class ProductService {
         updateDetail(productDetail, dto);
     }
 
+    public Product findProductById(Long pdtId) {
+        return productRepository.findById(pdtId)
+                .orElseThrow(() -> new NotFoundDBException("존재하지 않는 상품입니다."));
+    }
+
     private ProductDetailDto getDto(Product product) {
         return ProductDetailDto.builder()
                 .pdtId(product.getPdtId())

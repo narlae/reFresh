@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <title>OnlyFresh :: 리뷰 게시판</title>
     <link rel="icon" href="/only-fresh-favicon.svg" />
-    <link rel="stylesheet" type="text/css" href="/css/board/board.css">
+    <link rel="stylesheet" type="text/css" href="/css/board/board.css" th:fragment="link">
     <style></style>
 </head>
 <body>
-<div id="review_board">
+<div id="review_board" th:fragment="board">
     <div id="title_desc_filter_container">
         <h2>PRODUCT REVIEW</h2>
         <div id="desc_filter">
@@ -84,6 +84,6 @@
         </div>
     </div>
 </div>
-<script type="module" src="/js/board/board.js" th:inline="javascript"></script>
+<script type="module" src="/js/board/board.js" th:inline="javascript" th:fragment="script"></script>
 </body>
 </html>

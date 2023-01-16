@@ -4,7 +4,9 @@ import com.onlyfresh.devkurly.domain.board.Board;
 import com.onlyfresh.devkurly.domain.board.ReviewBoard;
 import com.onlyfresh.devkurly.repository.BoardRepository;
 import com.onlyfresh.devkurly.web.dto.ReviewBoardDto;
+import com.onlyfresh.devkurly.web.exception.LoginException;
 import com.onlyfresh.devkurly.web.exception.MemberListException;
+import com.onlyfresh.devkurly.web.exception.SignInException;
 import com.onlyfresh.devkurly.web.service.BoardService;
 import com.onlyfresh.devkurly.web.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 
 @Controller
@@ -35,7 +38,7 @@ public class BoardController {
     @GetMapping
     public String boardList(Long page, String sort_option) {
 
-        return "board/board";
+        return "board/reviewBoard";
     }
 
     @GetMapping("/{pdtId}/{page}")
@@ -50,7 +53,7 @@ public class BoardController {
     public ResponseEntity<String> write(@PathVariable Long pdtId, @RequestBody ReviewBoardDto reviewBoardDto,
                                         HttpSession session) {
         try {
-            boardService.write(session, reviewBoardDto);
+            boardService.write(pdtId, session, reviewBoardDto);
             return new ResponseEntity<>("WRT_OK", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,7 +100,8 @@ public class BoardController {
     }
 
     private Long getUserId(HttpSession session) {
-        return memberService.extractDto(session).getUserId();
+        return Optional.ofNullable(memberService.extractDto(session).getUserId())
+                .orElseThrow(() -> new LoginException("로그인이 필요합니다."));
     }
 
     private Page<ReviewBoardDto> getList(Long pdtId, String sort_option, int page, int pageSize) {

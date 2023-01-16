@@ -44,7 +44,9 @@ public class MemberService {
     }
 
     public MemberMainResponseDto extractDto(HttpSession session) {
-        return ((MemberMainResponseDto) session.getAttribute("loginMember"));
+        return (MemberMainResponseDto) Optional.ofNullable(session.getAttribute("loginMember"))
+                .orElseThrow(() -> new LoginException("로그인이 필요합니다."));
+
     }
 
     private Member memberBuild(RegisterFormDto formDto) {

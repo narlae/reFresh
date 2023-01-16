@@ -24,13 +24,12 @@
     flex-direction: column;
     flex-wrap: wrap;
     display: flex;
-    width: 80%;
+    width: 100%;
 }
 
 #board {
     display: flex;
     flex-direction: column;
-    min-width: 1200px;
 }
 
 #board_footer {

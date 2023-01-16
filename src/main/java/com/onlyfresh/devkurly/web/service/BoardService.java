@@ -4,13 +4,16 @@ import com.onlyfresh.devkurly.domain.board.Board;
 import com.onlyfresh.devkurly.domain.board.MemberLikeNo;
 import com.onlyfresh.devkurly.domain.board.ReviewBoard;
 import com.onlyfresh.devkurly.domain.member.Member;
+import com.onlyfresh.devkurly.domain.product.Product;
 import com.onlyfresh.devkurly.repository.BoardRepository;
 import com.onlyfresh.devkurly.repository.MemberLikeNoRepository;
 import com.onlyfresh.devkurly.repository.MemberRepository;
+import com.onlyfresh.devkurly.repository.ProductRepository;
 import com.onlyfresh.devkurly.web.dto.ReviewBoardDto;
 import com.onlyfresh.devkurly.web.exception.BoardListException;
 import com.onlyfresh.devkurly.web.exception.LikeNoException;
 import com.onlyfresh.devkurly.web.exception.MemberListException;
+import com.onlyfresh.devkurly.web.exception.NotFoundDBException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +27,14 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final MemberLikeNoRepository likeNoRepository;
     private final MemberService memberService;
+    private final ProductService productService;
 
 
-    public void write(HttpSession session, ReviewBoardDto boardDto) {
+    public void write(Long pdtId, HttpSession session, ReviewBoardDto boardDto) {
         Long user_id = memberService.extractDto(session).getUserId();
-        Member member = memberRepository.findById(user_id)
-                .orElseThrow(() -> new MemberListException("존재하지 않는 회원입니다."));
-        ReviewBoard board = getBoard(boardDto, user_id, member);
+        Member member = memberService.findMemberById(user_id);
+        Product product = productService.findProductById(pdtId);
+        ReviewBoard board = getBoard(boardDto, member, product);
         board.setRevwLike(0);
         boardRepository.save(board);
     }
@@ -43,10 +47,6 @@ public class BoardService {
         }
         board.setBbsTitle(bbsTitle);
         board.setBbsCn(bbsCn);
-    }
-
-    public Board findBoardById(Long bbsId) {
-        return boardRepository.findById(bbsId).orElseThrow(() -> new BoardListException("존재하지 않는 글입니다."));
     }
 
     @Transactional
@@ -70,12 +70,16 @@ public class BoardService {
         board.increaseRevwLike();
     }
 
+    public Board findBoardById(Long bbsId) {
+        return boardRepository.findById(bbsId).orElseThrow(() -> new BoardListException("존재하지 않는 글입니다."));
+    }
 
-    private ReviewBoard getBoard(ReviewBoardDto reviewBoardDto, Long user_id, Member member) {
+    private ReviewBoard getBoard(ReviewBoardDto reviewBoardDto,  Member member, Product product) {
         ReviewBoard board = new ReviewBoard();
         board.setBbsTitle(reviewBoardDto.getBbsTitle());
         board.setBbsCn(reviewBoardDto.getBbsCn());
         board.setMember(member);
+        board.setProduct(product);
 
         return board;
     }
