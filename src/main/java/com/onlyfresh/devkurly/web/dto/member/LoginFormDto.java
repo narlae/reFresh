@@ -6,8 +6,8 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 public class LoginFormDto {
-    @NotEmpty
+    @NotEmpty(message = "이메일은 필수입니다.")
     private String userEmail;
-    @NotEmpty
+    @NotEmpty(message = "비밀번호는 필수입니다.")
     private String pwd;
 }

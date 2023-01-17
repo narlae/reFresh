@@ -6,6 +6,7 @@ import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
 import com.onlyfresh.devkurly.web.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +27,7 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public String loginForm(HttpSession session, Model model) {
-        model.addAttribute("loginForm", new LoginFormDto());
+    public String loginForm(HttpSession session, LoginFormDto loginFormDto) {
         if (session.getAttribute("loginMember") == null) {
             return "members/login";
         }
@@ -35,7 +35,10 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute LoginFormDto loginFormDto, String toURL, HttpServletRequest request) {
+    public String login(@Valid @ModelAttribute LoginFormDto loginFormDto, BindingResult bindingResult, String toURL, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            return "members/login";
+        }
         MemberMainResponseDto memberMainResponseDto = memberService.checkMember(loginFormDto);
 
         HttpSession session = request.getSession();

@@ -1,6 +1,8 @@
 package com.onlyfresh.devkurly.repository;
 
 import com.onlyfresh.devkurly.domain.Category;
+import com.onlyfresh.devkurly.web.dto.CategoryDto;
+import com.onlyfresh.devkurly.web.service.CategoryService;
 import com.onlyfresh.devkurly.web.utils.CsvReader;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +11,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -23,6 +23,8 @@ class CategoryRepositoryTest {
     CategoryRepository categoryRepository;
     @Autowired
     CategoryProductRepository categoryProductRepository;
+    @Autowired
+    CategoryService categoryService;
 
     @Test
     public void setCategoryFromCsv() {
@@ -50,6 +52,12 @@ class CategoryRepositoryTest {
     @Test
     public void addCategoryProduct() {
 
+    }
+
+    @Test
+    public void sortCategory() {
+        CategoryDto categoryForm = categoryService.getCategoryForm();
+        System.out.println("categoryForm = " + categoryForm);
     }
 
 

@@ -69,6 +69,9 @@ const Api = {
     getHomeProducts() {
         return request(`${BASE_URL}/home`);
     },
+    getCategories() {
+        return request(`${BASE_URL}/product/categories`);
+    },
 
 }
 

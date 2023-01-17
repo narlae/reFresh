@@ -5,14 +5,14 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 
 @Data
-public class RegisterFormDto {
-    @NotEmpty
+public class RegisterForm {
+    @NotEmpty(message = "이메일은 필수입니다.")
     private String userEmail;
-    @NotEmpty
+    @NotEmpty(message = "비밀번호는 필수입니다.")
     private String pwd;
-    @NotEmpty
+    @NotEmpty(message = "성함은 필수입니다.")
     private String userNm;
-    @NotEmpty
+    @NotEmpty(message = "전화번호는 필수입니다.")
     private String telno;
 
 

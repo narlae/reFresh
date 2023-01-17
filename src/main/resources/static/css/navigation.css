@@ -210,6 +210,10 @@
 
 /*카테고리*/
 
+#cat_wrapper{
+    position: relative;
+}
+
 #show_category_button span{
     color: #333;
     font-size: 16px;
@@ -227,8 +231,12 @@
     position: absolute;
     display:none;
     width: 250px;
-    left: 200px;
+    left: 500px;
     background-color: white;
     border: 1px solid #ddd;
     margin: 0;
+}
+#sub_cat_container{
+    position: absolute;
+    left: 700px;
 }

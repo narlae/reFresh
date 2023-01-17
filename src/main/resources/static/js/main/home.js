@@ -5,6 +5,7 @@ function App(){
 
     this.init = async () =>{
         await render();
+        await category();
     }
 
     const render = async () => {
@@ -26,6 +27,55 @@ function App(){
             $(`#` + "product" + `${i+1}`).innerHTML = template;
         }
     }
+    /**
+     * 카테고리 작업
+     */
+    /* 카테고리 */
+    let main_cat_container = $("#main_cat_container");
+    let sub_cat_container = $("#sub_cat_container");
+    let wrapper = $("#cat_wrapper");
+    let show_category_button = $("#show_category_button");
+    show_category_button.addEventListener("mouseover",()=>{
+        main_cat_container.style.display = 'block';
+    })
+
+    wrapper.addEventListener("mouseover",()=>{
+        main_cat_container.style.display = 'block';
+    })
+
+    wrapper.addEventListener("mouseout",()=>{
+        main_cat_container.style.display = 'none';
+        sub_cat_container.style.display = 'none';
+    })
+
+    sub_cat_container.addEventListener("mouseout", ()=>{
+        sub_cat_container.style.display = 'none';
+    })
+
+    const category = async () =>{
+        let result = [];
+        result = await Api.getCategories();
+        let categories = result.categoryList;
+        Object.keys(result.categoryList).forEach((el)=>{
+            main_cat_container.insertAdjacentHTML("afterbegin", `<a href=""><li class="cat main_cat">${el}</li></a>`)
+        });
+        console.log(result.categoryList);
+        $(".main_cat").addEventListener("mouseover", (e)=>{
+            sub_cat_container.style.display = 'block';
+            console.log(categories[e.currentTarget.innerText]);
+            categories[e.currentTarget.innerText].forEach((el)=>{
+                sub_cat_container.innerHTML = `<a href=""><li class="cat main_cat">${el}</li></a>`;
+            })
+        })
+
+    }
+
+
+    /**
+     * 카테고리 끝.
+     */
+
+
 }
 const app = new App();
 app.init();

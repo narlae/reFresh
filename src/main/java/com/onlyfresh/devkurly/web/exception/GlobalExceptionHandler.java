@@ -3,6 +3,7 @@ package com.onlyfresh.devkurly.web.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -32,6 +33,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResult> memberListExHandler(MemberListException e) {
         return getResponseEntity("Mem-Ex", e);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResult> memberDuplicateExHandler(HttpServletResponse response, MemberDuplicateException e) throws IOException {
+        response.sendRedirect("/register?error=1");
+        return getResponseEntity("Mem-Ex", e);
+    }
+
 
     private ResponseEntity<ErrorResult> getResponseEntity(String code, Exception e) {
         ErrorResult errorResult = new ErrorResult(code, e.getMessage());

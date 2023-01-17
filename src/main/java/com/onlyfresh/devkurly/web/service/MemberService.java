@@ -4,8 +4,9 @@ import com.onlyfresh.devkurly.domain.member.Member;
 import com.onlyfresh.devkurly.repository.MemberRepository;
 import com.onlyfresh.devkurly.web.dto.member.LoginFormDto;
 import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
-import com.onlyfresh.devkurly.web.dto.member.RegisterFormDto;
+import com.onlyfresh.devkurly.web.dto.member.RegisterForm;
 import com.onlyfresh.devkurly.web.exception.LoginException;
+import com.onlyfresh.devkurly.web.exception.MemberDuplicateException;
 import com.onlyfresh.devkurly.web.exception.MemberListException;
 import com.onlyfresh.devkurly.web.exception.SignInException;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,11 @@ public class MemberService {
         return new MemberMainResponseDto(member);
     }
 
-    public MemberMainResponseDto registerMember(RegisterFormDto formDto) {
+    public MemberMainResponseDto registerMember(RegisterForm formDto) {
+        String userEmail = formDto.getUserEmail();
+        memberRepository.findMemberByUserEmailAndPwd(userEmail).ifPresent((m) -> {
+            throw new MemberDuplicateException("이미 회원으로 존재하는 이메일입니다.");
+        });
         Member member = memberBuild(formDto);
         memberRepository.save(member);
         return new MemberMainResponseDto(member);
@@ -49,7 +54,7 @@ public class MemberService {
 
     }
 
-    private Member memberBuild(RegisterFormDto formDto) {
+    private Member memberBuild(RegisterForm formDto) {
         return Member.builder()
                 .userEmail(formDto.getUserEmail())
                 .pwd(formDto.getPwd())
