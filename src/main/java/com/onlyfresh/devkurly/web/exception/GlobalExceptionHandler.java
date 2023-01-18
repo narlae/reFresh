@@ -1,9 +1,14 @@
 package com.onlyfresh.devkurly.web.exception;
 
+import com.onlyfresh.devkurly.web.dto.member.LoginFormDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -44,5 +49,27 @@ public class GlobalExceptionHandler {
     private ResponseEntity<ErrorResult> getResponseEntity(String code, Exception e) {
         ErrorResult errorResult = new ErrorResult(code, e.getMessage());
         return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
+    }
+
+    private ErrorResult makeErrorResult(BindingResult bindingResult, String requestURI) {
+        String code = "";
+        String message = "";
+        String detail = "";
+        String path = "";
+
+        if (bindingResult.hasErrors()) {
+            detail = bindingResult.getFieldError().getDefaultMessage();
+            String bindingResultCode = bindingResult.getFieldError().getCode();
+
+            switch (bindingResultCode) {
+                case "NotEmpty":
+                    code = ErrorCode.NOT_EMPTY.getCode();
+                    message = ErrorCode.NOT_EMPTY.getMessage();
+                    path = requestURI;
+                    break;
+            }
+        }
+        return new ErrorResult(code, message, detail, path);
+
     }
 }

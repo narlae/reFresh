@@ -4,7 +4,6 @@ import com.onlyfresh.devkurly.domain.board.Board;
 import com.onlyfresh.devkurly.domain.board.ReviewBoard;
 import com.onlyfresh.devkurly.repository.BoardRepository;
 import com.onlyfresh.devkurly.web.dto.ReviewBoardDto;
-import com.onlyfresh.devkurly.web.exception.LoginException;
 import com.onlyfresh.devkurly.web.exception.MemberListException;
 import com.onlyfresh.devkurly.web.exception.SignInException;
 import com.onlyfresh.devkurly.web.service.BoardService;
@@ -101,7 +100,7 @@ public class BoardController {
 
     private Long getUserId(HttpSession session) {
         return Optional.ofNullable(memberService.extractDto(session).getUserId())
-                .orElseThrow(() -> new LoginException("로그인이 필요합니다."));
+                .orElseThrow(() -> new SignInException("로그인이 필요합니다."));
     }
 
     private Page<ReviewBoardDto> getList(Long pdtId, String sort_option, int page, int pageSize) {

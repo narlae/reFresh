@@ -5,7 +5,7 @@ import com.onlyfresh.devkurly.repository.MemberRepository;
 import com.onlyfresh.devkurly.web.dto.member.LoginFormDto;
 import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
 import com.onlyfresh.devkurly.web.dto.member.RegisterForm;
-import com.onlyfresh.devkurly.web.exception.LoginException;
+import com.onlyfresh.devkurly.web.exception.LoginFormCheckException;
 import com.onlyfresh.devkurly.web.exception.MemberDuplicateException;
 import com.onlyfresh.devkurly.web.exception.MemberListException;
 import com.onlyfresh.devkurly.web.exception.SignInException;
@@ -25,10 +25,10 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public MemberMainResponseDto checkMember(LoginFormDto loginFormDto) {
+    public MemberMainResponseDto checkMember(LoginFormDto loginFormDto) throws LoginFormCheckException{
         Optional<Member> optionalMember =
                 memberRepository.findMemberByUserEmailAndPwd(loginFormDto.getUserEmail());
-        optionalMember.orElseThrow(() -> new SignInException("존재하지 않는 회원입니다."));
+        optionalMember.orElseThrow(() -> new LoginFormCheckException("아이디 또는 비밀번호가 틀립니다."));
         Member member = optionalMember.get();
         checkPwd(member, loginFormDto.getPwd());
         return new MemberMainResponseDto(member);
@@ -50,7 +50,7 @@ public class MemberService {
 
     public MemberMainResponseDto extractDto(HttpSession session) {
         return (MemberMainResponseDto) Optional.ofNullable(session.getAttribute("loginMember"))
-                .orElseThrow(() -> new LoginException("로그인이 필요합니다."));
+                .orElseThrow(() -> new SignInException("로그인이 필요합니다."));
 
     }
 
@@ -68,7 +68,7 @@ public class MemberService {
 
     private void checkPwd(Member member, String pwd) {
         if (!member.getPwd().equals(pwd)) {
-            throw new SignInException("아이디 또는 비밀번호가 틀립니다.");
+            throw new LoginFormCheckException("아이디 또는 비밀번호가 틀립니다.");
         }
     }
 }
