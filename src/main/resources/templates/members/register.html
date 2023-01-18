@@ -39,11 +39,11 @@
                             <span>
                             <input
                                     class="member-input"
-                                    id="cpwd"
                                     type="password"
-                                    name="cPassword"
+                                    th:field="*{cpwd}"
                                     placeholder="비밀번호를 한번 더 입력해주세요"
                             />
+                                <p class="form-error" th:if="${#fields.hasErrors('cpwd')}" th:errors="*{cpwd}"></p>
                         </span>
                         </div>
                         <div class="payment_row">
