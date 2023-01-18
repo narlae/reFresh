@@ -48,3 +48,11 @@
     border-radius: 2px;
     color: #4E7A51;
 }
+
+#congText{
+    font-size: xxx-large;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30vh;
+}

@@ -40,7 +40,6 @@ public class MemberController {
         HttpSession session = request.getSession();
         session.setAttribute("loginMember", memberMainResponseDto);
 
-        //회원가입 완료, 축하 창 만들어서 넣기
-        return "redirect:/";
+        return "members/regComplete";
     }
 }
