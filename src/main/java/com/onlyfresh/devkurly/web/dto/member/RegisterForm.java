@@ -21,6 +21,12 @@ public class RegisterForm {
     @NotEmpty(message = "전화번호는 필수입니다.")
     private String telno;
 
+    @NotEmpty(message = "주소 입력은 필수입니다. 주소를 검색해주세요.")
+    private String zoneCode;
+    @NotEmpty(message = "주소 입력은 필수입니다. 주소를 검색해주세요.")
+    private String addr1;
+    @NotEmpty(message = "세부 주소도 입력해주세요.")
+    private String addr2;
 
     private String rcmdrEmail;
     private String gender;
