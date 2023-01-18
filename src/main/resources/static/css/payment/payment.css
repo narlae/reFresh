@@ -343,3 +343,34 @@ h2 {
     border-radius: 50%;
     background: white;
 }
+
+/*
+checkbox, label
+ */
+input.checkbox{
+    display: none;
+}
+input.checkbox +label{
+    cursor: pointer;
+}
+input.checkbox +label:before{
+    content:"";
+    display:inline-block;
+    width:17px;
+    height:17px;
+    line-height:17px;
+    margin-right: 10px;
+    vertical-align:middle;
+    border:1px solid #cbcbcb;
+}
+input.checkbox:checked +label:before{
+    content:"\f058";/*폰트어썸 유니코드*/
+    font-family:"Font Awesome 5 Free"; /*폰트어썸 아이콘 사용*/
+    font-weight:900;/*폰트어썸 설정*/
+    color:#4E7A51;
+    background-color:white;
+    font-size:20px;
+    margin-right: 10px;
+    text-align:center;
+    border: 1px solid white;
+}

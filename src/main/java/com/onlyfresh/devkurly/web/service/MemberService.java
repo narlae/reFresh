@@ -1,5 +1,6 @@
 package com.onlyfresh.devkurly.web.service;
 
+import com.onlyfresh.devkurly.domain.Address;
 import com.onlyfresh.devkurly.domain.member.Member;
 import com.onlyfresh.devkurly.repository.MemberRepository;
 import com.onlyfresh.devkurly.web.dto.member.LoginFormDto;
@@ -39,7 +40,8 @@ public class MemberService {
         memberRepository.findMemberByUserEmailAndPwd(userEmail).ifPresent((m) -> {
             throw new MemberDuplicateException("이미 회원으로 존재하는 이메일입니다.");
         });
-        Member member = memberBuild(formDto);
+        Address address = new Address(formDto.getAddress(), formDto.getAddressDetail(), formDto.getZoneCode());
+        Member member = memberBuild(formDto, address);
         memberRepository.save(member);
         return new MemberMainResponseDto(member);
     }
@@ -54,15 +56,16 @@ public class MemberService {
 
     }
 
-    private Member memberBuild(RegisterForm formDto) {
+    private Member memberBuild(RegisterForm formDto, Address address) {
         return Member.builder()
                 .userEmail(formDto.getUserEmail())
                 .pwd(formDto.getPwd())
                 .userNm(formDto.getUserNm())
                 .telno(formDto.getTelno())
+                .address(address)
                 .rcmdrEmail(formDto.getRcmdrEmail())
                 .gender(formDto.getGender())
-                .prvcArge(formDto.getPrvcArge())
+                .prvcArge(formDto.isPrvcArge())
                 .build();
     }
 

@@ -24,13 +24,14 @@ public class RegisterForm {
     @NotEmpty(message = "주소 입력은 필수입니다. 주소를 검색해주세요.")
     private String zoneCode;
     @NotEmpty(message = "주소 입력은 필수입니다. 주소를 검색해주세요.")
-    private String addr1;
+    private String address;
     @NotEmpty(message = "세부 주소도 입력해주세요.")
-    private String addr2;
+    private String addressDetail;
 
+    @Email(message = "이메일 형식으로 써주세요.")
     private String rcmdrEmail;
     private String gender;
-    private Character prvcArge; //선택 이용 약관 동의
+    private boolean prvcArge; //선택 이용 약관 동의
 
 
 }
