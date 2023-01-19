@@ -12,6 +12,8 @@ public class ProductDetailDto {
     private String subTitle; //소제목
     private String image;
     private boolean deType; //배송유형 (t:샛별, f:낮배송)
+
+    @Builder.Default
     private Integer dsRate = 0; //할인율
     private Integer selPrice; //판매가격
     private Integer price;

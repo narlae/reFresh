@@ -40,7 +40,6 @@ const request = async (url, option) => {
 const requestWithoutJson = async (url, option, message) => {
     const response = await fetch(url, option);
     if (!response.ok) {
-        console.log(response);
         response.json().then((body) => alert(body.message));
         return;
     }
@@ -74,6 +73,9 @@ const Api = {
     },
     checkDuplicateEmail(userEmail) {
         return request(`${BASE_URL}/register/checkDupli`, {method: "POST", body: userEmail});
+    },
+    getProductsByCategory(catId, page, sort_option) {
+        return request(`${BASE_URL}/products/${catId}/${page}` + '?sort_option=' + sort_option);
     },
 
 }

@@ -1,16 +1,22 @@
 package com.onlyfresh.devkurly.web.service;
 
+import com.onlyfresh.devkurly.domain.CategoryProduct;
 import com.onlyfresh.devkurly.domain.product.Product;
 import com.onlyfresh.devkurly.domain.product.ProductDetail;
+import com.onlyfresh.devkurly.repository.CategoryProductRepository;
 import com.onlyfresh.devkurly.repository.ProductDetailRepository;
 import com.onlyfresh.devkurly.repository.ProductRepository;
 import com.onlyfresh.devkurly.web.dto.ProductDetailDto;
+import com.onlyfresh.devkurly.web.dto.ProductsByCatDto;
 import com.onlyfresh.devkurly.web.exception.NotFoundDBException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,10 +24,8 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductDetailRepository detailRepository;
+    private final CategoryProductRepository categoryProductRepository;
 
-    public void addProduct() {
-
-    }
 
     public ProductDetailDto getProductDetail(Long pdtId) {
         Product product = productRepository.findById(pdtId).
@@ -54,6 +58,27 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("수정할 상품디테일이 존재하지 않습니다."));
         updateDetail(productDetail, dto);
     }
+
+    public Page<ProductsByCatDto> getProductsByCategory(Long catId, String sort_option, int page, int pageSize) {
+
+        PageRequest pageRequest = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, sort_option));
+
+        List<ProductsByCatDto> productsByCatId = getProductsByCatId(catId);
+
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), productsByCatId.size());
+
+
+        return new PageImpl<>(productsByCatId.subList(start, end), pageRequest, productsByCatId.size());
+    }
+
+    private List<ProductsByCatDto> getProductsByCatId(Long catId) {
+        List<CategoryProduct> list = categoryProductRepository.findCategoryProductsByCategory_CatId(catId);
+        return list.stream()
+                .map(m -> productRepository.findProductByPdtId(m.getProduct().getPdtId()))
+                .map(ProductsByCatDto::new).collect(Collectors.toList());
+    }
+
 
     public Product findProductById(Long pdtId) {
         return productRepository.findById(pdtId)

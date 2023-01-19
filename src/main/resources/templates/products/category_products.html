@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::#content}, ~{::script})"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnlyFresh :: 카테고리별 상품</title>
+    <link rel="stylesheet" type="text/css" href="/css/payment/payment.css">
+    <link rel="stylesheet" type="text/css" href="/css/product/category_products.css">
+    <style></style>
+</head>
+<body>
+<div id="whole_container">
+    <div id="content">
+        <div id="categoryNm">
+            <h2 class="categoryNm" th:text="${categoryName['parent']}">
+            </h2><h2>-</h2><h2 class="categoryNm" th:text="${categoryName['child']}"></h2>
+        </div>
+        <div id="sortContainer">
+            <span class="sortOption">판매량순</span>
+            <span class="sortOption">할인순</span>
+            <span class="sortOption">최근등록순</span>
+        </div>
+        <div id="productsContainer">
+        </div>
+        <div class="ph">
+            <div class="paging">
+                <!--페이지 네비-->
+            </div>
+        </div>
+    </div>
+</div>
+<script type="module" src="/js/products/category_products.js"></script>
+<script>
+    const catId = [[${catId}]];
+</script>
+</body>
+</html>

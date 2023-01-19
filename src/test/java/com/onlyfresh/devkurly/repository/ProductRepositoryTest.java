@@ -99,4 +99,16 @@ class ProductRepositoryTest {
         List<Long> pdtIds = productRepository.findPdtIds();
         System.out.println("pdtIds = " + pdtIds);
     }
+
+    @Test
+    public void test() {
+        Product product = productRepository.findById(32L).get();
+        System.out.println("product = " + product);
+
+        List<CategoryProduct> categoryProducts = product.getCategoryProducts();
+        System.out.println("categoryProducts = " + categoryProducts);
+
+        Long catId = categoryProducts.get(0).getCategory().getCatId();
+        System.out.println("catId = " + catId);
+    }
 }

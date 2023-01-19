@@ -1,6 +1,6 @@
 import Api from "../api/index.js";
 import {$} from "../utils/dom.js";
-import {getLoginForm} from "../utils/utils.js";
+import {getLoginForm, searchParam} from "../utils/utils.js";
 
 function App(){
 
@@ -23,7 +23,7 @@ function App(){
         }
         getSortOption.call(this);
         this.page = await Api.getBoardList(this.list.pdtId, this.list.page - 1, this.list.sort_option);
-        const template =  this.page.content.map((item)=> {
+        $("#board").innerHTML = this.page.content.map((item) => {
             let wrtDt = dateToString(item.wrtDt);
             return `
         <div class="tr1">
@@ -48,8 +48,6 @@ function App(){
         </div>
         `;
         }).join("");
-
-        $("#board").innerHTML = template;
 
         const pagingNav = () => {
             let temp = '';
@@ -207,10 +205,6 @@ function App(){
         await Api.upBoardLike(this.list.pdtId, bbsId);
         await render();
     }
-
-    function searchParam(key) {
-        return new URLSearchParams(location.search).get(key);
-    };
 
     let dateToString = function(ms=0) {
         let addZero = function(value=1){

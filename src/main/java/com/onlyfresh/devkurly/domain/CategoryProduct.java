@@ -3,7 +3,6 @@ package com.onlyfresh.devkurly.domain;
 import com.onlyfresh.devkurly.domain.product.Product;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 

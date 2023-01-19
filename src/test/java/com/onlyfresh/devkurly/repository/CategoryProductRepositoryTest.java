@@ -2,6 +2,7 @@ package com.onlyfresh.devkurly.repository;
 
 import com.onlyfresh.devkurly.domain.Category;
 import com.onlyfresh.devkurly.domain.CategoryProduct;
+import com.onlyfresh.devkurly.domain.product.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,8 +38,19 @@ class CategoryProductRepositoryTest {
                     map(p -> p.getImage()).
                     collect(Collectors.toList());
         }
+    }
 
+    @Test
+    public void test2() {
+        List<CategoryProduct> list = categoryProductRepository.findCategoryProductsByCategory_CatId(2L);
+        System.out.println("!!!!!!!!!!!!!!!!!!!list = " + list);
+        List<Product> collect = list.stream()
+                .map(m -> productRepository.findProductByPdtId(m.getProduct().getPdtId()))
+                .collect(Collectors.toList());
+
+        System.out.println("collect = " + collect);
 
     }
+
 
 }
