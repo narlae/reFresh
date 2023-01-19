@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,6 +41,12 @@ class MemberRepositoryTest {
 //        memberRepository.delete(member);
 //        long count = memberRepository.count();
 //        assertEquals(0, count);
+    }
+
+    @Test
+    public void isMembertest() {
+        boolean present = memberRepository.findMemberByUserEmail("kyjttaa13@naver.com").isPresent();
+        System.out.println(present);
     }
 
 

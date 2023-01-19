@@ -72,6 +72,9 @@ const Api = {
     getCategories() {
         return request(`${BASE_URL}/product/categories`);
     },
+    checkDuplicateEmail(userEmail) {
+        return request(`${BASE_URL}/register/checkDupli`, {method: "POST", body: userEmail});
+    },
 
 }
 

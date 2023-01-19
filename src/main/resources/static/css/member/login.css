@@ -5,20 +5,21 @@
     text-align: center;
 }
 
-.member-input {
+.member-input, .member-input:focus{
     width: 450px;
     height: 45px;
     color: #808080;
     font-size: 16px;
     background-color: #FAFAFA;
     border: 1px solid rgb(221, 221, 221);
+    outline: none;
 }
 
-.member-input:focus {
-    font-size: 16px;
-    width: 450px;
-    border: 1px solid rgb(221, 221, 221);
-}
+/*.member-input:focus {*/
+/*    font-size: 16px;*/
+/*    width: 450px;*/
+/*    border: 1px solid rgb(221, 221, 221);*/
+/*}*/
 
 #member-submit {
     width: 100%;
@@ -55,4 +56,17 @@
     justify-content: center;
     align-items: center;
     height: 30vh;
+}
+
+#duplBtn{
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: #4E7A51;
+    width: 70px;
+    height: 100%;
+    display: flex;
+    margin-left: 70px;
+    border: solid 1px #4E7A51;
 }

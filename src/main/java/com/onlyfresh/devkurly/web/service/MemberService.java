@@ -50,6 +50,10 @@ public class MemberService {
         return memberRepository.findById(userId).orElseThrow(() -> new MemberListException("존재하지 않는 회원입니다."));
     }
 
+    public boolean isMemberByUserEmail(String userEmail) {
+        return memberRepository.findMemberByUserEmail(userEmail).isPresent();
+    }
+
     public MemberMainResponseDto extractDto(HttpSession session) {
         return (MemberMainResponseDto) Optional.ofNullable(session.getAttribute("loginMember"))
                 .orElseThrow(() -> new SignInException("로그인이 필요합니다."));

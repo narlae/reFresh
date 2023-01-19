@@ -22,7 +22,10 @@
                     <h4 class="product_type" style="padding-top: 0px;"></h4>
                     <div class="products_container">
                         <div class="payment_row">
-                            <span style="padding-top: 15px;">이메일<span style="color: orangered">*</span></span>
+                            <span style="width: 100%; display: flex; align-items: baseline;">이메일<span style="color: orangered">*</span>
+                                                            <div id="duplBtn">중복확인</div>
+
+                            </span>
                             <span>
                             <input class="member-input" type="text" th:field="*{userEmail}" placeholder="이메일을 입력해주세요"/>
             <p class="form-error" th:if="${#fields.hasErrors('userEmail')}" th:errors="*{userEmail}"></p>
