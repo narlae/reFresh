@@ -44,7 +44,7 @@ public class BoardController {
     @ResponseBody
     public Page<ReviewBoardDto> getBoardList(@PathVariable Long pdtId, @PathVariable int page, String sort_option) {
 
-        return getList(pdtId, sort_option, page, 10);
+        return getList(pdtId, sort_option, page);
     }
 
     @PostMapping("/{pdtId}")
@@ -103,9 +103,9 @@ public class BoardController {
                 .orElseThrow(() -> new SignInException("로그인이 필요합니다."));
     }
 
-    private Page<ReviewBoardDto> getList(Long pdtId, String sort_option, int page, int pageSize) {
+    private Page<ReviewBoardDto> getList(Long pdtId, String sort_option, int page) {
 
-        PageRequest pageRequest = PageRequest.of(page, pageSize,
+        PageRequest pageRequest = PageRequest.of(page, 10,
                 Sort.by(Sort.Direction.DESC, sort_option));
 
         Page<ReviewBoard> boardPage = boardRepository.findByPdt_id(pdtId, pageRequest);

@@ -17,8 +17,6 @@ public class ReviewBoardDto {
     private Integer revwLike;
     private String revwImg;
 
-    public ReviewBoardDto() {
-    }
 
     public ReviewBoardDto(ReviewBoard reviewBoard) {
         this.bbsId = reviewBoard.getBbsId();

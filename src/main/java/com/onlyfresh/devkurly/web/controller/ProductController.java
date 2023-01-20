@@ -39,7 +39,7 @@ public class ProductController {
     @GetMapping("/products/{catId}/{page}")
     @ResponseBody
     public Page<ProductsByCatDto> getProductsList(@PathVariable Long catId, @PathVariable int page,
-                                                  String sort_option, Pageable pageable) {
+                                                  String sort_option) {
         return productService.getProductsByCategory(catId, sort_option, page, 9);
     }
 

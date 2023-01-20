@@ -7,10 +7,11 @@ function App(){
     this.list = {
         page : 1,
         catId : catId,
-        sort_option : 'salesRate',
+        sort_option : 'pdtId',
     }
     this.init = async () =>{
         await render();
+        initEventListeners();
     }
 
     this.page = {};
@@ -19,6 +20,7 @@ function App(){
         if (searchParam('page') !== null) {
             this.list.page = searchParam('page');
         }
+        getSortOption.call(this);
         this.page = await Api.getProductsByCategory(this.list.catId, this.list.page - 1, this.list.sort_option);
         $("#productsContainer").innerHTML = this.page.content.map((item) => {
             let selPrice = item.selPrice.toLocaleString();
@@ -63,6 +65,34 @@ function App(){
 
     }
 
+    const initEventListeners = () => {
+        $("#salesRate").addEventListener("click", async () => {
+            localStorage.setItem("productSortOption", 'salesRate');
+            await render();
+        })
+
+        $("#inDate").addEventListener("click", async () => {
+            localStorage.setItem("productSortOption", 'inDate');
+            await render();
+        })
+
+        $("#dsRate").addEventListener("click", async () => {
+            localStorage.setItem("productSortOption", 'dsRate');
+            await render();
+        })
+    }
+
+    let getSortOption = () => {
+        if (localStorage.getItem("productSortOption")) {
+            this.list.sort_option = localStorage.getItem("productSortOption");
+            //이걸 클래스를 대입하는 방식으로 바꿀 예정.
+            let elementsByClassName = document.getElementsByClassName("sortOption");
+            for (let i = 0; i < elementsByClassName.length; i++) {
+                elementsByClassName.item(i).style.fontWeight = 'normal';
+            }
+            document.getElementById(this.list.sort_option).style.fontWeight = '900';
+        }
+    }
 
 
 }

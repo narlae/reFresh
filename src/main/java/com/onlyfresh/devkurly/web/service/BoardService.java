@@ -24,7 +24,6 @@ import javax.servlet.http.HttpSession;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-    private final MemberRepository memberRepository;
     private final MemberLikeNoRepository likeNoRepository;
     private final MemberService memberService;
     private final ProductService productService;

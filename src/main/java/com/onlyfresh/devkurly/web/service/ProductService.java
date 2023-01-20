@@ -14,6 +14,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -61,9 +62,9 @@ public class ProductService {
 
     public Page<ProductsByCatDto> getProductsByCategory(Long catId, String sort_option, int page, int pageSize) {
 
-        PageRequest pageRequest = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, sort_option));
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
 
-        List<ProductsByCatDto> productsByCatId = getProductsByCatId(catId);
+        List<ProductsByCatDto> productsByCatId = getProductsByCatId(catId, sort_option);
 
         int start = (int) pageRequest.getOffset();
         int end = Math.min((start + pageRequest.getPageSize()), productsByCatId.size());
@@ -72,11 +73,13 @@ public class ProductService {
         return new PageImpl<>(productsByCatId.subList(start, end), pageRequest, productsByCatId.size());
     }
 
-    private List<ProductsByCatDto> getProductsByCatId(Long catId) {
+    private List<ProductsByCatDto> getProductsByCatId(Long catId, String sort_option) {
         List<CategoryProduct> list = categoryProductRepository.findCategoryProductsByCategory_CatId(catId);
         return list.stream()
                 .map(m -> productRepository.findProductByPdtId(m.getProduct().getPdtId()))
-                .map(ProductsByCatDto::new).collect(Collectors.toList());
+                .map(ProductsByCatDto::new)
+                .sorted((m1, m2) -> m1.compareTo(m2, sort_option))
+                .collect(Collectors.toList());
     }
 
 
