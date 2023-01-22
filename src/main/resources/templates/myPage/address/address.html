@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::#content}, ~{::script})"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnlyFresh :: 마이페이지</title>
+    <link rel="stylesheet" type="text/css" href="/css/payment/payment.css">
+    <link rel="stylesheet" type="text/css" href="/css/myPage/address.css">
+    <link rel="stylesheet" type="text/css" href="/css/myPage/myPage.css">
+    <style></style>
+</head>
+<body>
+<div id="whole_container">
+    <div id="content">
+        <div th:replace="~{myPage/myPage :: myPage}"></div>
+        <div id="mypage_content">
+            <div id="add_coupon_box">
+                <h2 id="add_coupon_box_tits">배송지 관리
+                    <span id="add_coupon_box_cmt" class="">배송지에 따라 상품정보 및 배송유형이 달라질 수 있습니다.</span>
+                </h2>
+                <div id="add_box_newAddress">
+                    <a href="/address/add">
+                        <button id="newAddrressAdd">
+                            <img src="https://res.kurly.com/pc/ico/2006/ico_add_16x16.svg" alt class="ico">
+                            새 배송지 추가
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <div id="optional_function">
+            </div>
+            <div id="mypage_content_body">
+                <div class="address_cols">
+                    <div class="first_col_addr tit_colx">주소</div>
+                    <div class="second_col_addr tit_colx">받으실 분</div>
+                    <div class="third_col_addr tit_colx">연락처</div>
+                    <div class="fourth_col_addr tit_colx">배송유형</div>
+                    <div class="fifth_col_addr tit_colx">수정</div>
+                </div>
+                <div id="addressList">
+                    <form action="/address/default" id="form" method="post">
+                        <c:forEach var="addressDto" items="${list}">
+                            <div class="address colx">
+                                <div class="address_main first_col_addr">
+                                    <span class="chk_addr_tag_${addressDto.chk_addr}">
+                                    </span>
+                                    <p class="addr" aria-readonly="true">
+                                        <br>
+
+                                    </p>
+                                </div>
+                                <div class="address_name second_col_addr colx">
+                                </div>
+                                <div class="address_tel third_col_addr colx" id="phone-${addressDto.addr_id}">
+                                </div>
+                                <div class="address_deli fourth_col_addr colx">
+                                    <span id="deli_${addressDto.deli_type}">
+                                    </span>
+                                </div>
+                                <div class="address_modify fifth_col_addr colx">
+                                    <a href="/address/read?addr_id=${addressDto.addr_id}">
+                                        <button type="button" id="readBtn">
+                                            수정
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                            <script>
+                                $(document).ready(function () {
+                                    let phone = '${addressDto.addr_tel}';
+                                    $('#phone-${addressDto.addr_id}').text(phone.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
+                                });
+                                $('#checkbox-${addressDto.addr_id}').click(function () {
+                                    alert("배송지 선택이 완료되었습니다.");
+                                    $('#form').submit();
+                                });
+                            </script>
+                        </c:forEach>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="module" src=""></script>
+</body>
+</html>

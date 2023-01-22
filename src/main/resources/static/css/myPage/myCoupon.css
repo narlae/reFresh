@@ -1,0 +1,142 @@
+#add_coupon_box {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    padding: 20px;
+    border: 1px solid #DDDDDD;
+    margin-bottom: 20px;
+}
+
+#add_input_wrapper {
+    width: 200px;
+    padding: 0;
+    border: 1px solid #333;
+}
+
+#add_input_wrapper input {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding-left: 10px;
+    border: none;
+    outline: none;
+    font-size: 11px;
+}
+
+#add_input_wrapper input::placeholder {
+    font-size: 11px;
+}
+
+#add_input_wrapper input:focus {
+    font-size: 11px;
+}
+
+#add_coupon_button {
+    width: 100px;
+    height: 37.5px;
+    background-color: #4E7A51 ;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#is_used_tab_container {
+    display: flex;
+    width: 730px;
+    height: 50px;
+    margin-bottom: 20px;
+}
+
+.is_used_tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    border: 1px solid #dddddd;
+    margin: 0;
+    font-size: 14px;
+    color: #333333;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+#optional_function {
+    display: flex;
+    justify-content: flex-end;
+    color: #666666;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.cols {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    /* border: 1px solid salmon; */
+    border-bottom: 1px solid #333;
+}
+
+.col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.first_col, .second_col, .third_col, .fourth_col, .fifth_col {
+    /* border:1px solid cadetblue; */
+}
+
+
+.first_col {
+    width: 340px;
+}
+
+.second_col {
+    width: 70px;
+}
+
+.third_col {
+    width: 80px;
+}
+
+.fourth_col {
+    width: 150px;
+}
+
+.fifth_col {
+    width: 100px;
+}
+
+.coupon {
+    border-bottom: 1px solid #F4F4F4;
+}
+
+.coupon_name {
+    padding: 20px 0 10px 0;
+}
+
+.coupon_name * {
+    font-size: 14px;
+    padding-bottom: 6px;
+}
+
+#coupon_form {
+    display: flex;
+}
+
+.no_coupon_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333333;
+    font-size: 30px;
+    font-weight: 500;
+    margin-top: 30px;
+}
+
+#unused_coupons {
+    background-color: #dddddd;
+}
