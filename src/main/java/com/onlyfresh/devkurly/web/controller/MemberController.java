@@ -45,7 +45,6 @@ public class MemberController {
     @PostMapping("/register/checkDupli")
     @ResponseBody
     public boolean checkEmail(@RequestBody String userEmail) {
-        System.out.println("userEmail = " + userEmail);
         return memberService.isMemberByUserEmail(userEmail);
     }
 }

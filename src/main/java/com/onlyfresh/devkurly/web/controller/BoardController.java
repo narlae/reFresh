@@ -109,8 +109,6 @@ public class BoardController {
                 Sort.by(Sort.Direction.DESC, sort_option));
 
         Page<ReviewBoard> boardPage = boardRepository.findByPdt_id(pdtId, pageRequest);
-        Page<ReviewBoardDto> dtoPage = boardPage.map(m ->
-                new ReviewBoardDto(m));
-        return dtoPage;
+        return boardPage.map(ReviewBoardDto::new);
     }
 }

@@ -1,5 +1,6 @@
-import {$} from "../utils/dom";
-import Api from "../api";
+import {$} from "../utils/dom.js";
+import Api from "../api/index.js";
+import {kakaoMap} from "../api/kakaoMap.js";
 
 
 $("#member-submit").addEventListener("click", () => {
@@ -12,13 +13,7 @@ $("#member-submit").addEventListener("click", () => {
 
 $("#member-signup").addEventListener("click", ()=>{
     //카카오 지도 발생
-    new daum.Postcode({
-        oncomplete: function(data) {
-            document.getElementById("address").value = data.address;
-            document.getElementById("zoneCode").value = data.zonecode;
-            $("#addressDetail").focus();
-        }
-    }).open();
+    kakaoMap();
 })
 
 $("#AllCheck").addEventListener("click", ()=>{

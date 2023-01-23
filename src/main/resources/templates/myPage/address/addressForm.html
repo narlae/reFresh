@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/css/myPage/address.css">
     <link rel="stylesheet" type="text/css" href="/css/myPage/addressForm.css">
     <link rel="stylesheet" type="text/css" href="/css/myPage/myPage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
     <style></style>
 </head>
 <body>
@@ -21,51 +22,43 @@
                 <h2 id="add_coupon_box_tits">배송지 등록</h2>
             </div>
             <div id="address_add">
-                <form id="address_add_body" name="addrInsert" action="/address/create" method="post">
+                <form id="address_add_body" th:action = "@{/address/add}" th:object="${addressForm}" method="post">
                     <div class="insert_addr">
-                        <div id="tit_deli" name="tit2">
-                        </div>
                         <div class="field">
                             <div class="address_search">
                                 <div>
-                                    <input type="text"
-                                           id="main_addr"
-                                           class="addrMain"
-                                           name="main_addr"
-                                           placeholder="주소를 검색해 주세요"
-                                           readonly="readonly"
-                                    />
-                                    <button type="button" class="rebtn" value="우편번호 찾기" onclick="execPostcode()">
-                                        <span class="ico"></span>
-                                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMSIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIxIDIwIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHBhdGggZmlsbD0iI0ZGRiIgZmlsbC1vcGFjaXR5PSIwIiBmaWxsLXJ1bGU9Im5vbnplcm8iIGQ9Ik0wIDBIMjBWMjBIMHoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC40KSIvPgogICAgICAgIDxwYXRoIGZpbGw9IiM0RTdBNTEiIGQ9Ik05LjMzMyA0LjY2N0MxMS45MTEgNC42NjcgMTQgNi43NTYgMTQgOS4zMzNjMCAxLjA1MS0uMzQ3IDIuMDItLjkzMyAyLjguMDI0LjAxOC4wNDguMDQuMDcxLjA2MmwyIDJjLjI2LjI2LjI2LjY4MyAwIC45NDMtLjI2LjI2LS42ODIuMjYtLjk0MyAwbC0yLTItLjA2MS0uMDcxYy0uNzguNTg2LTEuNzUuOTMzLTIuOC45MzMtMi41NzggMC00LjY2Ny0yLjA5LTQuNjY3LTQuNjY3czIuMDg5LTQuNjY2IDQuNjY2LTQuNjY2em0wIDEuMzMzQzcuNDkzIDYgNiA3LjQ5MiA2IDkuMzMzYzAgMS44NDEgMS40OTIgMy4zMzQgMy4zMzMgMy4zMzQgMS44NDEgMCAzLjMzNC0xLjQ5MyAzLjMzNC0zLjMzNEMxMi42NjcgNy40OTMgMTEuMTc0IDYgOS4zMzMgNnoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC40KSIvPgogICAgPC9nPgo8L3N2Zz4K">
-                                        우편번호 찾기
-                                    </button>
+                                    <div style="display: flex;">
+                                        <input type="text" class="addrMain"  th:field="*{zoneCode}" placeholder="우편번호" readonly="readonly"/>
+                                        <button type="button" class="rebtn" value="우편번호 찾기">
+                                            <span class="ico"></span>
+                                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMSIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIxIDIwIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHBhdGggZmlsbD0iI0ZGRiIgZmlsbC1vcGFjaXR5PSIwIiBmaWxsLXJ1bGU9Im5vbnplcm8iIGQ9Ik0wIDBIMjBWMjBIMHoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC40KSIvPgogICAgICAgIDxwYXRoIGZpbGw9IiM0RTdBNTEiIGQ9Ik05LjMzMyA0LjY2N0MxMS45MTEgNC42NjcgMTQgNi43NTYgMTQgOS4zMzNjMCAxLjA1MS0uMzQ3IDIuMDItLjkzMyAyLjguMDI0LjAxOC4wNDguMDQuMDcxLjA2MmwyIDJjLjI2LjI2LjI2LjY4MyAwIC45NDMtLjI2LjI2LS42ODIuMjYtLjk0MyAwbC0yLTItLjA2MS0uMDcxYy0uNzguNTg2LTEuNzUuOTMzLTIuOC45MzMtMi41NzggMC00LjY2Ny0yLjA5LTQuNjY3LTQuNjY3czIuMDg5LTQuNjY2IDQuNjY2LTQuNjY2em0wIDEuMzMzQzcuNDkzIDYgNiA3LjQ5MiA2IDkuMzMzYzAgMS44NDEgMS40OTIgMy4zMzQgMy4zMzMgMy4zMzQgMS44NDEgMCAzLjMzNC0xLjQ5MyAzLjMzNC0zLjMzNEMxMi42NjcgNy40OTMgMTEuMTc0IDYgOS4zMzMgNnoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC40KSIvPgogICAgPC9nPgo8L3N2Zz4K">
+                                            우편번호 찾기
+                                        </button>
+                                    </div>
+                                    <input type="text" class="addrMain"  th:field="*{address}" placeholder="주소를 검색해 주세요" readonly="readonly"/>
                                 </div>
                             </div>
-                            <input class="member-input" placeholder="우편번호" name="city_code" id="addr1" type="text"
-                                   readonly="readonly" hidden>
-                            <input type="text" id="sub_addr" name="sub_addr" maxlength="50"
+                            <input type="text" th:field="*{addressDetail}" maxlength="50"
                                    placeholder="나머지 주소를 입력해주세요"
                                    data-format="text"/>
                         </div>
                         <div class="field">
-                            <label class="label_block" for="addr_name">받으실 분</label><br>
-                            <input type="text" id="addr_name" name="addr_name" maxlength="20"
+                            <label class="label_block" for="recipient">받으실 분</label><br>
+                            <input type="text" id="recipient" th:field="*{recipient}" maxlength="20"
                                    placeholder="이름을 입력해주세요"/>
                         </div>
                         <div class="field">
-                            <label class="label_block" for="addr_tel">휴대폰</label><br>
-                            <input type="text" id="addr_tel" name="addr_tel" minlength="9" maxlength="11"
+                            <label class="label_block" for="telno">휴대폰</label><br>
+                            <input type="text" id="telno" th:field="*{telno}" minlength="9" maxlength="11"
                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                                    placeholder="번호를 입력해주세요"/>
                         </div>
                         <div class="label_default">
-                            <input type="checkbox" id="chk_addr" name="chk_addr" value="true">
-                            <label for="chk_addr" class="ico"></label>
-                            기본 배송지로 저장
+                            <input type="checkbox" class="checkbox" id="isDefaultAdd" name="isDefaultAdd">
+                            <label th:for="isDefaultAdd">기본 배송지로 저장</label>
                         </div>
                         <div>
-                            <button type="button" id="insertBtn" class="btn active" onclick="addrInsertChk()">
+                            <button type="button" id="insertBtn" class="btn active">
                                 배송지 등록
                             </button>
                         </div>
@@ -82,6 +75,7 @@
         </div>
     </div>
 </div>
-<script type="module" src=""></script>
+<script type="module" src="/js/myPage/addressForm.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </body>
 </html>

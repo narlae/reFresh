@@ -1,13 +1,16 @@
 package com.onlyfresh.devkurly.domain.member;
 
 import com.onlyfresh.devkurly.domain.Address;
+import com.onlyfresh.devkurly.domain.board.MemberLikeNo;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,8 +35,9 @@ public class Member {
 
     private String telno;
 
-    @Embedded
-    private Address address;
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @Builder.Default
+    private List<Address> addressList = new ArrayList<>();
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

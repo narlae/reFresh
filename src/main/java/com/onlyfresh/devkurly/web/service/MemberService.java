@@ -11,6 +11,7 @@ import com.onlyfresh.devkurly.web.exception.MemberDuplicateException;
 import com.onlyfresh.devkurly.web.exception.MemberListException;
 import com.onlyfresh.devkurly.web.exception.SignInException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotEmpty;
@@ -35,13 +36,15 @@ public class MemberService {
         return new MemberMainResponseDto(member);
     }
 
+    @Transactional
     public MemberMainResponseDto registerMember(RegisterForm formDto) {
         String userEmail = formDto.getUserEmail();
         memberRepository.findMemberByUserEmailAndPwd(userEmail).ifPresent((m) -> {
             throw new MemberDuplicateException("이미 회원으로 존재하는 이메일입니다.");
         });
-        Address address = new Address(formDto.getAddress(), formDto.getAddressDetail(), formDto.getZoneCode());
-        Member member = memberBuild(formDto, address);
+        Member member = memberBuild(formDto);
+        Address.of(member, formDto.getAddress(), formDto.getAddressDetail(), formDto.getZoneCode(), formDto.getUserNm(), false);
+
         memberRepository.save(member);
         return new MemberMainResponseDto(member);
     }
@@ -60,13 +63,12 @@ public class MemberService {
 
     }
 
-    private Member memberBuild(RegisterForm formDto, Address address) {
+    private Member memberBuild(RegisterForm formDto) {
         return Member.builder()
                 .userEmail(formDto.getUserEmail())
                 .pwd(formDto.getPwd())
                 .userNm(formDto.getUserNm())
                 .telno(formDto.getTelno())
-                .address(address)
                 .rcmdrEmail(formDto.getRcmdrEmail())
                 .gender(formDto.getGender())
                 .prvcArge(formDto.isPrvcArge())

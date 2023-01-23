@@ -1,5 +1,6 @@
 package com.onlyfresh.devkurly.repository;
 
+import com.onlyfresh.devkurly.domain.Address;
 import com.onlyfresh.devkurly.domain.member.Member;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -47,6 +48,17 @@ class MemberRepositoryTest {
     public void isMembertest() {
         boolean present = memberRepository.findMemberByUserEmail("kyjttaa13@naver.com").isPresent();
         System.out.println(present);
+    }
+
+    @Test
+    public void test3() {
+        Member member = memberRepository.findById(4001L).get();
+        List<Address> addressList = member.getAddressList();
+        Member member1 = null;
+        for (Address address : addressList) {
+            member1 = address.getMember();
+        }
+        assertEquals(member, member1);
     }
 
 
