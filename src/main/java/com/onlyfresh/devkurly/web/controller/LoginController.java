@@ -6,6 +6,7 @@ import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
 import com.onlyfresh.devkurly.web.exception.ErrorCode;
 import com.onlyfresh.devkurly.web.exception.LoginFormCheckException;
 import com.onlyfresh.devkurly.web.service.MemberService;
+import com.onlyfresh.devkurly.web.utils.SessionConst;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +32,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginForm(HttpSession session, LoginFormDto loginFormDto) {
-        if (session.getAttribute("loginMember") == null) {
+        if (session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
             return "members/login";
         }
         return "redirect:/";
@@ -51,7 +52,7 @@ public class LoginController {
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute("loginMember", memberMainResponseDto);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, memberMainResponseDto);
 
 
         return "redirect:" + toURL;

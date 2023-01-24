@@ -1,5 +1,7 @@
 import Api from "../api/index.js";
 import {$} from "../utils/dom.js";
+import cookieFunc from "../utils/cookie.js";
+
 function App(){
 
     this.init = async () =>{
@@ -9,6 +11,10 @@ function App(){
         menuNav();
         updateQty();
     }
+    this.pdt = {
+        pdtId : pdtId,
+        quantity : 1,
+    };
 
     const localeString = () =>{
         let selPriceLocaleString = selPrice.toLocaleString();
@@ -56,14 +62,26 @@ function App(){
         $("#down_qty").addEventListener("click", () =>{
             if(parseInt($pdt_qty.innerText)>1)
                 $pdt_qty.innerText = parseInt($pdt_qty.innerText)-1;
+            this.pdt.quantity = $pdt_qty.innerText;
             $("#actual_price").innerText = (parseInt($pdt_qty.innerText)*selPrice).toLocaleString();
         })
 
         $("#up_qty").addEventListener("click", ()=>{
             $pdt_qty.innerText = parseInt($pdt_qty.innerText)+1;
+            this.pdt.quantity = $pdt_qty.innerText;
             $("#actual_price").innerText = (parseInt($pdt_qty.innerText)*selPrice).toLocaleString();
         });
     }
+
+    $("#addCart").addEventListener("click",()=>{
+        let stringify = JSON.stringify(this.pdt);
+        cookieFunc.setCookie('pdtCookie',stringify, {'max-age': 3600});
+        alert("장바구니에 추가되었습니다.");
+    })
+
+
+
+
 }
 const app = new App();
 app.init();
