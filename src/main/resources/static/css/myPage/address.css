@@ -103,6 +103,9 @@
 .fifth_col_addr { /* 수정 사이즈 */
     width: 60px;
 }
+.addressRemove{
+    cursor: pointer;
+}
 
 /*  */
 #readBtn { /* 수정 버튼 */

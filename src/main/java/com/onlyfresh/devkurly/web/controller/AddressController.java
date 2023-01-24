@@ -6,11 +6,10 @@ import com.onlyfresh.devkurly.web.service.AddressService;
 import com.onlyfresh.devkurly.web.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -31,10 +30,23 @@ public class AddressController {
         return "myPage/address/addressForm";
     }
 
+    @PostMapping("/addressList")
+    @ResponseBody
+    public List<AddressForm> getAddressList(@RequestBody Long userId) {
+        return addressService.getUserAddressList(userId);
+    }
+
     @PostMapping("/add")
     public String registerAdd(HttpSession session, AddressForm addressForm) {
         Long userId = getUserId(session);
         addressService.saveAddress(userId, addressForm);
+        return "redirect:/address/list";
+    }
+
+    @DeleteMapping("/{index}")
+    public String deleteAdd(HttpSession session, @PathVariable Long index) {
+        Long userId = getUserId(session);
+        addressService.deleteAddress(userId, index);
         return "myPage/address/address";
     }
 

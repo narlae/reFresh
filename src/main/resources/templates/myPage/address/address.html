@@ -38,52 +38,18 @@
                     <div class="third_col_addr tit_colx">연락처</div>
                     <div class="fourth_col_addr tit_colx">배송유형</div>
                     <div class="fifth_col_addr tit_colx">수정</div>
+                    <div class="fifth_col_addr tit_colx">삭제</div>
                 </div>
                 <div id="addressList">
-                    <form action="/address/default" id="form" method="post">
-                        <c:forEach var="addressDto" items="${list}">
-                            <div class="address colx">
-                                <div class="address_main first_col_addr">
-                                    <span class="chk_addr_tag_${addressDto.chk_addr}">
-                                    </span>
-                                    <p class="addr" aria-readonly="true">
-                                        <br>
 
-                                    </p>
-                                </div>
-                                <div class="address_name second_col_addr colx">
-                                </div>
-                                <div class="address_tel third_col_addr colx" id="phone-${addressDto.addr_id}">
-                                </div>
-                                <div class="address_deli fourth_col_addr colx">
-                                    <span id="deli_${addressDto.deli_type}">
-                                    </span>
-                                </div>
-                                <div class="address_modify fifth_col_addr colx">
-                                    <a href="/address/read?addr_id=${addressDto.addr_id}">
-                                        <button type="button" id="readBtn">
-                                            수정
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
-                            <script>
-                                $(document).ready(function () {
-                                    let phone = '${addressDto.addr_tel}';
-                                    $('#phone-${addressDto.addr_id}').text(phone.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
-                                });
-                                $('#checkbox-${addressDto.addr_id}').click(function () {
-                                    alert("배송지 선택이 완료되었습니다.");
-                                    $('#form').submit();
-                                });
-                            </script>
-                        </c:forEach>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script type="module" src=""></script>
+<script type="module" src="/js/myPage/address.js"></script>
+<script th:inline="javascript">
+    const loginMember = [[${session.loginMember}]];
+</script>
 </body>
 </html>

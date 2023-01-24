@@ -43,7 +43,8 @@ public class MemberService {
             throw new MemberDuplicateException("이미 회원으로 존재하는 이메일입니다.");
         });
         Member member = memberBuild(formDto);
-        Address.of(member, formDto.getAddress(), formDto.getAddressDetail(), formDto.getZoneCode(), formDto.getUserNm(), false);
+        Address.of(member, formDto.getAddress(), formDto.getAddressDetail(),
+                formDto.getZoneCode(), member.getTelno(), formDto.getUserNm(), true);
 
         memberRepository.save(member);
         return new MemberMainResponseDto(member);

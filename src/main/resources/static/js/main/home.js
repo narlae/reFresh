@@ -59,10 +59,8 @@ function App(){
         Object.keys(result.categoryList).forEach((el)=>{
             main_cat_container.insertAdjacentHTML("afterbegin", `<a href=""><li class="cat main_cat">${el}</li></a>`)
         });
-        console.log(result.categoryList);
         $(".main_cat").addEventListener("mouseover", (e)=>{
             sub_cat_container.style.display = 'block';
-            console.log(categories[e.currentTarget.innerText]);
             categories[e.currentTarget.innerText].forEach((el)=>{
                 sub_cat_container.innerHTML = `<a href=""><li class="cat main_cat">${el}</li></a>`;
             })

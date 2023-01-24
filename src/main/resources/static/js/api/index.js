@@ -77,6 +77,12 @@ const Api = {
     getProductsByCategory(catId, page, sort_option) {
         return request(`${BASE_URL}/products/${catId}/${page}` + '?sort_option=' + sort_option);
     },
+    getAddressList(userId) {
+        return request(`${BASE_URL}/address/addressList`, HTTP_METHOD.POST(userId));
+    },
+    deleteAddress(index) {
+        return requestWithoutJson(`${BASE_URL}/address/${index}`, HTTP_METHOD.DELETE(), "주소지가 삭제되었습니다.");
+    },
 
 }
 

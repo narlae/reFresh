@@ -40,6 +40,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<ErrorResult> AddressLimitExHandler(HttpServletResponse response, AddressLimitException e) throws IOException {
+        response.sendRedirect("/address/list");
+        return getResponseEntity("Addr-Ex", e);
+    }
+
+    @ExceptionHandler
     public ResponseEntity<ErrorResult> memberDuplicateExHandler(HttpServletResponse response, MemberDuplicateException e) throws IOException {
         response.sendRedirect("/register?error=1");
         return getResponseEntity("Mem-Ex", e);

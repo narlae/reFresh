@@ -29,38 +29,34 @@ public class Address {
     @NotEmpty
     private String zoneCode;
 
+    private String telno;
     @NotEmpty
     private String recipient;
+
+    private boolean defaultAdd;
+
 
 
     protected Address() {
     }
 
-    public Address(Member member, String address, String addressDetail, String zoneCode, String recipient) {
+    public Address(Member member, String address, String addressDetail, String zoneCode, String telno, String recipient, boolean defaultAdd) {
         this.member = member;
         this.address = address;
         this.addressDetail = addressDetail;
         this.zoneCode = zoneCode;
+        this.telno = telno;
         this.recipient = recipient;
+        this.defaultAdd = defaultAdd;
+    }
+
+    @Override
+    public String toString() {
+        return this.address;
     }
 
     public static Address of(Member member, String mainAddress, String addressDetail,
-                             String zoneCode, String recipient, boolean isDeafultAdd) {
-        Address address = new Address(member, mainAddress, addressDetail, zoneCode, recipient);
-        List<Address> addressList = member.getAddressList();
-        addAddressByDefaultValue(isDeafultAdd, address, addressList);
-        return address;
-    }
-
-    private static void addAddressByDefaultValue(boolean isDeafultAdd, Address address, List<Address> addressList) {
-        if (!isDeafultAdd) {
-            addressList.add(address);
-        }else{
-            if (!addressList.isEmpty()) {
-                addressList.add(address);
-                Collections.swap(addressList, 0, addressList.size()-1);
-            }
-            addressList.add(address);
-        }
+                             String zoneCode, String telno, String recipient, boolean defaultAdd) {
+        return new Address(member, mainAddress, addressDetail, zoneCode, telno, recipient, defaultAdd);
     }
 }
