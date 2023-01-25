@@ -5,10 +5,12 @@ import com.onlyfresh.devkurly.web.dto.AddressForm;
 import com.onlyfresh.devkurly.web.exception.SignInException;
 import com.onlyfresh.devkurly.web.service.AddressService;
 import com.onlyfresh.devkurly.web.service.MemberService;
+import com.onlyfresh.devkurly.web.utils.SessionConst;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -33,6 +35,14 @@ public class AddressController {
         return "myPage/address/addressForm";
     }
 
+    @GetMapping("/read")
+    public String getAddressEditPage(@RequestParam Long addId , HttpSession session, Model model) {
+        Long userId = getUserId(session);
+        AddressForm addressForm = addressService.editPage(userId, addId);
+        model.addAttribute("addressForm", addressForm);
+        return "myPage/address/addressEdit";
+    }
+
     @GetMapping("/addressList")
     @ResponseBody
     public List<AddressForm> getAddressList(HttpSession session) {
@@ -44,6 +54,13 @@ public class AddressController {
     public String registerAdd(HttpSession session, AddressForm addressForm) {
         Long userId = getUserId(session);
         addressService.saveAddress(userId, addressForm);
+        return "redirect:/address/list";
+    }
+
+    @PostMapping("/update")
+    public String updateAdd(HttpSession session, AddressForm addressForm) {
+        Long userId = getUserId(session);
+        addressService.updateAddress(userId, addressForm);
         return "redirect:/address/list";
     }
 

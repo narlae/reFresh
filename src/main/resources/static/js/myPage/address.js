@@ -38,7 +38,7 @@ function App(){
                                     </span>
                         </div>
                         <div class="address_modify fifth_col_addr colx">
-                            <a href="/address/read?addr_id=">
+                            <a href="/address/read?addId=${item.addId}">
                                 <button type="button" id="readBtn">
                                     수정
                                 </button>

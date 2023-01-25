@@ -34,9 +34,27 @@ public class AddressService {
 
         addressRepository.save(address);
     }
+
+    @Transactional
+    public void updateAddress(Long userId, AddressForm addressForm) {
+        Member member = memberService.findMemberById(userId);
+        Address address = addressRepository.findById(addressForm.getAddId()).orElseThrow(() -> new NotFoundDBException("해당하는 주소지가 없습니다."));
+        if (!address.getMember().equals(member)) {
+            throw new MemberListException("유저와 주소가 일치하지 않습니다.");
+        }
+
+        if (addressForm.isDefaultAdd()) {
+            List<Address> addressList = member.getAddressList();
+            for (Address item : addressList) {
+                item.setDefaultAdd(false);
+            }
+        }
+        addressFormToAddress(addressForm, address);
+    }
+
     public void deleteAddress(Long userId, Long addId) {
         Member member = memberService.findMemberById(userId);
-        Address address = addressRepository.findById(addId).orElseThrow(() -> new NotFoundDBException("찾는 address가 없습니다."));
+        Address address = addressRepository.findById(addId).orElseThrow(() -> new NotFoundDBException("해당하는 주소지가 없습니다."));
         if (!address.getMember().equals(member)) {
             throw new MemberListException("유저와 주소가 일치하지 않습니다.");
         }
@@ -51,6 +69,16 @@ public class AddressService {
             list.add(new AddressForm().createForm(address));
         }
         return list;
+    }
+
+    public AddressForm editPage(Long userId, Long addId) {
+        Member member = memberService.findMemberById(userId);
+        Address address = addressRepository.findById(addId).orElseThrow(() -> new NotFoundDBException("해당하는 주소지가 없습니다."));
+        if (!member.getAddressList().contains(address)) {
+            throw new MemberListException("유저와 주소가 일치하지 않습니다.");
+        }
+        AddressForm addressForm = new AddressForm();
+        return addressForm.createForm(address);
     }
 
     public AddressForm getDefault(Long userId) {
@@ -77,5 +105,14 @@ public class AddressService {
         addressForm.setAddress(address.getAddress());
         addressForm.setAddressDetail(address.getAddressDetail());
         return addressForm;
+    }
+
+    private void addressFormToAddress(AddressForm addressForm, Address address) {
+        address.setAddress(addressForm.getAddress());
+        address.setAddressDetail(addressForm.getAddressDetail());
+        address.setDefaultAdd(addressForm.isDefaultAdd());
+        address.setRecipient(addressForm.getRecipient());
+        address.setTelno(addressForm.getTelno());
+        address.setZoneCode(addressForm.getZoneCode());
     }
 }
