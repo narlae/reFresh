@@ -77,11 +77,26 @@ const Api = {
     getProductsByCategory(catId, page, sort_option) {
         return request(`${BASE_URL}/products/${catId}/${page}` + '?sort_option=' + sort_option);
     },
-    getAddressList(userId) {
-        return request(`${BASE_URL}/address/addressList`, HTTP_METHOD.POST(userId));
+    getAddressList() {
+        return request(`${BASE_URL}/address/addressList`);
     },
     deleteAddress(index) {
         return requestWithoutJson(`${BASE_URL}/address/${index}`, HTTP_METHOD.DELETE(), "주소지가 삭제되었습니다.");
+    },
+    addCart(pdt) {
+        return requestWithoutJson(`${BASE_URL}/cart/add`, HTTP_METHOD.POST(pdt), "상품을 장바구니에 넣었습니다.");
+    },
+    getCartList() {
+        return request(`${BASE_URL}/cart/list`);
+    },
+    removePdt(pdtId) {
+        return requestWithoutJson(`${BASE_URL}/cart/${pdtId}`, HTTP_METHOD.DELETE(), false);
+    },
+    updateQuantity(pdtId, quantity) {
+        return requestWithoutJson(`${BASE_URL}/cart/${pdtId}`, HTTP_METHOD.PUT(quantity), false);
+    },
+    getDefaultAdd() {
+        return request(`${BASE_URL}/address/default`);
     },
 
 }

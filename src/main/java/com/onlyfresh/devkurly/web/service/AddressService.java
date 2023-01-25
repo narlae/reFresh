@@ -53,6 +53,12 @@ public class AddressService {
         return list;
     }
 
+    public AddressForm getDefault(Long userId) {
+        Member member = memberService.findMemberById(userId);
+        Address address = addressRepository.findAddressByMemberAndDefaultAdd(member, true);
+        return dtoFromAddress(address);
+    }
+
     private void ifIsDefault(AddressForm addressForm, Member member, Address address) {
         List<Address> addressList = member.getAddressList();
 
@@ -64,5 +70,12 @@ public class AddressService {
             }
         }
         addressList.add(address);
+    }
+
+    private AddressForm dtoFromAddress(Address address) {
+        AddressForm addressForm = new AddressForm();
+        addressForm.setAddress(address.getAddress());
+        addressForm.setAddressDetail(address.getAddressDetail());
+        return addressForm;
     }
 }

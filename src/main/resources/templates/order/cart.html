@@ -8,6 +8,7 @@
     <title>OnlyFresh :: 장바구니</title>
     <link rel="stylesheet" type="text/css" href="/css/payment/payment.css">
     <link rel="stylesheet" type="text/css" href="/css/order/cart.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
     <style></style>
 </head>
 <body>
@@ -17,25 +18,15 @@
         <div id="container">
             <div id="product_list" style="margin-right: 20px;">
                 <div class="select_or_delete">
-                    <span id="select_all" style="display: flex; cursor: pointer;">
-                    <img id="select_all_checked"
-                         class="select_all"
-                         src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGc+CiAgICAgICAgICAgIDxnPgogICAgICAgICAgICAgICAgPGc+CiAgICAgICAgICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ni4wMDAwMDAsIC0xMDkwLjAwMDAwMCkgdHJhbnNsYXRlKDEwMC4wMDAwMDAsIDkzNi4wMDAwMDApIHRyYW5zbGF0ZSg2MC4wMDAwMDAsIDE0Mi4wMDAwMDApIHRyYW5zbGF0ZSgxNi4wMDAwMDAsIDEyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMiIgZmlsbD0iIzRFN0E1MSIvPgogICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiIGQ9Ik03IDEyLjY2N0wxMC4zODUgMTYgMTggOC41Ii8+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4="
-                         alt=""/>
-                    <img id="select_all_unchecked"
-                         class="select_all"
-                         src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgc3Ryb2tlPSIjREREIj4KICAgICAgICAgICAgPGc+CiAgICAgICAgICAgICAgICA8Zz4KICAgICAgICAgICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNjY5LjAwMDAwMCwgLTEwOTAuMDAwMDAwKSB0cmFuc2xhdGUoMTAwLjAwMDAwMCwgOTM2LjAwMDAwMCkgdHJhbnNsYXRlKDU1My4wMDAwMDAsIDE0Mi4wMDAwMDApIHRyYW5zbGF0ZSgxNi4wMDAwMDAsIDEyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMS41Ii8+CiAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiIGQ9Ik03IDEyLjY2N0wxMC4zODUgMTYgMTggOC41Ii8+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4K"
-                         alt="" style="display: none"/>
-                    <span id="select_all_text" style="padding-top: 5px;">전체선택</span>
-                        <input type="checkbox" id="allCheck" checked hidden>
-                    </span>
+                    <span id="select_all" style="display: flex; cursor: pointer; padding-top: 5px; align-items: center;">
+                        <input type="checkbox" class="checkbox" id="allCheck" checked>
+                        <label th:for="allCheck">전체선택</label>
                     <span class="select_contour"></span>
                     <span id="delete-checked" style="cursor: pointer">선택삭제</span>
                 </div>
                 <div class="products_container">
                     <h4 class="product_type">냉장 상품</h4>
                     <div id="cart-empty" style="margin-left: 230px; margin-top: 50px; font-size: 16px;">
-                        장바구니에 담긴 상품이 없습니다
                     </div>
                     <!-- 여기에 상품들을 jquery, ajax 로 원하는 만큼 넣기 -->
                     <div id="cart"></div>
@@ -46,11 +37,9 @@
                 <div id="shipping_payment">
                     <div id="shipping">
                         <h4>배송지</h4>
-                        <p id="is_star_deli">배송지를 등록하고</p>
-                        <p>구매 가능한 상품을 확인하세요!</p>
-                        <a href="/address/list">
-                            <button>배송지 등록</button>
-                        </a>
+                        <p id="is_star_deli">&nbsp</p>
+                        <p>&nbsp</p>
+                        <a href="/address/list"><button></button></a>
                     </div>
                     <div id="payment_box">
                         <div style="padding: 20px">
@@ -73,16 +62,16 @@
                         </div>
                     </div>
                 </div>
-                <form id="form" action="/orders/" method="get" autocomplete="off">
-                    <input type="hidden" name="checked" id="checked" value=""/>
-                    <button id="order_submit" type="submit" style="cursor: pointer">
+                    <button id="order_submit"  onclick = "location.href ='/orders'" style="cursor: pointer">
                         주문하기
                     </button>
-                </form>
             </div>
         </div>
     </div>
 </div>
-<!--<script type="module" src="/js/products/category_products.js"></script>-->
+<script type="module" src="/js/order/cart.js"></script>
+<script th:inline="javascript">
+    const loginMember = [[${session.loginMember}]];
+</script>
 </body>
 </html>

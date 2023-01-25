@@ -12,6 +12,7 @@ public class CartForm {
     private Integer price;
     private Integer dsRate;
     private Integer selPrice;
+    private Integer stock;
 
     public CartForm(Long pdtId, Integer quantity) {
         this.pdtId = pdtId;

@@ -73,10 +73,8 @@ function App(){
         });
     }
 
-    $("#addCart").addEventListener("click",()=>{
-        let stringify = JSON.stringify(this.pdt);
-        cookieFunc.setCookie('pdtCookie',stringify, {'max-age': 3600});
-        alert("장바구니에 추가되었습니다.");
+    $("#addCart").addEventListener("click",async ()=>{
+        await Api.addCart(this.pdt);
     })
 
 

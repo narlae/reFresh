@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -34,8 +31,11 @@ public class CartController {
         return "order/cart";
     }
 
-    @GetMapping("/cart/add")
-    public ResponseEntity<String> addCart(Long pdtId, Integer quantity, HttpServletRequest request) {
+    @PostMapping("/cart/add")
+    @ResponseBody
+    public ResponseEntity<String> addCart(@RequestBody CartForm cartForm, HttpServletRequest request) {
+        Long pdtId = cartForm.getPdtId();
+        Integer quantity = cartForm.getQuantity();
         HttpSession session = request.getSession();
         if (Optional.ofNullable(session.getAttribute(SessionConst.CART_PDT)).isPresent()) {
             CartProductsDto cartProductsDto = (CartProductsDto) session.getAttribute(SessionConst.CART_PDT);
@@ -53,6 +53,7 @@ public class CartController {
     }
 
     @GetMapping("/cart/list")
+    @ResponseBody
     public List<CartForm> getCartList(HttpSession session) {
         List<CartForm> list = new ArrayList<>();
         if (Optional.ofNullable(session.getAttribute(SessionConst.CART_PDT)).isPresent()) {
@@ -65,19 +66,19 @@ public class CartController {
     }
 
     @DeleteMapping("/cart/{pdtId}")
-    public String deletePdtInCart(@PathVariable Long pdtId, HttpSession httpSession) {
+    public ResponseEntity<String> deletePdtInCart(@PathVariable Long pdtId, HttpSession httpSession) {
         CartProductsDto dto = (CartProductsDto) httpSession.getAttribute(SessionConst.CART_PDT);
         dto.getProducts().remove(pdtId);
         httpSession.setAttribute(SessionConst.CART_PDT, dto);
-        return "order/cart";
+        return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }
 
     @PutMapping("/cart/{pdtId}")
-    public String updatePdtInCart(@PathVariable Long pdtId, Integer quantity, HttpSession httpSession) {
+    public ResponseEntity<String> updatePdtInCart(@PathVariable Long pdtId, @RequestBody Integer quantity, HttpSession httpSession) {
         CartProductsDto dto = (CartProductsDto) httpSession.getAttribute(SessionConst.CART_PDT);
         dto.getProducts().put(pdtId, quantity);
         httpSession.setAttribute(SessionConst.CART_PDT, dto);
-        return "order/cart";
+        return new ResponseEntity<>("PUT_OK", HttpStatus.OK);
     }
 
     private CartProductsDto createCartPdtDto(Long pdtId, Integer quantity) {
@@ -93,5 +94,6 @@ public class CartController {
         cartForm.setPrice(product.getPrice());
         cartForm.setDsRate(product.getDsRate());
         cartForm.setSelPrice(product.getSelPrice());
+        cartForm.setStock(product.getStock());
     }
 }
