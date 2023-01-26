@@ -60,7 +60,7 @@ public class CartController {
             CartProductsDto dto = (CartProductsDto) session.getAttribute(SessionConst.CART_PDT);
             Map<Long, Integer> products = dto.getProducts();
             products.forEach((key, value) -> list.add(new CartForm(key, value)));
-            list.forEach(m->setFieldsByProduct(m, productService.findProductById(m.getPdtId())));
+            list.forEach(m->productService.setFieldsByProduct(m, productService.findProductById(m.getPdtId())));
         }
         return list;
     }
@@ -88,12 +88,4 @@ public class CartController {
         return cartProductsDto;
     }
 
-    private void setFieldsByProduct(CartForm cartForm, Product product) {
-        cartForm.setImage(product.getImage());
-        cartForm.setTitle(product.getTitle());
-        cartForm.setPrice(product.getPrice());
-        cartForm.setDsRate(product.getDsRate());
-        cartForm.setSelPrice(product.getSelPrice());
-        cartForm.setStock(product.getStock());
-    }
 }

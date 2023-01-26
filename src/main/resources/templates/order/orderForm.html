@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::#content}, ~{::script})"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnlyFresh :: 주문서</title>
+    <link rel="stylesheet" type="text/css" href="/css/payment/payment.css">
+    <link rel="stylesheet" type="text/css" href="/css/order/order.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+    <style></style>
+</head>
+<body>
+<div id="whole_container">
+    <div id="content">
+        <h2>주문서</h2>
+        <form id="form" action="/payments/${order_id}" method="post" autocomplete="off">
+            <div id="container">
+                <div id="product_list">
+                    <h4 class="product_type">주문 상품</h4>
+                    <div class="products_container">
+                        <div id="order"></div>
+                        <div th:each="cartForm : ${cartFormList}">
+                            <div class="product">
+                                <img th:src="${cartForm.image}" class="product_img"/>
+                                <h4>[[${cartForm.title}]]</h4>
+                                <div class="quantity_control_box">
+                                    <div id="order-qty" style="width: 50px;">[[${cartForm.quantity}]] 개</div>
+                                    <input th:data-index ="${cartFormStat.index}" type="hidden" th:value="${cartFormStat.last}">
+                                </div>
+                                <p id="order-sum" style="margin-bottom: 0px;">
+                                    [[${#numbers.formatInteger(cartForm.quantity*cartForm.selPrice,3,'COMMA')+'원'}]]
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="product_type">주문자 정보</h4>
+                    <div class="products_container">
+                        <div id="user-info">
+                            <div class="payment_row">
+                                <span>보내시는 분</span>
+                                <span id="order-id">[[${memberForm.userNm}]]</span>
+                            </div>
+                            <div class="payment_row">
+                                <span>휴대폰</span>
+                                <span id="order-tel">[[${memberForm.telno}]]</span>
+                            </div>
+                            <div class="payment_row">
+                                <span>이메일</span>
+                                <span>[[${memberForm.userEmail}]]</span>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="product_type">배송 정보</h4>
+                    <div class="products_container">
+                        <div id="address">
+                            <div class="payment_row">
+                                <span>배송지</span>
+                                <span id="order-addr">[[${addressForm.address}]] [[${addressForm.addressDetail}]]</span>
+                            </div>
+                            <div class="payment_row">
+                                <span>받으시는 분</span>
+                                <span>[[${addressForm.recipient}]],  [[${addressForm.telno}]]</span>
+                            </div>
+                            <input type="text" name="addr_id" th:value="${addressForm.addId}" hidden/>
+                        </div>
+                    </div>
+                    <h4 class="product_type">쿠폰 / 적립금</h4>
+                    <div class="products_container">
+                        <!-- 여기에 상품들을 jquery, ajax 로 원하는 만큼 넣기 -->
+                        <div id="coupon"></div>
+                        <div class="payment_row">
+                            <span style="margin-top: 15px;">쿠폰 적용</span>
+                            <span>
+                            <label>
+                                <select class="coupon-select" id="coupon-select" name='coupn_id'>
+                                    <option data-coupon="0" value='0'>사용가능 쿠폰 확인</option>
+                                </select>
+                            </label>
+                        </span>
+                        </div>
+                        <div style="padding-top: 20px;" class="payment_row">
+                            <span style="margin-top: 30px;">보유한 적립금</span>
+                            <span id="point-text" style="padding-top: 25px; padding-left: 300px;">0원</span>
+                            <span><a id="point-btn">모두사용</a></span>
+                        </div>
+                        <div style="padding-top: 20px;" class="payment_row">
+                            <span style="margin-top: 25px;">사용할 적립금</span>
+                            <span style="margin-top: 15px;"><input id="point-input" name="used_acamt" type="number" max="0" min="0"
+                                                                   value="0"
+                                                                   placeholder="0" style="text-align: right"></span>
+                        </div>
+                    </div>
+                    <h4 class="product_type">결제 수단</h4>
+                    <div class="products_container">
+                        <!-- 여기에 상품들을 jquery, ajax 로 원하는 만큼 넣기 -->
+                        <div id="payment-way"></div>
+                        <div class="payment_row">
+                            <span>결제수단 선택</span>
+                            <span id="remember-payment-select" style="display: flex">
+                                    <input type="checkbox" class="checkbox"
+                                           id="remember-payment"
+                                           name="remember-payment">
+                                <label for="remember-payment" class="remember-payment" style="margin-top: 5px;margin-left: 5px;">선택한 결제수단을 다음에도 사용</label>
+                            </span>
+                        </div>
+                        <div class="payment_row">
+                            <span></span>
+                            <span>
+                                <div class="payment-container">
+                            <div style="display: flex;" class="select-payment">
+                                <input type="text" id="payment" name="setl_cd" value="credit" hidden/>
+                                <input
+                                        type="radio"
+                                        id="credit"
+                                        name="payment"
+                                        checked
+                                        onclick="document.querySelector('#payment').value = 'credit'"
+                                /><label class="payment" for="credit">신용카드</label>
+                                <input
+                                        type="radio"
+                                        id="pay"
+                                        name="payment"
+                                        onclick="document.querySelector('#payment').value = 'pay'"
+                                /><label class="payment" for="pay">간편 결제</label>
+                                <input
+                                        type="radio"
+                                        id="phone"
+                                        name="payment"
+                                        onclick="document.querySelector('#payment').value = 'phone'"
+                                /><label class="payment" for="phone">휴대폰</label>
+                            </div>
+                            <div id="below-div"></div>
+                        </div>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 284px;padding-left: 10px;">
+                    <div id="shipping">
+                        <h4 style="font-weight: 500; font-size: 24px">결제 금액</h4>
+                    </div>
+                    <div id="shipping_payment">
+                        <div id="payment_box" style="height: 290px;">
+                            <div style="padding: 20px">
+                                <div class="payment_row">
+                                    <span>주문금액</span>
+                                    <span id="order_price">[[${#numbers.formatInteger(priceForm.totalSelPrice,3,'COMMA')+'원'}]]</span>
+                                </div>
+                                <div class="payment_row" style="font-size: 14px; color: #C5C5C5;">
+                                    <span>ㄴ 상품금액</span>
+                                    <span id="product_price">0 원</span>
+                                </div>
+                                <div class="payment_row" style="font-size: 14px; color: #C5C5C5;">
+                                    <span>ㄴ 상품할인금액</span>
+                                    <span id="discount_price">0 원</span>
+                                </div>
+                                <div class="payment_row">
+                                    <span>배송비</span>
+                                    <span>0 원</span>
+                                </div>
+                                <div class="payment_row">
+                                    <span>쿠폰할인</span>
+                                    <span id="coupon_price">0 원</span>
+                                </div>
+                                <div class="payment_row">
+                                    <span>적립금사용</span>
+                                    <span id="point_price">0 원</span>
+                                </div>
+                                <div class="payment_row total">
+                                    <span>최종결제금액</span>
+                                    <span id="payment_price" style="font-weight: bold; font-size: 22px;">0 원</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="checked" id="checked" value=""/>
+                    <input type="number" name="all_amt" id="all_amt" min="0" value="" hidden>
+                    <div id="order_submit" style="cursor: pointer; font-weight: 500; font-size: 16px; text-align: center; line-height: 50px;">
+                        0 원 결제하기
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="module" src=""></script>
+<script th:inline="javascript">
+    const loginMember = [[${session.loginMember}]];
+</script>
+</body>
+</html>

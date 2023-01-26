@@ -1,5 +1,6 @@
 import {$} from "../utils/dom.js";
 import Api from "../api/index.js";
+import {pageGoPost} from "../utils/utils.js";
 
 
 function App() {
@@ -10,7 +11,7 @@ function App() {
         initEventListeners();
     }
 
-    this.list = {}
+    this.cart = [];
 
     let $cart = $("#cart");
 
@@ -43,7 +44,7 @@ function App() {
                                 <option value="10">10+</option>
                             </select>`
             }
-            temp += `     <div class="product">
+            temp += `     <div class="product" data-pdtId="${item.pdtId}" data-quantity="${item.quantity}">
                         <input type="checkbox" id="checked-cart-${item.pdtId}" class="checkbox" name="check" checked>
                         <label for="checked-cart-${item.pdtId}"></label>
                         <a href="/product/${item.pdtId}" style="display: flex; align-items: center;">
@@ -98,10 +99,7 @@ function App() {
                 window.location.href = '/cart';
             }
             if (e.target.classList.contains("input-quantity")) {
-                console.log(e.target);
                 e.target.oninput = () =>{
-                    console.log("oninput");
-                    console.log(e.target.closest(".product").querySelector(".update-quantity-box").type);
                     e.target.closest(".product").querySelector(".update-quantity-box").style.display = 'block';
                 }
             }
@@ -120,6 +118,18 @@ function App() {
                 await Api.updateQuantity(pdtId, e.target.value);
                 window.location.href = '/cart';
             }
+        })
+
+        $("#order_submit").addEventListener("click",async ()=>{
+            if (this.cart.length === 0) {
+                alert("장바구니가 비어있습니다. 주문할 수 없습니다.");
+                return;
+            }
+            pageGoPost({
+                url: "/order/orderForm",	//이동할 페이지
+                items: this.cart
+            });
+
         })
 
 
@@ -164,9 +174,11 @@ function App() {
     const calculation = () =>{
         let totalPrice = 0;
         let totalSelPrice = 0;
+        this.cart = [];
         document.querySelectorAll('input[name=check]:checked').forEach((e)=>{
             totalPrice += parseInt(e.closest(".product").querySelector(".cart-sum-pdt").innerText);
             totalSelPrice += parseInt(e.closest(".product").querySelector(".cart-sum").innerText);
+            this.cart.push([e.closest(".product").dataset.pdtid, e.closest(".product").dataset.quantity]);
         })
         let totalDsPrice = totalPrice - totalSelPrice;
 

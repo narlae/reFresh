@@ -87,6 +87,12 @@ public class AddressService {
         return dtoFromAddress(address);
     }
 
+    public AddressForm getAllDefault(Long userId) {
+        Member member = memberService.findMemberById(userId);
+        Address address = addressRepository.findAddressByMemberAndDefaultAdd(member, true);
+        return dtoFromAllAddress(address);
+    }
+
     private void ifIsDefault(AddressForm addressForm, Member member, Address address) {
         List<Address> addressList = member.getAddressList();
 
@@ -104,6 +110,17 @@ public class AddressService {
         AddressForm addressForm = new AddressForm();
         addressForm.setAddress(address.getAddress());
         addressForm.setAddressDetail(address.getAddressDetail());
+        return addressForm;
+    }
+
+    private AddressForm dtoFromAllAddress(Address address) {
+        AddressForm addressForm = new AddressForm();
+        addressForm.setAddId(address.getAddId());
+        addressForm.setAddress(address.getAddress());
+        addressForm.setAddressDetail(address.getAddressDetail());
+        addressForm.setRecipient(address.getRecipient());
+        addressForm.setTelno(address.getTelno());
+        addressForm.setZoneCode(address.getZoneCode());
         return addressForm;
     }
 

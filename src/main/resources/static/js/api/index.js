@@ -98,7 +98,6 @@ const Api = {
     getDefaultAdd() {
         return request(`${BASE_URL}/address/default`);
     },
-
 }
 
 export default Api;

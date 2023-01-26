@@ -6,6 +6,7 @@ import com.onlyfresh.devkurly.domain.product.ProductDetail;
 import com.onlyfresh.devkurly.repository.CategoryProductRepository;
 import com.onlyfresh.devkurly.repository.ProductDetailRepository;
 import com.onlyfresh.devkurly.repository.ProductRepository;
+import com.onlyfresh.devkurly.web.dto.CartForm;
 import com.onlyfresh.devkurly.web.dto.ProductDetailDto;
 import com.onlyfresh.devkurly.web.dto.ProductsByCatDto;
 import com.onlyfresh.devkurly.web.exception.NotFoundDBException;
@@ -128,6 +129,15 @@ public class ProductService {
         productDetail.setPrtInfo(dto.getPrtInfo());
         productDetail.setPrtImage(dto.getPrtImage());
         productDetail.setDeType(dto.isDeType());
+    }
+
+    public void setFieldsByProduct(CartForm cartForm, Product product) {
+        cartForm.setImage(product.getImage());
+        cartForm.setTitle(product.getTitle());
+        cartForm.setPrice(product.getPrice());
+        cartForm.setDsRate(product.getDsRate());
+        cartForm.setSelPrice(product.getSelPrice());
+        cartForm.setStock(product.getStock());
     }
 
 
