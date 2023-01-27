@@ -48,8 +48,8 @@
                 </div>
                 <div id="css-input1">
                     <div id="input_container">
-                        <input placeholder="검색어를 입력해주세요"/>
-                        <img src="/imgs/cart/loupe.png" style="width: 20px; height: 20px"/>
+                        <input id="searchInput" placeholder="검색어를 입력해주세요" th:value="${param.keyword !=null ? param.keyword : ''}"/>
+                        <img src="/imgs/cart/loupe.png" id="searchBtn" style="width: 20px; height: 20px; cursor: pointer;"/>
                     </div>
                 </div>
                 <div id="css-icon1">

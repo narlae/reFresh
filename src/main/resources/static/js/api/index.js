@@ -80,6 +80,9 @@ const Api = {
     getProductsByNav(page, navName) {
         return request(`${BASE_URL}/products/nav/${page}` + '?navName=' + navName);
     },
+    getProductsSearch(page, keyword, sort_option) {
+        return request(`${BASE_URL}/products/search/${page}` + '?keyword=' + keyword+'&sort_option='+sort_option);
+    },
     getAddressList() {
         return request(`${BASE_URL}/address/addressList`);
     },

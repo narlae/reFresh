@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OnlyFresh :: 상품 정렬</title>
+    <title>OnlyFresh :: 카테고리별 상품</title>
     <link rel="stylesheet" type="text/css" href="/css/payment/payment.css">
     <link rel="stylesheet" type="text/css" href="/css/product/category_products.css">
     <style></style>
@@ -14,13 +14,13 @@
 <div id="whole_container">
     <div id="content">
         <div id="categoryNm">
-            <h2 class="categoryNm" th:text="${navName}"></h2>
+            <h2 class="categoryNm" th:text="'검색어 :&nbsp;&nbsp;'+ ${keyword}"></h2>
         </div>
-<!--        <div id="sortContainer">-->
-<!--            <span class="sortOption" id="salesRate">판매량순</span>-->
-<!--            <span class="sortOption" id="dsRate">할인순</span>-->
-<!--            <span class="sortOption" id="inDate">최근등록순</span>-->
-<!--        </div>-->
+                <div id="sortContainer">
+                    <span class="sortOption" id="salesRate">판매량순</span>
+                    <span class="sortOption" id="dsRate">할인순</span>
+                    <span class="sortOption" id="inDate">최근등록순</span>
+                </div>
         <div id="productsContainer">
         </div>
         <div class="ph">
@@ -30,7 +30,7 @@
         </div>
     </div>
 </div>
-<script type="module" src="/js/main/navProducts.js"></script>
+<script type="module" src="/js/main/searchProducts.js"></script>
 <script>
 </script>
 </body>

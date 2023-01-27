@@ -6,12 +6,13 @@ function App(){
 
     this.list = {
         page : 1,
-        catId : catId,
         sort_option : 'pdtId',
+        keyword : '',
     }
     this.init = async () =>{
         await render();
         initEventListeners();
+        focusing();
     }
 
     this.page = {};
@@ -21,7 +22,9 @@ function App(){
             this.list.page = searchParam('page');
         }
         getSortOption.call(this);
-        this.page = await Api.getProductsByCategory(this.list.catId, this.list.page - 1, this.list.sort_option);
+        this.list.keyword = searchParam('keyword');
+        this.page = await Api.getProductsSearch(this.list.page - 1, this.list.keyword, this.list.sort_option);
+        console.log(this.page.content);
         $("#productsContainer").innerHTML = this.page.content.map((item) => {
             let selPrice = item.selPrice.toLocaleString();
             let price = item.price.toLocaleString();
@@ -43,15 +46,16 @@ function App(){
             let beginPage = parseInt((page - 1 )/ naviSize) * naviSize + 1;
             let totalPage = this.page.totalPages;
             let endPage = Math.min(beginPage + naviSize - 1, totalPage);
+            let keyword = this.list.keyword;
             if (!this.page.empty) {
                 if (beginPage !==1) {
-                    temp += `<a class="page" href="/products/${catId}?page=${beginPage-1}"><</a>`
+                    temp += `<a class="page" href="/products/search?page=${beginPage-1}&keyword=${keyword}"><</a>`
                 }
                 for (let i = beginPage; i <= endPage; i++) {
-                    temp += `<a class="page ${i=== page ? 'paging-active' : ''}" href="/products/${catId}?page=${i}" >${i}</a>`
+                    temp += `<a class="page ${i== page ? 'paging-active' : ''}" href="/products/search?page=${i}&keyword=${keyword}" >${i}</a>`
                 }
                 if (totalPage !== endPage) {
-                    temp += `<a class="page" href="/products/${catId}?page=${endPage+1}">></a>`
+                    temp += `<a class="page" href="/products/searchv?page=${endPage+1}&keyword=${keyword}">></a>`
                 }
 
             }
@@ -62,7 +66,6 @@ function App(){
             return temp;
         };
         $(".paging").innerHTML = pagingNav();
-
     }
 
     const initEventListeners = () => {
@@ -92,6 +95,13 @@ function App(){
             }
             document.getElementById(this.list.sort_option).style.fontWeight = '900';
         }
+    }
+    const focusing = ()=>{
+        const $searchInput = $("#searchInput");
+        $searchInput.focus();
+        let keyword = $searchInput.value;
+        $searchInput.value = '';
+        $searchInput.value = keyword;
     }
 
 

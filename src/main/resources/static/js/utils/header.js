@@ -8,6 +8,14 @@ function App(){
         await category();
         initEventListeners();
     }
+    //검색
+    $("#searchBtn").addEventListener("click", ()=>{
+        let keyword = $("#searchInput").value;
+        window.location.href = "/products/search?keyword=" + keyword;
+    })
+
+
+
 
     /**
      * 카테고리 작업
@@ -40,6 +48,14 @@ function App(){
                     allElement.style.display = 'none';
                 }
                 e.target.querySelector(".depth").style.display = 'block';
+            }
+        })
+
+        $("#searchInput").addEventListener("keydown", (e)=>{
+            let key = e.key || e.keyCode;
+            if (key === 'Enter' || key === 13) {
+                let keyword = $("#searchInput").value;
+                window.location.href = "/products/search?keyword=" + keyword;
             }
         })
     }

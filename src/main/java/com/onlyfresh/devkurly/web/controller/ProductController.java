@@ -68,5 +68,16 @@ public class ProductController {
         return productService.getProductsByNavName(navName, page, 9);
     }
 
+    @GetMapping("/products/search")
+    public String getSearchPage(String keyword, Model model) {
+        model.addAttribute("keyword", keyword);
+        return "main/searchProducts";
+    }
+
+    @GetMapping("/products/search/{page}")
+    @ResponseBody
+    public Page<ProductsByCatDto> getProductsBySearch(@PathVariable int page, String keyword, String sort_option) {
+        return productService.getProductsBySearch(keyword, sort_option, page, 9);
+    }
 
 }

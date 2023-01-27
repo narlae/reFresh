@@ -93,6 +93,23 @@ public class ProductService {
         return new PageImpl<>(collect.subList(start, end), pageRequest, collect.size());
     }
 
+    @Transactional
+    public Page<ProductsByCatDto> getProductsBySearch(String keyword, String sort_option, int page, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+
+        List<Product> productList = productRepository.findProductsByTitleContainingIgnoreCase(keyword);
+        List<ProductsByCatDto> collect = productList.stream().map(ProductsByCatDto::new)
+                .sorted((m1, m2) -> m1.compareTo(m2, sort_option))
+                .collect(Collectors.toList());
+
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), collect.size());
+
+        return new PageImpl<>(collect.subList(start, end), pageRequest, collect.size());
+    }
+
+
+
     private List<ProductsByCatDto> getProductsByCatId(Long catId, String sort_option) {
         //만약에 catId로 찾은 category의 parent가 null이면 그 자식들의 상품을 가지고 온다.
         if (categoryService.getCategoryById(catId).getParent() == null) {

@@ -22,7 +22,6 @@
 #productsContainer {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
 }
@@ -45,9 +44,10 @@
 .products {
     display: inline-block;
     width: 350px;
-    /* height: 600px; */
-    /* margin-top: 50px; */
-    margin-left: 10px;
+     height: 600px;
+     margin-top: 50px;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 #img{
