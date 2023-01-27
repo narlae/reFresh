@@ -15,7 +15,7 @@
     <div id="content">
         <div id="categoryNm">
             <h2 class="categoryNm" th:text="${categoryName['parent']}"></h2>
-            <h2 class="categoryNm" th:if="${categoryName['child'] !=null}" th:text="'-'+${categoryName['child']}"></h2>
+            <h2 class="categoryNm" th:if="${categoryName['child'] !=null}" th:text="'-&nbsp&nbsp'+${categoryName['child']}"></h2>
         </div>
         <div id="sortContainer">
             <span class="sortOption" id="salesRate">판매량순</span>

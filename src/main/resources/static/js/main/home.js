@@ -18,7 +18,7 @@ function App(){
                             <div class="products"><a href="/product/${result[i][j].pdtId}">
                             <img class="mainImg" src="${result[i][j].image}"/></a>
                             <h3 class="product_title">${result[i][j].title}<h3/>
-                            <div class="product"><span class="product_ds_rate">${result[i][j].dsRate}%</span>
+                            <div class="product"><span class="product_ds_rate">${result[i][j].dsRate===0 ? '' : result[i][j].dsRate+'%'}</span>
                             <span class="product_sel_price">${selPrice}원</span></div>
                             <span class="product_price">${price}원</span></div>
 `;
@@ -26,7 +26,6 @@ function App(){
             $(`#` + "product" + `${i+1}`).innerHTML = template;
         }
     }
-
 }
 const app = new App();
 app.init();
