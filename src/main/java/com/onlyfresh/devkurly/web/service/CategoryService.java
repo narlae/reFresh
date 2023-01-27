@@ -31,12 +31,20 @@ public class CategoryService {
 
     public Map<String, String> getCategoryName(Long catId) {
         Category category = categoryRepository.findById(catId).orElseThrow(() -> new RuntimeException("해당하는 카테고리가 없습니다."));
-        String catName = category.getCatName();
-        String catParentName = category.getParent().getCatName();
         Map<String, String> map = new HashMap<String, String>();
+        String catName = category.getCatName();
+        if (getCategoryById(catId).getParent() == null) {
+            map.put("parent", catName);
+            return map;
+        }
+        String catParentName = category.getParent().getCatName();
         map.put("parent", catParentName);
         map.put("child", catName);
         return map;
 
+    }
+
+    public Category getCategoryById(Long catId) {
+        return categoryRepository.findById(catId).orElseThrow(() -> new NotFoundDBException("찾는 카테고리가 없습니다."));
     }
 }

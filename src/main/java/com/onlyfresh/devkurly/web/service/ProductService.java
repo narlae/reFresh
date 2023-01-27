@@ -1,9 +1,11 @@
 package com.onlyfresh.devkurly.web.service;
 
+import com.onlyfresh.devkurly.domain.Category;
 import com.onlyfresh.devkurly.domain.CategoryProduct;
 import com.onlyfresh.devkurly.domain.product.Product;
 import com.onlyfresh.devkurly.domain.product.ProductDetail;
 import com.onlyfresh.devkurly.repository.CategoryProductRepository;
+import com.onlyfresh.devkurly.repository.CategoryRepository;
 import com.onlyfresh.devkurly.repository.ProductDetailRepository;
 import com.onlyfresh.devkurly.repository.ProductRepository;
 import com.onlyfresh.devkurly.web.dto.CartForm;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +30,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductDetailRepository detailRepository;
     private final CategoryProductRepository categoryProductRepository;
+    private final CategoryService categoryService;
 
 
     public ProductDetailDto getProductDetail(Long pdtId) {
@@ -75,7 +79,20 @@ public class ProductService {
     }
 
     private List<ProductsByCatDto> getProductsByCatId(Long catId, String sort_option) {
-        List<CategoryProduct> list = categoryProductRepository.findCategoryProductsByCategory_CatId(catId);
+        //만약에 catId로 찾은 category의 parent가 null이면 그 자식들의 상품을 가지고 온다.
+        if (categoryService.getCategoryById(catId).getParent() == null) {
+            List<CategoryProduct> list = new ArrayList<>();
+            Category category = categoryService.getCategoryById(catId);
+            category.getChild().stream().map(Category::getCatId)
+                    .forEach(id->list.addAll(categoryProductRepository.findCategoryProductsByCategory_CatId(id)));
+            return getSortedCollect(sort_option, list);
+        }else{
+            List<CategoryProduct> list = categoryProductRepository.findCategoryProductsByCategory_CatId(catId);
+            return getSortedCollect(sort_option, list);
+        }
+    }
+
+    private List<ProductsByCatDto> getSortedCollect(String sort_option, List<CategoryProduct> list) {
         return list.stream()
                 .map(m -> productRepository.findProductByPdtId(m.getProduct().getPdtId()))
                 .map(ProductsByCatDto::new)
