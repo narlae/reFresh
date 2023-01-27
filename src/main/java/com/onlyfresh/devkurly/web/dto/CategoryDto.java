@@ -5,19 +5,27 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @ToString
 @Getter
-public class CategoryDto {
+public class CategoryDto implements Comparable{
 
-    private final Map<String, List<String>> categoryList = new LinkedHashMap<>();
+    private final Long catId;
+    private final String catName;
+    private final List<SubCategoryDto> childName;
 
-    public void setCategoryDto(String parentNm , List<Category> child) {
-        List<String> childList = new ArrayList<>();
-        categoryList.put(parentNm, childList);
-        for (Category category : child) {
-            childList.add(category.getCatName());
-        }
+    public CategoryDto(Category category) {
+        this.catId = category.getCatId();
+        this.catName = category.getCatName();
+        this.childName = category.getChild().stream().map(SubCategoryDto::new).collect(Collectors.toList());
     }
+
+    @Override
+    public int compareTo(Object o) {
+        CategoryDto o1 = (CategoryDto) o;
+        return (int) (this.catId - o1.getCatId());
+    }
+
 
 }

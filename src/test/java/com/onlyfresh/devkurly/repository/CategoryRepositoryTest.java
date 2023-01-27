@@ -54,11 +54,5 @@ class CategoryRepositoryTest {
 
     }
 
-    @Test
-    public void sortCategory() {
-        CategoryDto categoryForm = categoryService.getCategoryForm();
-        System.out.println("categoryForm = " + categoryForm);
-    }
-
 
 }

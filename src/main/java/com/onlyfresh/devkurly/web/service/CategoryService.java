@@ -8,8 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,16 +19,14 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public CategoryDto getCategoryForm() {
-        CategoryDto categoryDto = new CategoryDto();
+    public List<CategoryDto> getCategoryForm() {
+
         List<Category> All = categoryRepository.findAll();
         if (All.isEmpty()) {
             throw new NotFoundDBException("카테고리가 없습니다.");
         }
-        All.stream().filter(m -> m.getParent() == null)
-                .forEach(i -> categoryDto.setCategoryDto(i.getCatName(), i.getChild()));
-
-        return categoryDto;
+        return All.stream().filter(m -> m.getParent() == null)
+                .map(CategoryDto::new).sorted().collect(Collectors.toList());
     }
 
     public Map<String, String> getCategoryName(Long catId) {
