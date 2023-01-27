@@ -6,7 +6,10 @@ function App(){
     this.init = async () =>{
         await render();
         await category();
+        initEventListeners();
     }
+
+    this.categories = [];
 
     const render = async () => {
         let result = await Api.getHomeProducts();
@@ -39,10 +42,6 @@ function App(){
         main_cat_container.style.display = 'block';
     })
 
-    wrapper.addEventListener("mouseover",()=>{
-        main_cat_container.style.display = 'block';
-    })
-
     wrapper.addEventListener("mouseout",()=>{
         main_cat_container.style.display = 'none';
         sub_cat_container.style.display = 'none';
@@ -52,22 +51,42 @@ function App(){
         sub_cat_container.style.display = 'none';
     })
 
+    main_cat_container.addEventListener("mouseover",()=>{
+        main_cat_container.style.display = 'block';
+    })
+    //
+    // main_cat_container.addEventListener("mouseout",()=>{
+    //     main_cat_container.style.display = 'none';
+    //     sub_cat_container.style.display = 'none';
+    // })
+
+    const initEventListeners = ()=>{
+        $("#main_cat_container").addEventListener("mouseover", (e)=>{
+            if (e.target.classList.contains('main_cat')) {
+                sub_cat_container.style.display = 'block';
+                let temp = '';
+                let length = Object.keys(this.categories).length;
+                for (let i = 0; i < length; i++) {
+                    let el = this.categories[e.target.innerText][i];
+                    if (el === undefined) {
+                        temp +=`<li class="cat main_cat">&nbsp</li>`;
+                    }else{
+                        temp += `<a href=""><li class="cat main_cat">${el}</li></a>`;
+                    }
+                }
+                sub_cat_container.innerHTML = temp;
+            }
+        })
+    }
+
     const category = async () =>{
         let result = [];
         result = await Api.getCategories();
-        let categories = result.categoryList;
+        this.categories = result.categoryList;
         Object.keys(result.categoryList).forEach((el)=>{
             main_cat_container.insertAdjacentHTML("afterbegin", `<a href=""><li class="cat main_cat">${el}</li></a>`)
         });
-        $(".main_cat").addEventListener("mouseover", (e)=>{
-            sub_cat_container.style.display = 'block';
-            categories[e.currentTarget.innerText].forEach((el)=>{
-                sub_cat_container.innerHTML = `<a href=""><li class="cat main_cat">${el}</li></a>`;
-            })
-        })
-
     }
-
 
     /**
      * 카테고리 끝.

@@ -209,12 +209,7 @@
 }
 
 /*카테고리*/
-
-#cat_wrapper{
-    position: relative;
-}
-
-#show_category_button span{
+#show_category_button span {
     color: #333;
     font-size: 16px;
     font-weight: 600;
@@ -223,20 +218,59 @@
 }
 
 #show_category_button:hover #categories {
-    display:block;
+    display: block;
 }
 
 
 #main_cat_container {
     position: absolute;
-    display:none;
+    display: none;
     width: 250px;
-    left: 500px;
+    left: 420px;
     background-color: white;
     border: 1px solid #ddd;
     margin: 0;
 }
-#sub_cat_container{
+
+
+.cat {
+    padding: 8px 0 8px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    list-style: none;
+    color: #949296;
+    /* border: 1px solid springgreen; */
+}
+
+.cat:hover {
+    color: #4E7A51;
+    background-color: #f7f7f7;
+    cursor: pointer;
+}
+
+#sub_cat_container {
+    display: none;
     position: absolute;
-    left: 700px;
+    left: 670px;
+    width: 250px;;
+    margin: 0;
+    background-color: #f7f7f7;
+    z-index: 20;
+    border: 10px solid #ddd;
+}
+
+#main_cat_container a, #sub_cat_container a {
+    display: block;
+    text-decoration: none;
+    color: #333333;
+}
+
+#main_cat_container a:hover, #sub_cat_container a:hover {
+    color: #4E7A51;
+}
+
+#cat_wrapper{
+    z-index: 100;
+    border: 10px solid #ddd;
+
 }
