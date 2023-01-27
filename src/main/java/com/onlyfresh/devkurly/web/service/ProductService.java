@@ -65,6 +65,7 @@ public class ProductService {
         updateDetail(productDetail, dto);
     }
 
+    @Transactional
     public Page<ProductsByCatDto> getProductsByCategory(Long catId, String sort_option, int page, int pageSize) {
 
         PageRequest pageRequest = PageRequest.of(page, pageSize);
@@ -76,6 +77,20 @@ public class ProductService {
 
 
         return new PageImpl<>(productsByCatId.subList(start, end), pageRequest, productsByCatId.size());
+    }
+
+    @Transactional
+    public Page<ProductsByCatDto> getProductsByNavName(String navName, int page, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        List<Product> all = productRepository.findAll();
+        List<ProductsByCatDto> collect = all.stream().map(ProductsByCatDto::new)
+                .sorted((m1, m2) -> m1.compareTo(m2, navName))
+                .collect(Collectors.toList());
+
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), collect.size());
+
+        return new PageImpl<>(collect.subList(start, end), pageRequest, collect.size());
     }
 
     private List<ProductsByCatDto> getProductsByCatId(Long catId, String sort_option) {

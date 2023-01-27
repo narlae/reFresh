@@ -43,5 +43,29 @@ public class ProductController {
         return productService.getProductsByCategory(catId, sort_option, page, 9);
     }
 
+    @GetMapping("/products/nav")
+    public String getNavProductsPage(String navName, Model model) {
+        switch (navName) {
+            case "dsRate":
+                navName = "알뜰쇼핑";
+                break;
+            case "salesRate":
+                navName = "베스트";
+                break;
+            case "inDate":
+                navName = "신상품";
+                break;
+        }
+        model.addAttribute("navName", navName);
+        return "main/navProducts";
+    }
+
+    @GetMapping("/products/nav/{page}")
+    @ResponseBody
+    public Page<ProductsByCatDto> getProductsByNav(@PathVariable int page, String navName) {
+//        navName : dsRate, salesRate, inDate
+        return productService.getProductsByNavName(navName, page, 9);
+    }
+
 
 }

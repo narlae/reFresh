@@ -77,6 +77,9 @@ const Api = {
     getProductsByCategory(catId, page, sort_option) {
         return request(`${BASE_URL}/products/${catId}/${page}` + '?sort_option=' + sort_option);
     },
+    getProductsByNav(page, navName) {
+        return request(`${BASE_URL}/products/nav/${page}` + '?navName=' + navName);
+    },
     getAddressList() {
         return request(`${BASE_URL}/address/addressList`);
     },
