@@ -4,5 +4,6 @@ public interface SessionConst {
 
     public static final String LOGIN_MEMBER = "loginMember";
     public static final String CART_PDT = "cartProducts";
+    public static final String ORDER_IMFO = "orderInfo";
 
 }

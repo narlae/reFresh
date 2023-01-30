@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::#content}, ~{::script})"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnlyFresh :: 결제완료</title>
+    <link rel="stylesheet" type="text/css" href="/css/payment/payment.css">
+    <link rel="stylesheet" type="text/css" href="/css/order/order.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+    <style></style>
+</head>
+<body>
+<div id="whole_container">
+    <div id="content">
+        <h2>결제 정보</h2>
+        <div id="container">
+            <!--            <div>-->
+            <!--                카카오페이 결제가 정상적으로 완료되었습니다.-->
+
+            <!--                결제일시:     [[${info.approved_at}]]<br/>-->
+            <!--                주문번호:    [[${info.partner_order_id}]]<br/>-->
+            <!--                상품명:    [[${info.item_name}]]<br/>-->
+            <!--                상품수량:    [[${info.quantity}]]<br/>-->
+            <!--                결제방법:    [[${info.payment_method_type}]]<br/>-->
+            <!--            </div>-->
+            <!--            <h2>[[${info}]]</h2>-->
+            <div id="product_list">
+                <h4 class="product_type">주문자 상세</h4>
+                <div class="products_container">
+                    <!-- 여기에 상품들을 jquery, ajax 로 원하는 만큼 넣기 -->
+                    <div id="user-info"></div>
+                    <div class="payment_row"><a th:href="/order/${}">
+                        <span style="font-size: 24px;"> 날짜  주문 •
+                            <span style="font-size: 24px; color: #797979;">주문번호 [[${}]]</span></span>
+                        <span></span>
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="module" src=""></script>
+</script>
+</body>
+</html>

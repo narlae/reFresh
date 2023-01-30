@@ -185,9 +185,10 @@
         </form>
     </div>
 </div>
-<script type="module" src=""></script>
+<script type="module" src="/js/order/orderForm.js"></script>
 <script th:inline="javascript">
     const loginMember = [[${session.loginMember}]];
+    const cartFormList = [[${cartFormList}]];
 </script>
 </body>
 </html>

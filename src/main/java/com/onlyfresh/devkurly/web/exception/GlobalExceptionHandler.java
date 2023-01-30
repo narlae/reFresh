@@ -51,6 +51,12 @@ public class GlobalExceptionHandler {
         return getResponseEntity("Mem-Ex", e);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<ErrorResult> orderExHandler(HttpServletResponse response, OrderErrorException e) throws IOException {
+        response.sendRedirect("/cart?error=1");
+        return getResponseEntity("SignIn-EX", e);
+    }
+
 
     private ResponseEntity<ErrorResult> getResponseEntity(String code, Exception e) {
         ErrorResult errorResult = new ErrorResult(code, e.getMessage());

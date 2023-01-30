@@ -1,6 +1,7 @@
 package com.onlyfresh.devkurly.domain.product;
 
 import com.onlyfresh.devkurly.domain.CategoryProduct;
+import com.onlyfresh.devkurly.domain.order.OrderProduct;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
