@@ -57,6 +57,12 @@ public class GlobalExceptionHandler {
         return getResponseEntity("SignIn-EX", e);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<ErrorResult> orderExHandler(HttpServletResponse response, WrongAccessException e) throws IOException {
+        response.sendRedirect("/order/list?error=1");
+        return getResponseEntity("SignIn-EX", e);
+    }
+
 
     private ResponseEntity<ErrorResult> getResponseEntity(String code, Exception e) {
         ErrorResult errorResult = new ErrorResult(code, e.getMessage());

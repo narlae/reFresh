@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::#content}, ~{::script})"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnlyFresh :: 마이페이지</title>
+    <link rel="stylesheet" type="text/css" href="/css/payment/payment.css">
+    <link rel="stylesheet" type="text/css" href="/css/myPage/address.css">
+    <link rel="stylesheet" type="text/css" href="/css/myPage/myPage.css">
+    <style></style>
+</head>
+<body>
+<div id="whole_container">
+    <div id="content">
+        <div th:replace="~{myPage/myPage :: myPage}"></div>
+        <div id="mypage_content">
+            <h2>주문 상세</h2>
+            <div id="container">
+                <div id="product_list">
+                    <h4 class="product_type">주문 상품</h4>
+                    <div class="products_container">
+                        <div id="user-info"></div>
+                        <div class="payment_row">
+                            <span style="font-size: 24px;">[[${#temporals.format(orderInfoDto.approved_at,'yyyy년 MM월 dd일')}]]  주문 • <span style="font-size: 24px; color: #797979;">주문번호 [[${orderInfoDto.orderId}]]</span></span>
+                            <span></span>
+                        </div>
+                        <div id="product">
+                            <div class="product" th:each="pdtDto: ${cartFormList}">
+                                <a th:href="@{/product/{pdtId}(pdtId=${pdtDto.pdtId})}" style="display: flex; align-items: center;">
+                                    <img th:src="${pdtDto.image}"
+                                         alt="" class="product_img"/>
+                                    <h4>[[${pdtDto.title}]]</h4>
+                                </a>
+                                <div class="quantity_control_box">
+                                    <div id="order-qty" style="width: 50px;">[[${pdtDto.quantity}]]개</div>
+                                </div>
+                                <p id="order-sum" style="margin-bottom: 0px;">
+                                    [[${#numbers.formatInteger(pdtDto.quantity*pdtDto.selPrice,3,'COMMA')+'원'}]]
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="product_type">배송 정보</h4>
+                    <div class="products_container">
+                        <div id="address">
+                            <div class="payment_row">
+                                <span style="font-size: 24px;">배송 준비 • <span style="font-size: 24px; color: green;">
+                                    [[${#temporals.format(orderInfoDto.availability_date,'yyyy년 MM월 dd일')}]] 새벽 도착 예정</span></span>
+                                <span></span>
+                            </div>
+                            <div class="payment_row">
+                                <span>받으시는 분</span>
+                                <span>[[${addressForm.recipient}]]</span>
+                            </div>
+                            <div class="payment_row">
+                                <span>연락처</span>
+                                <span>[[${addressForm.telno}]]</span>
+                            </div>
+                            <div class="payment_row">
+                                <span>받는 주소</span>
+                                <span>[[${addressForm.address}]]   [[${addressForm.addressDetail}]]</span>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="product_type">결제 정보</h4>
+                    <div class="products_container">
+                        <div id="payment">
+                            <div class="payment_row">
+                                <span>결제 수단</span>
+                                <span>간편결제 / 일시불</span> <!--결제수단이 다양해지면 수정-->
+                            </div>
+                        </div>
+                        <div class="payment_row">
+                            <span>총 결제금액</span>
+                            <span>[[${#numbers.formatInteger(orderInfoDto.total_amount,3,'COMMA')+'원'}]]</span>
+                        </div>
+                        <a href="/order/list">
+                            <button id="order_submit" type="button"
+                                    style="cursor: pointer; font-weight: 500; font-size: 16px; margin-left: 5px;">
+                                돌아가기
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="module" src=""></script>
+</body>
+</html>

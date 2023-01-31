@@ -7,7 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -41,6 +43,8 @@ public class Orders {
     private String reqDtls; //세부 요청사항
     private Integer usedAcamt; //사용된 포인트
     private boolean deliYn; //배송완료 여부
+    private LocalDateTime approved_at; //결제성공 승인 날짜
+
 
     public Orders(Member member, Address address) {
         this.member = member;

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::#content}, ~{::script})"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnlyFresh :: 마이페이지</title>
+    <link rel="stylesheet" type="text/css" href="/css/payment/payment.css">
+    <link rel="stylesheet" type="text/css" href="/css/myPage/address.css">
+    <link rel="stylesheet" type="text/css" href="/css/myPage/myPage.css">
+    <style></style>
+</head>
+<body>
+<div id="whole_container">
+    <div id="content">
+        <div th:replace="~{myPage/myPage :: myPage}"></div>
+        <div id="mypage_content">
+            <div id="add_coupon_box">
+                <h2 id="add_coupon_box_tits">주문 내역
+                </h2>
+            </div>
+            <div id="mypage_content_body">
+                <div class="address_cols">
+                    <div class="first_col_addr tit_colx">주문이름</div>
+                    <div class="second_col_addr tit_colx">주문번호</div>
+                    <div class="third_col_addr tit_colx">총금액</div>
+                    <div class="fourth_col_addr tit_colx">주문상태</div>
+                    <div class="fifth_col_addr tit_colx">배송상태</div>
+                    <div class="fifth_col_addr tit_colx"></div>
+                </div>
+                <div id="addressList" th:each="OrderDto: ${orderDtoList==null ? '주문내역이 없습니다.' : orderDtoList}">
+                    <div class="address colx">
+                        <div class="address_main first_col_addr">
+                            <a th:href="@{/order/{orderId}(orderId=${OrderDto.orderId})}">
+                            <p class="addr" aria-readonly="true" th:text="${OrderDto.item_name}">주문이름
+                            </p>
+                            </a>
+                        </div>
+                        <div class="address_name second_col_addr colx" th:text="${OrderDto.orderId}">주문번호
+                        </div>
+                        <div class="address_tel third_col_addr colx" id="phone-" th:text="${#numbers.formatInteger(OrderDto.total_amount,3,'COMMA')+'원'}">총금액
+                        </div>
+                        <div class="address_deli fourth_col_addr colx" th:text="${OrderDto.statusCd}">
+                                    <span id="deli_true">주문상태
+                                    </span>
+                        </div>
+                        <div class="address_modify fifth_col_addr colx" th:text="${OrderDto.deliYn ? '배송중' : '배송대기'}">
+                            <a href="">
+                            </a>
+                        </div>
+                        <div class="addressRemove fifth_col_addr colx"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="module" src=""></script>
+</body>
+</html>

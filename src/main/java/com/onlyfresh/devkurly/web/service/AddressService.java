@@ -113,7 +113,7 @@ public class AddressService {
         return addressForm;
     }
 
-    private AddressForm dtoFromAllAddress(Address address) {
+    public AddressForm dtoFromAllAddress(Address address) {
         AddressForm addressForm = new AddressForm();
         addressForm.setAddId(address.getAddId());
         addressForm.setAddress(address.getAddress());

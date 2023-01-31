@@ -170,7 +170,8 @@
                                 </div>
                                 <div class="payment_row total">
                                     <span>최종결제금액</span>
-                                    <span id="payment_price" style="font-weight: bold; font-size: 22px;">0 원</span>
+                                    <span id="payment_price" style="font-weight: bold; font-size: 22px;">
+                                        [[${#numbers.formatInteger(priceForm.totalSelPrice,3,'COMMA')+'원'}]]</span>
                                 </div>
                             </div>
                         </div>

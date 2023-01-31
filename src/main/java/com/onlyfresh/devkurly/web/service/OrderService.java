@@ -8,12 +8,17 @@ import com.onlyfresh.devkurly.domain.product.Product;
 import com.onlyfresh.devkurly.repository.AddressRepository;
 import com.onlyfresh.devkurly.repository.OrderRepository;
 import com.onlyfresh.devkurly.web.dto.CartForm;
+import com.onlyfresh.devkurly.web.dto.order.KakaoPayApprovalVO;
+import com.onlyfresh.devkurly.web.dto.order.OrderFormDto;
 import com.onlyfresh.devkurly.web.dto.order.PdtQutDto;
 import com.onlyfresh.devkurly.web.exception.NotFoundDBException;
+import com.onlyfresh.devkurly.web.exception.WrongAccessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -73,6 +78,13 @@ public class OrderService {
     public Orders findOrdersByOrderId(Long orderId) {
         return orderRepository.findById(orderId).orElseThrow(() -> new NotFoundDBException("찾을 수 없는 주문입니다."));
     }
+    @Transactional
+    public Orders orderSuccessLogic(OrderFormDto orderFormDto) {
+        Orders order = findOrdersByOrderId(orderFormDto.getOrderId());
+        order.setStatusCd("주문완료");
+        order.setApproved_at(LocalDateTime.now());
+        return order;
+    }
 
     private Map<Long, Integer> getLongIntegerMap(Map<String, String> map) {
         return map.entrySet().stream().collect(Collectors.toMap(
@@ -92,4 +104,15 @@ public class OrderService {
         list.add(pdtQutDto);
     }
 
+    public boolean checkOrderNUser(Orders order, Long userId) {
+        Member memberById = memberService.findMemberById(userId);
+        if (!order.getMember().equals(memberById)) {
+            throw new WrongAccessException("잘못된 접근입니다.");
+        }
+        return order.getMember().equals(memberById);
+    }
+
+    public void getOrderProductPageForm() {
+
+    }
 }

@@ -9,13 +9,11 @@ function App(){
         getPdtInfo();
     }
     const initEventListeners = () => {
-        console.log(cartFormList);
-        console.log(this.data);
+        $("#order_submit").innerText = $("#payment_price").innerText + ' 결제하기';
     }
 
     const getPdtInfo = () =>{
         cartFormList.forEach(el => setData(el));
-
     }
     const setData = (el)=> {
         this.data.push([el.pdtId, el.quantity]);
@@ -38,7 +36,7 @@ function App(){
 
     $("#order_submit").addEventListener("click",async ()=>{
         pageGoPost({
-            url: "/order/kakaoPay",
+            url: "/payment/kakaoPay",
             items: this.data
         });
     })
