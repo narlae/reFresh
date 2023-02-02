@@ -24,7 +24,7 @@
     font-size: 12px;
 }
 
-#signup, #signin{
+.sign_button{
     display: block;
     cursor: pointer;
     vertical-align: middle;

@@ -24,16 +24,22 @@ public class Member {
     private Long userId;
 
     @NotEmpty
+    @Column(updatable = false, nullable = false)
     private String userNm;
 
     @NotEmpty
     @Email
+    @Column(updatable = false, unique = true, nullable = false)
     private String userEmail;
 
     @NotEmpty
     private String pwd;
 
     private String telno;
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<MemberAuthoritiesMapping> memberAuthoritiesMappingList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = {CascadeType.ALL}, orphanRemoval = true)
     @Builder.Default
