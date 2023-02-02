@@ -11,6 +11,10 @@ $("#member-submit").addEventListener("click", () => {
     }
 });
 
+$("#telno").addEventListener("keyup", ()=>{
+    $("#telno").value = ($("#telno").value.replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/, "$1-$2-$3").replace("--", "-"));
+})
+
 $("#member-signup").addEventListener("click", ()=>{
     //카카오 지도 발생
     kakaoMap();

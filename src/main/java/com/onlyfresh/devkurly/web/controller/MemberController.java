@@ -1,5 +1,7 @@
 package com.onlyfresh.devkurly.web.controller;
 
+import com.onlyfresh.devkurly.domain.member.Member;
+import com.onlyfresh.devkurly.web.dto.jwt.TokenInfo;
 import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
 import com.onlyfresh.devkurly.web.dto.member.RegisterForm;
 import com.onlyfresh.devkurly.web.service.MemberService;
@@ -35,9 +37,8 @@ public class MemberController {
             return "members/register";
         }
 
-        MemberMainResponseDto memberMainResponseDto = memberService.registerMember(registerForm);
-        HttpSession session = request.getSession();
-        session.setAttribute("loginMember", memberMainResponseDto);
+        Member member = memberService.registerMember(registerForm);
+        memberService.login(member.getUserEmail(), member.getPwd());
 
         return "members/regComplete";
     }

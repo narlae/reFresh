@@ -1,5 +1,6 @@
 <html>
-<html th:fragment="layout (title, links, content, scripts)" xmlns:th="http://www.thymeleaf.org">
+<html th:fragment="layout (title, links, content, scripts)" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,11 +30,11 @@
     <div>
         <div id="navigation">
             <div id="signup_signin">
-                <a id="signup" th:href="${session.loginMember==null ? '/register' : '/mypage'}"
-                   th:text="${session.loginMember==null ? '회원가입' : session.loginMember.userNm}"></a>
+                <a class="sign_button" sec:authorize="isAuthenticated()" th:href="@{/order/list}">이름자리</a>
+                <a class="sign_button" sec:authorize="isAnonymous()" th:href="@{/register}">회원가입</a>
                 <div class="css-bar"></div>
-                <a id="signin" th:href="${session.loginMember==null ? '/login' : '/logout'}"
-                   th:text="${session.loginMember==null ? '로그인' : '로그아웃'}"></a>
+                <a class="sign_button" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
+                <a class="sign_button" sec:authorize="isAnonymous()" th:href="@{/loginForm}">로그인</a>
                 <div class="css-bar"></div>
                 <a id="cust">고객센터</a>
             </div>

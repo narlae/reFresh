@@ -1,13 +1,18 @@
 package com.onlyfresh.devkurly.web.controller;
 
 import com.onlyfresh.devkurly.repository.MemberRepository;
+import com.onlyfresh.devkurly.web.dto.jwt.TokenInfo;
 import com.onlyfresh.devkurly.web.dto.member.LoginFormDto;
 import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
 import com.onlyfresh.devkurly.web.exception.ErrorCode;
 import com.onlyfresh.devkurly.web.exception.LoginFormCheckException;
 import com.onlyfresh.devkurly.web.service.MemberService;
+import com.onlyfresh.devkurly.web.utils.SecurityUtil;
 import com.onlyfresh.devkurly.web.utils.SessionConst;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,30 +20,46 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
+@Slf4j
 public class LoginController {
 
-    private final MemberRepository memberRepository;
     private final MemberService memberService;
 
     public LoginController(MemberRepository memberRepository, MemberService memberService) {
-        this.memberRepository = memberRepository;
         this.memberService = memberService;
     }
 
-    @GetMapping("/login")
-    public String loginForm(HttpSession session, LoginFormDto loginFormDto) {
-        if (session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
-            return "members/login";
-        }
-        return "redirect:/";
+    @GetMapping("/loginForm")
+    public String loginForm(LoginFormDto loginFormDto) {
+        return "members/login";
     }
 
     @PostMapping("/login")
+    public TokenInfo login(@Valid @ModelAttribute LoginFormDto loginFormDto, BindingResult bindingResult, HttpServletResponse response) {
+        log.info("=======================================loginFormDto={}", loginFormDto);
+        if (bindingResult.hasErrors()) {// fieldError
+            return "members/login";
+        }
+        String userEmail = loginFormDto.getUserEmail();
+        String pwd = loginFormDto.getPwd();
+        TokenInfo tokenInfo = memberService.login(userEmail, pwd);
+        log.info("========================================Member={}", SecurityUtil.getCurrentMemberId());
+        ResponseCookie responseCookie = ResponseCookie.from("tokenInfo", tokenInfo.getRefreshToken())
+                .httpOnly(true)
+                .maxAge(60 * 60)
+                .path("/")
+                .build();
+        return tokenInfo;
+    }
+
+    @PostMapping("/login2")
     public String login(@Valid @ModelAttribute LoginFormDto loginFormDto, BindingResult bindingResult, String toURL, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {// fieldError
             return "members/login";
@@ -53,7 +74,6 @@ public class LoginController {
 
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, memberMainResponseDto);
-
 
         return "redirect:" + toURL;
     }
@@ -73,12 +93,4 @@ public class LoginController {
         return "success";
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session.getAttribute(SessionConst.LOGIN_MEMBER) != null) {
-            session.removeAttribute(SessionConst.LOGIN_MEMBER);
-        }
-        return "redirect:/";
-    }
 }
