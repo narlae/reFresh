@@ -14,7 +14,6 @@ import com.onlyfresh.devkurly.web.exception.SignInException;
 import com.onlyfresh.devkurly.web.service.AddressService;
 import com.onlyfresh.devkurly.web.service.MemberService;
 import com.onlyfresh.devkurly.web.service.OrderService;
-import com.onlyfresh.devkurly.web.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,7 +37,6 @@ public class OrderController {
     private final MemberService memberService;
     private final AddressService addressService;
     private final OrderService orderService;
-    private final ProductService productService;
 
     private final OrderRepository orderRepository;
 

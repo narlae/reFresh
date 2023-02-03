@@ -1,41 +1,25 @@
 package com.onlyfresh.devkurly.web.controller;
 
-import com.onlyfresh.devkurly.repository.MemberRepository;
 import com.onlyfresh.devkurly.web.dto.jwt.TokenInfo;
 import com.onlyfresh.devkurly.web.dto.member.LoginFormDto;
-import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
-import com.onlyfresh.devkurly.web.exception.ErrorCode;
-import com.onlyfresh.devkurly.web.exception.LoginFormCheckException;
 import com.onlyfresh.devkurly.web.service.MemberService;
-import com.onlyfresh.devkurly.web.utils.SecurityUtil;
-import com.onlyfresh.devkurly.web.utils.SessionConst;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.MethodParameter;
 import org.springframework.http.ResponseCookie;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.Optional;
 
 @Controller
 @Slf4j
+@RequiredArgsConstructor
 public class LoginController {
 
     private final MemberService memberService;
-
-    public LoginController(MemberRepository memberRepository, MemberService memberService) {
-        this.memberService = memberService;
-    }
 
     @GetMapping("/loginForm")
     public String loginForm(LoginFormDto loginFormDto) {
