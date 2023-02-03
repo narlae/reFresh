@@ -35,18 +35,22 @@ public class SecurityConfig {
         http
                 .httpBasic().disable()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
                 .authorizeRequests()
                 .mvcMatchers("/css/**","/icon/**","/imgs/**","/js/**", "/category/**", "/templates/**",
                         "/product/**", "/products/**", "/", "/home","/products/**").permitAll()
                 .antMatchers("/resources").permitAll()
                 .antMatchers("/login", "/loginForm").permitAll()
                 .antMatchers("/register").permitAll()
-                .antMatchers("/myPage/**","/address/**", "/order/**").hasAuthority("USER")
+                .antMatchers("/myPage/**","/address/**", "/order/**", "/logout").hasAuthority("USER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/loginForm")
+                .and()
+                .logout()
+                .logoutSuccessUrl("/")
+                .deleteCookies("tokenInfo")
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         return http.build();

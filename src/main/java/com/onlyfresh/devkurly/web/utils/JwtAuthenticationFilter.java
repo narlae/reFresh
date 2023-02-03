@@ -12,9 +12,11 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -26,7 +28,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         // 1. Request Header 에서 JWT 토큰 추출
         String token = resolveToken((HttpServletRequest) request);
-        log.info("=============token====================={}",token);
 
 
         // 2. validateToken 으로 토큰 유효성 검사
@@ -34,7 +35,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 토큰이 유효할 경우 토큰에서 Authentication 객체를 가지고 와서 SecurityContext 에 저장
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.info("====================================token 유효성검사 통과============================{}", SecurityUtil.getCurrentMember());
         }
         log.info("======================JwtAuthenticationFilter request=====================");
         chain.doFilter(request, response);
@@ -43,10 +43,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     // Request Header 에서 토큰 정보 추출
     private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        log.info("===================bearerToken===================={}", bearerToken);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(7);
+        Cookie[] cookies = request.getCookies();
+        Cookie cookie = Arrays.stream(cookies).filter(c -> c.getName().equals("tokenInfo")).findFirst().orElse(null);
+
+        if (cookie!=null) {
+            return cookie.getValue();
         }
         return null;
     }

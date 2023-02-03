@@ -30,7 +30,7 @@
     <div>
         <div id="navigation">
             <div id="signup_signin">
-                <a class="sign_button" sec:authorize="isAuthenticated()" th:href="@{/order/list}">이름자리</a>
+                <a class="sign_button" sec:authorize="isAuthenticated()" th:href="@{/order/list}" sec:authentication="name">이름자리</a>
                 <a class="sign_button" sec:authorize="isAnonymous()" th:href="@{/register}">회원가입</a>
                 <div class="css-bar"></div>
                 <a class="sign_button" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>

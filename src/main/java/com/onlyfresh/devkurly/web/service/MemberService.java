@@ -22,7 +22,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -38,26 +41,32 @@ public class MemberService {
     private final MemberAuthoritiesCodeRepository codeRepository;
 
     @Transactional
-    public TokenInfo login(String memberId, String password) {
+    public TokenInfo login(String userEmail, String password, boolean allTokenRequired) {
+        Authentication authentication = getAuthentication(userEmail, password);
+
+        return jwtTokenProvider.generateToken(authentication, allTokenRequired);
+    }
+
+    public Authentication getAuthentication(String userEmail, String password) {
         // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
         // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, password);
-        log.info("=======================================authenticationToken={}", authenticationToken);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userEmail, password);
 
         // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분
         // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        log.info("=======================================authentication={}", authentication);
-        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-        log.info("=======================================tokenInfo={}", tokenInfo);
-
-        // 3. 인증 정보를 기반으로 JWT 토큰 생성
-        return tokenInfo;
+        return authenticationManagerBuilder.getObject().authenticate(authenticationToken);
     }
 
-    public Member findMemberByEmail(String userEmail) {
-        return memberRepository.findMemberByUserEmail(userEmail)
-                .orElseThrow(() -> new NotFoundDBException("찾는 유저가 없습니다."));
+    public boolean isAccessTokenAndValidate(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        Optional<Cookie> optional = Arrays.stream(cookies).filter(c -> c.getName().equals("tokenInfo")).findFirst();
+        return optional.filter(cookie -> jwtTokenProvider.validateToken(cookie.getValue())).isPresent();
+    }
+
+    public boolean isRefreshTokenAndValidate(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        Optional<Cookie> optional = Arrays.stream(cookies).filter(c -> c.getName().equals("refreshTokenInfo")).findFirst();
+        return optional.filter(cookie -> jwtTokenProvider.validateToken(cookie.getValue())).isPresent();
     }
 
     public MemberMainResponseDto checkMember(LoginFormDto loginFormDto) throws LoginFormCheckException{
@@ -96,6 +105,10 @@ public class MemberService {
 
     public Member findMemberById(Long userId) {
         return memberRepository.findById(userId).orElseThrow(() -> new MemberListException("존재하지 않는 회원입니다."));
+    }
+
+    public Member findMemberByEmail(String userEmail) {
+        return memberRepository.findMemberByUserEmail(userEmail).orElseThrow(() -> new MemberListException("존재하지 않는 회원입니다."));
     }
 
     public boolean isMemberByUserEmail(String userEmail) {

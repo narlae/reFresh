@@ -38,7 +38,7 @@ public class MemberController {
         }
 
         Member member = memberService.registerMember(registerForm);
-        memberService.login(member.getUserEmail(), member.getPwd());
+        memberService.login(member.getUserEmail(), member.getPwd(), true);
 
         return "members/regComplete";
     }

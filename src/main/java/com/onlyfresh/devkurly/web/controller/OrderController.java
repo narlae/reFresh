@@ -17,6 +17,7 @@ import com.onlyfresh.devkurly.web.service.OrderService;
 import com.onlyfresh.devkurly.web.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -60,11 +61,10 @@ public class OrderController {
     }
 
     @GetMapping("/list")
-    public String orderList(HttpSession session, Model model) {
-        Long userId = getUserId(session);
-        List<OrderHistoryDto> orderDtoList = getOrderDtoList(userId);
+    public String orderList(Model model) {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<OrderHistoryDto> orderDtoList = getOrderDtoList(userEmail);
         model.addAttribute("orderDtoList", orderDtoList);
-        log.info("orderDtoList======================{}", orderDtoList);
         return "myPage/order/orderList";
     }
 
@@ -95,8 +95,8 @@ public class OrderController {
         model.addAttribute("addressForm", addressForm);
     }
 
-    private List<OrderHistoryDto> getOrderDtoList(Long userId) {
-        Member member = memberService.findMemberById(userId);
+    private List<OrderHistoryDto> getOrderDtoList(String userEmail) {
+        Member member = memberService.findMemberByEmail(userEmail);
         return orderRepository.findAllByMember(member)
                 .stream().map(OrderHistoryDto::new).collect(Collectors.toList());
     }
