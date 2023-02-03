@@ -7,11 +7,13 @@ import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
 import com.onlyfresh.devkurly.web.exception.ErrorCode;
 import com.onlyfresh.devkurly.web.exception.LoginFormCheckException;
 import com.onlyfresh.devkurly.web.service.MemberService;
+import com.onlyfresh.devkurly.web.utils.SecurityUtil;
 import com.onlyfresh.devkurly.web.utils.SessionConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -82,5 +84,4 @@ public class LoginController {
             response.addHeader("Set-Cookie",refreshCookie.toString());
         }
     }
-
 }
