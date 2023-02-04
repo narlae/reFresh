@@ -1,6 +1,6 @@
 import Api from "../api/index.js";
 import {$} from "../utils/dom.js";
-import {getLoginForm, searchParam} from "../utils/utils.js";
+import {searchParam} from "../utils/utils.js";
 
 function App(){
 
@@ -86,10 +86,6 @@ function App(){
             }
 
             if (e.target.classList.contains("del_btn")) {
-                if (loginMember == null) {
-                    getLoginForm();
-                    return;
-                }
                 if (!confirm("정말로 글을 삭제하시겠습니까?")) {
                     return;
                 }
@@ -97,10 +93,6 @@ function App(){
             }
 
             if (e.target.classList.contains("mod_btn")) {
-                if (loginMember == null) {
-                    getLoginForm();
-                    return;
-                }
                 this.board['bbsTitle'] = e.target.closest("#title").querySelector(".title_cn").innerText;
                 this.board['bbsCn'] = e.target.closest("#title").querySelector(".review_content").innerText;
                 this.board['bbsId'] = e.target.closest("#title").dataset.bbsid;
@@ -112,20 +104,12 @@ function App(){
             }
 
             if (e.target.classList.contains("like_button")) {
-                if (loginMember == null) {
-                    getLoginForm();
-                    return;
-                }
                 likeBtn(e);
             }
         });
 
         $(".border_write_btn").addEventListener("click",(e) => {
             if (e.target.classList.contains("p_write_btn")) {
-                if (loginMember == null) {
-                    getLoginForm();
-                    return;
-                }
                 $("#modal-btn").className = 'btn-write';
                 openModal();
             }

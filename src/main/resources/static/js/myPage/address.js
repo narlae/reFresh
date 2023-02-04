@@ -14,7 +14,6 @@ function App(){
     }
 
     const render = async () => {
-        let userId = loginMember.userId;
         let result = await Api.getAddressList(userId);
         this.list.elementNum = result.length;
         let temp= '';

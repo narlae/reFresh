@@ -23,13 +23,6 @@ import java.util.Optional;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResult> signInExHandler(HttpServletResponse response, HttpServletRequest request, SignInException e) throws IOException {
-        String requestURI = request.getRequestURI();
-        response.sendRedirect("/login?toURL=" + requestURI);
-        return getResponseEntity("SignIn-EX", e);
-    }
-
-    @ExceptionHandler
     public ResponseEntity<ErrorResult> alreadyPush(LikeNoException e ) {
         return getResponseEntity("LikeNo-Ex", e);
     }

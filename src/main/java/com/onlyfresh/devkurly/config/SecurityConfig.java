@@ -1,6 +1,8 @@
 package com.onlyfresh.devkurly.config;
 
 
+import com.onlyfresh.devkurly.web.utils.CustomLoginFailureHandler;
+import com.onlyfresh.devkurly.web.utils.CustomLoginSuccessHandler;
 import com.onlyfresh.devkurly.web.utils.JwtAuthenticationFilter;
 import com.onlyfresh.devkurly.web.utils.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -10,9 +12,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -34,22 +38,25 @@ public class SecurityConfig {
         http
                 .httpBasic().disable()
                 .csrf().disable()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
                 .mvcMatchers("/css/**","/icon/**","/imgs/**","/js/**", "/category/**", "/templates/**",
-                        "/product/**", "/products/**", "/", "/home","/products/**").permitAll()
+                        "/product/**", "/products/**", "/", "/home","/products/**","/boardlist/**", "/cart/**").permitAll()
                 .antMatchers("/resources").permitAll()
                 .antMatchers("/login", "/loginForm").permitAll()
                 .antMatchers("/register").permitAll()
-                .antMatchers("/myPage/**","/address/**", "/order/**", "/logout").hasAuthority("USER")
+                .antMatchers("/myPage/**","/address/**", "/order/**", "/logout","/board/**").hasAuthority("USER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/loginForm")
+                .successHandler(new CustomLoginSuccessHandler())
+                .failureHandler(new CustomLoginFailureHandler())
                 .and()
                 .logout()
                 .logoutSuccessUrl("/")
                 .deleteCookies("tokenInfo")
+                .invalidateHttpSession(false)
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         return http.build();

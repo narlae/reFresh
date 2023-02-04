@@ -7,17 +7,13 @@ import com.onlyfresh.devkurly.domain.member.Member;
 import com.onlyfresh.devkurly.domain.product.Product;
 import com.onlyfresh.devkurly.repository.BoardRepository;
 import com.onlyfresh.devkurly.repository.MemberLikeNoRepository;
-import com.onlyfresh.devkurly.repository.MemberRepository;
-import com.onlyfresh.devkurly.repository.ProductRepository;
 import com.onlyfresh.devkurly.web.dto.ReviewBoardDto;
 import com.onlyfresh.devkurly.web.exception.BoardListException;
 import com.onlyfresh.devkurly.web.exception.LikeNoException;
 import com.onlyfresh.devkurly.web.exception.MemberListException;
-import com.onlyfresh.devkurly.web.exception.NotFoundDBException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import javax.servlet.http.HttpSession;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +25,8 @@ public class BoardService {
     private final ProductService productService;
 
 
-    public void write(Long pdtId, HttpSession session, ReviewBoardDto boardDto) {
-        Long user_id = memberService.extractDto(session).getUserId();
-        Member member = memberService.findMemberById(user_id);
+    public void write(Long pdtId, String userEmail, ReviewBoardDto boardDto) {
+        Member member = memberService.findMemberByEmail(userEmail);
         Product product = productService.findProductById(pdtId);
         ReviewBoard board = getBoard(boardDto, member, product);
         board.setRevwLike(0);
@@ -39,8 +34,9 @@ public class BoardService {
     }
 
     @Transactional
-    public void updateBoard(Long bbsId, String bbsTitle, String bbsCn, Long userId) {
+    public void updateBoard(Long bbsId, String bbsTitle, String bbsCn, String userEmail) {
         Board board = findBoardById(bbsId);
+        Long userId = memberService.findMemberByEmail(userEmail).getUserId();
         if (!userId.equals(board.getMember().getUserId())) {
             throw new MemberListException("자신의 글만 수정할 수 있습니다.");
         }
@@ -49,9 +45,9 @@ public class BoardService {
     }
 
     @Transactional
-    public MemberLikeNo makeLikeNo(HttpSession session, Long bbsId) {
-        Long userId = memberService.extractDto(session).getUserId();
-        Member member = memberService.findMemberById(userId);
+    public MemberLikeNo makeLikeNo(String userEmail, Long bbsId) {
+        Member member = memberService.findMemberByEmail(userEmail);
+        Long userId = member.getUserId();
         Board board = findBoardById(bbsId);
         if (userId.equals(board.getMember().getUserId())) {
             throw new LikeNoException("자신의 글에 추천할 수 없습니다.");

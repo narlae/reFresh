@@ -115,11 +115,6 @@ public class MemberService {
         return memberRepository.findMemberByUserEmail(userEmail).isPresent();
     }
 
-    public MemberMainResponseDto extractDto(HttpSession session) {
-        return (MemberMainResponseDto) Optional.ofNullable(session.getAttribute("loginMember"))
-                .orElseThrow(() -> new SignInException("로그인이 필요합니다."));
-
-    }
 
     private Member memberBuild(RegisterForm formDto) {
         return Member.builder()

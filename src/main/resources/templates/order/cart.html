@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::#content}, ~{::script})"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,15 +32,15 @@
                     <!-- 여기에 상품들을 jquery, ajax 로 원하는 만큼 넣기 -->
                     <div id="cart"></div>
                 </div>
-
             </div>
             <div style="width: 284px;">
                 <div id="shipping_payment">
                     <div id="shipping">
+                        <div id="authorize" sec:authorize="isAuthenticated()" hidden></div>
                         <h4>배송지</h4>
-                        <p id="is_star_deli">&nbsp</p>
-                        <p>&nbsp</p>
-                        <a href="/address/list"><button></button></a>
+                        <p id="is_star_deli">배송지를 등록하고</p>
+                        <p>구매 가능한 상품을 확인하세요!</p>
+                        <a href="/address/list"><button>배송지 등록</button></a>
                     </div>
                     <div id="payment_box">
                         <div style="padding: 20px">
@@ -62,14 +63,12 @@
                         </div>
                     </div>
                 </div>
-                    <button id="order_submit" style="cursor: pointer">주문하기</button>
+                <button id="order_submit" style="cursor: pointer">주문하기</button>
             </div>
         </div>
     </div>
 </div>
 <script type="module" src="/js/order/cart.js"></script>
-<script th:inline="javascript">
-    const loginMember = [[${session.loginMember}]];
-</script>
-</body>
+<script type="module" sec:authorize="isAuthenticated()" src="/js/utils/renderAddr.js">
+</script></body>
 </html>

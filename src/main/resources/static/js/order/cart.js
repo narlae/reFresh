@@ -7,7 +7,6 @@ function App() {
 
     this.init = async () => {
         await renderCart();
-        await renderAddr();
         initEventListeners();
     }
 
@@ -66,24 +65,7 @@ function App() {
         });
         calculation();
     }
-    const renderAddr = async () =>{
-        let temp = '';
-        if (loginMember == null) {
-            temp = `<h4>배송지</h4>
-                    <p id="is_star_deli">배송지를 등록하고</p>
-                    <p>구매 가능한 상품을 확인하세요!</p>
-                    <a href="/address/list"><button>배송지 등록</button></a>`;
-            $("#shipping").innerHTML = temp;
-            return;
-        }
-        let result = await Api.getDefaultAdd();
-        temp = `    <h4>배송지</h4>
-                    <p>${result.address} ${result.addressDetail}</p>
-                    <p id="is_star_deli">새벽배송</p>
-                    <a href="/address/list"><button>배송지 변경</button></a>
-        `;
-        $("#shipping").innerHTML = temp;
-    }
+
 
     const initEventListeners = () => {
         $cart.addEventListener("click", async (e) => {

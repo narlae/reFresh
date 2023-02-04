@@ -51,7 +51,7 @@ const requestWithoutJson = async (url, option, message) => {
 
 const Api = {
     getBoardList(pdtId, page, sort_option) {
-        return request(`${BASE_URL}/board/${pdtId}/${page}`+'?sort_option='+sort_option);
+        return request(`${BASE_URL}/boardlist/${pdtId}/${page}`+'?sort_option='+sort_option);
     },
     writeBoard(pdtId, board) {
         return requestWithoutJson(`${BASE_URL}/board/${pdtId}`, HTTP_METHOD.POST(board));

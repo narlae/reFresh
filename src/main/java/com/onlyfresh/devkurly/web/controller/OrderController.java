@@ -10,22 +10,19 @@ import com.onlyfresh.devkurly.web.dto.PriceForm;
 import com.onlyfresh.devkurly.web.dto.member.OrderMemberForm;
 import com.onlyfresh.devkurly.web.dto.order.OrderHistoryDto;
 import com.onlyfresh.devkurly.web.dto.order.OrderInfoDto;
-import com.onlyfresh.devkurly.web.exception.SignInException;
 import com.onlyfresh.devkurly.web.service.AddressService;
 import com.onlyfresh.devkurly.web.service.MemberService;
 import com.onlyfresh.devkurly.web.service.OrderService;
+import com.onlyfresh.devkurly.web.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -43,12 +40,12 @@ public class OrderController {
 
 
     @PostMapping("/orderForm")
-    public String orderForm(@RequestParam Map<String, String> paramMap, HttpSession session, Model model) {
+    public String orderForm(@RequestParam Map<String, String> paramMap, Model model) {
+        String userEmail = SecurityUtil.getCurrentMemberId();
         List<CartForm> cartFormList = orderService.getCartFormList(paramMap);
-        Long userId = getUserId(session);
-        Member member = memberService.findMemberById(userId);
+        Member member = memberService.findMemberByEmail(userEmail);
         OrderMemberForm memberForm = new OrderMemberForm(member);
-        AddressForm addressForm = addressService.getAllDefault(userId);
+        AddressForm addressForm = addressService.getAllDefault(userEmail);
         PriceForm priceForm = new PriceForm(cartFormList);
         model.addAttribute("cartFormList", cartFormList);
         model.addAttribute("memberForm", memberForm);
@@ -60,17 +57,17 @@ public class OrderController {
 
     @GetMapping("/list")
     public String orderList(Model model) {
-        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        String userEmail = SecurityUtil.getCurrentMemberId();
         List<OrderHistoryDto> orderDtoList = getOrderDtoList(userEmail);
         model.addAttribute("orderDtoList", orderDtoList);
         return "myPage/order/orderList";
     }
 
     @GetMapping("/{orderId}")
-    public String getOrderProductPage(@PathVariable Long orderId, HttpSession session, Model model) {
-        Long userId = getUserId(session);
+    public String getOrderProductPage(@PathVariable Long orderId, Model model) {
+        String userEmail = SecurityUtil.getCurrentMemberId();
         Orders order = orderService.findOrdersByOrderId(orderId);
-        if (!orderService.checkOrderNUser(order, userId))
+        if (!orderService.checkOrderNUser(order, userEmail))
             return "redirect:/order/list?error=1";
 
         extractedModel(model, order);
@@ -97,11 +94,5 @@ public class OrderController {
         Member member = memberService.findMemberByEmail(userEmail);
         return orderRepository.findAllByMember(member)
                 .stream().map(OrderHistoryDto::new).collect(Collectors.toList());
-    }
-
-
-    private Long getUserId(HttpSession session) {
-        return Optional.ofNullable(memberService.extractDto(session).getUserId())
-                .orElseThrow(() -> new SignInException("로그인이 필요합니다."));
     }
 }

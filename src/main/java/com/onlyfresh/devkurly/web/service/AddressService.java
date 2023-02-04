@@ -22,8 +22,8 @@ public class AddressService {
     private final MemberService memberService;
 
     @Transactional
-    public void saveAddress(Long userId, AddressForm addressForm) {
-        Member member = memberService.findMemberById(userId);
+    public void saveAddress(String userEmail, AddressForm addressForm) {
+        Member member = memberService.findMemberByEmail(userEmail);
         if (member.getAddressList().size() > 4) {
             throw new AddressLimitException("주소지 등록은 5개까지만 가능합니다.");
         }
@@ -36,8 +36,8 @@ public class AddressService {
     }
 
     @Transactional
-    public void updateAddress(Long userId, AddressForm addressForm) {
-        Member member = memberService.findMemberById(userId);
+    public void updateAddress(String userEmail, AddressForm addressForm) {
+        Member member = memberService.findMemberByEmail(userEmail);
         Address address = addressRepository.findById(addressForm.getAddId()).orElseThrow(() -> new NotFoundDBException("해당하는 주소지가 없습니다."));
         if (!address.getMember().equals(member)) {
             throw new MemberListException("유저와 주소가 일치하지 않습니다.");
@@ -52,8 +52,8 @@ public class AddressService {
         addressFormToAddress(addressForm, address);
     }
 
-    public void deleteAddress(Long userId, Long addId) {
-        Member member = memberService.findMemberById(userId);
+    public void deleteAddress(String userEmail, Long addId) {
+        Member member = memberService.findMemberByEmail(userEmail);
         Address address = addressRepository.findById(addId).orElseThrow(() -> new NotFoundDBException("해당하는 주소지가 없습니다."));
         if (!address.getMember().equals(member)) {
             throw new MemberListException("유저와 주소가 일치하지 않습니다.");
@@ -61,8 +61,8 @@ public class AddressService {
         addressRepository.delete(address);
     }
 
-    public List<AddressForm> getUserAddressList(Long userId) {
-        Member member = memberService.findMemberById(userId);
+    public List<AddressForm> getUserAddressList(String userEmail) {
+        Member member = memberService.findMemberByEmail(userEmail);
         List<Address> addressList = member.getAddressList();
         List<AddressForm> list = new ArrayList<>();
         for (Address address : addressList) {
@@ -71,8 +71,8 @@ public class AddressService {
         return list;
     }
 
-    public AddressForm editPage(Long userId, Long addId) {
-        Member member = memberService.findMemberById(userId);
+    public AddressForm editPage(String userEmail, Long addId) {
+        Member member = memberService.findMemberByEmail(userEmail);
         Address address = addressRepository.findById(addId).orElseThrow(() -> new NotFoundDBException("해당하는 주소지가 없습니다."));
         if (!member.getAddressList().contains(address)) {
             throw new MemberListException("유저와 주소가 일치하지 않습니다.");
@@ -81,14 +81,14 @@ public class AddressService {
         return addressForm.createForm(address);
     }
 
-    public AddressForm getDefault(Long userId) {
-        Member member = memberService.findMemberById(userId);
+    public AddressForm getDefault(String userEmail) {
+        Member member = memberService.findMemberByEmail(userEmail);
         Address address = addressRepository.findAddressByMemberAndDefaultAdd(member, true);
         return dtoFromAddress(address);
     }
 
-    public AddressForm getAllDefault(Long userId) {
-        Member member = memberService.findMemberById(userId);
+    public AddressForm getAllDefault(String userEmail) {
+        Member member = memberService.findMemberByEmail(userEmail);
         Address address = addressRepository.findAddressByMemberAndDefaultAdd(member, true);
         return dtoFromAllAddress(address);
     }

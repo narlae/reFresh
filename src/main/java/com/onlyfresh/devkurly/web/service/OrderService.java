@@ -39,8 +39,8 @@ public class OrderService {
     }
 
     @Transactional
-    public Orders createOrder(Long userId, Map<String, String> map) {
-        Member member = memberService.findMemberById(userId);
+    public Orders createOrder(String userEmail, Map<String, String> map) {
+        Member member = memberService.findMemberByEmail(userEmail);
         Address address = addressRepository.findAddressByMemberAndDefaultAdd(member, true);
         Orders order = new Orders(member, address);
 
@@ -104,12 +104,12 @@ public class OrderService {
         list.add(pdtQutDto);
     }
 
-    public boolean checkOrderNUser(Orders order, Long userId) {
-        Member memberById = memberService.findMemberById(userId);
-        if (!order.getMember().equals(memberById)) {
+    public boolean checkOrderNUser(Orders order, String userEmail) {
+        Member member = memberService.findMemberByEmail(userEmail);
+        if (!order.getMember().equals(member)) {
             throw new WrongAccessException("잘못된 접근입니다.");
         }
-        return order.getMember().equals(memberById);
+        return order.getMember().equals(member);
     }
 
     public void getOrderProductPageForm() {

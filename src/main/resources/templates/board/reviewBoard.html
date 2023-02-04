@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <!--th:replace="fragments/layout :: layout(~{::title}, ~{::link}, ~{::#review_board}, ~{::script})"-->
 <head>
     <meta charset="UTF-8">
@@ -39,7 +40,7 @@
 
     <div id ="board_footer">
         <div class="border_write_btn">
-            <p class="p_write_btn">글쓰기</p>
+            <p class="p_write_btn" sec:authorize="isAuthenticated()">글쓰기</p>
         </div>
         <div class="ph">
             <div class="paging">
@@ -78,7 +79,7 @@
                 </div>
                 <div class="modal-footer">
                     <p class="btn-cancel">취소</p>
-                    <p id="modal-btn" class="btn-write">등록</p>
+                    <p id="modal-btn" class="btn-write" sec:authorize="isAuthenticated()">등록</p>
                 </div>
             </div>
         </div>

@@ -14,10 +14,11 @@
 <div id="whole_container">
     <div id="content">
         <h2>로그인</h2>
-        <form id="form" th:action="@{login(toURL=${param.toURL})}" th:object="${loginFormDto}"  method="post" autocomplete="off">
+        <form id="form" th:action="@{login}" th:object="${loginFormDto}"  method="post" autocomplete="off">
             <div th:if="${#fields.hasGlobalErrors()}">
                 <p class="form-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
             </div>
+                <p class="form-error" th:text="${#request.getParameter(loginFailMsg)}"></p>
             <div id="container">
                 <div id="product_list">
                     <h4 class="product_type" style="padding-top: 0px;"></h4>

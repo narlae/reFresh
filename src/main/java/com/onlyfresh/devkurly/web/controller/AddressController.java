@@ -5,6 +5,7 @@ import com.onlyfresh.devkurly.web.dto.AddressForm;
 import com.onlyfresh.devkurly.web.exception.SignInException;
 import com.onlyfresh.devkurly.web.service.AddressService;
 import com.onlyfresh.devkurly.web.service.MemberService;
+import com.onlyfresh.devkurly.web.utils.SecurityUtil;
 import com.onlyfresh.devkurly.web.utils.SessionConst;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,6 @@ import java.util.Optional;
 public class AddressController {
 
     private final AddressService addressService;
-    private final MemberService memberService;
 
     @GetMapping("/list")
     public String getAddressPage() {
@@ -36,50 +36,46 @@ public class AddressController {
     }
 
     @GetMapping("/read")
-    public String getAddressEditPage(@RequestParam Long addId , HttpSession session, Model model) {
-        Long userId = getUserId(session);
-        AddressForm addressForm = addressService.editPage(userId, addId);
+    public String getAddressEditPage(@RequestParam Long addId , Model model) {
+        String userEmail = SecurityUtil.getCurrentMemberId();
+        AddressForm addressForm = addressService.editPage(userEmail, addId);
         model.addAttribute("addressForm", addressForm);
         return "myPage/address/addressEdit";
     }
 
     @GetMapping("/addressList")
     @ResponseBody
-    public List<AddressForm> getAddressList(HttpSession session) {
-        Long userId = getUserId(session);
-        return addressService.getUserAddressList(userId);
+    public List<AddressForm> getAddressList() {
+        String userEmail = SecurityUtil.getCurrentMemberId();
+        return addressService.getUserAddressList(userEmail);
     }
 
     @PostMapping("/add")
-    public String registerAdd(HttpSession session, AddressForm addressForm) {
-        Long userId = getUserId(session);
-        addressService.saveAddress(userId, addressForm);
+    public String registerAdd(AddressForm addressForm) {
+        String userEmail = SecurityUtil.getCurrentMemberId();
+        addressService.saveAddress(userEmail, addressForm);
         return "redirect:/address/list";
     }
 
     @PostMapping("/update")
-    public String updateAdd(HttpSession session, AddressForm addressForm) {
-        Long userId = getUserId(session);
-        addressService.updateAddress(userId, addressForm);
+    public String updateAdd(AddressForm addressForm) {
+        String userEmail = SecurityUtil.getCurrentMemberId();
+        addressService.updateAddress(userEmail, addressForm);
         return "redirect:/address/list";
     }
 
     @DeleteMapping("/{index}")
-    public String deleteAdd(HttpSession session, @PathVariable Long index) {
-        Long userId = getUserId(session);
-        addressService.deleteAddress(userId, index);
+    public String deleteAdd(@PathVariable Long index) {
+        String userEmail = SecurityUtil.getCurrentMemberId();
+        addressService.deleteAddress(userEmail, index);
         return "myPage/address/address";
     }
 
     @GetMapping("/default")
     @ResponseBody
-    public AddressForm getDefulatAddress(HttpSession session) {
-        Long userId = getUserId(session);
-        return addressService.getDefault(userId);
+    public AddressForm getDefaultAddress() {
+        String userEmail = SecurityUtil.getCurrentMemberId();
+        return addressService.getDefault(userEmail);
     }
 
-    private Long getUserId(HttpSession session) {
-        return Optional.ofNullable(memberService.extractDto(session).getUserId())
-                .orElseThrow(() -> new SignInException("로그인이 필요합니다."));
-    }
 }

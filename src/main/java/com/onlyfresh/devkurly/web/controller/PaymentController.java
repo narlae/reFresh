@@ -4,10 +4,10 @@ import com.onlyfresh.devkurly.domain.order.Orders;
 import com.onlyfresh.devkurly.web.dto.order.KakaoPayApprovalVO;
 import com.onlyfresh.devkurly.web.dto.order.OrderFormDto;
 import com.onlyfresh.devkurly.web.exception.OrderErrorException;
-import com.onlyfresh.devkurly.web.exception.SignInException;
 import com.onlyfresh.devkurly.web.service.KakaoPay;
 import com.onlyfresh.devkurly.web.service.MemberService;
 import com.onlyfresh.devkurly.web.service.OrderService;
+import com.onlyfresh.devkurly.web.utils.SecurityUtil;
 import com.onlyfresh.devkurly.web.utils.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,9 +35,8 @@ public class PaymentController {
 
     @PostMapping("/kakaoPay")
     public String kakaoPay(@RequestParam Map<String, String> paramMap, HttpSession session) {
-
-        Long userId = getUserId(session);
-        Orders order = orderService.createOrder(userId, paramMap);
+        String userEmail = SecurityUtil.getCurrentMemberId();
+        Orders order = orderService.createOrder(userEmail, paramMap);
         session.setAttribute(SessionConst.ORDER_IMFO,
                 new OrderFormDto(order.getOrderId(), order.getItem_name(),order.getQuantity(), order.getTotal_amount()));
         return "redirect:" + kakaoPay.kakaoPayReady(order);
@@ -45,7 +44,8 @@ public class PaymentController {
 
     @GetMapping("/kakaoPaySuccess")
     public String kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model, HttpSession session) {
-        Long userId = getUserId(session);
+        String userEmail = SecurityUtil.getCurrentMemberId();
+        Long userId = memberService.findMemberByEmail(userEmail).getUserId();
         OrderFormDto orderFormDto = getOrderDtoFromSession(session);
         KakaoPayApprovalVO kakaoPayApprovalVO = Optional.ofNullable(kakaoPay.kakaoPayInfo(pg_token, orderFormDto, userId))
                 .orElseThrow(() -> new OrderErrorException("결제가 실패했습니다."));
@@ -56,15 +56,6 @@ public class PaymentController {
 
         return "redirect:/order/list";
     }
-
-    private Long getUserId(HttpSession session) {
-        return Optional.ofNullable(memberService.extractDto(session).getUserId())
-                .orElseThrow(() -> new SignInException("로그인이 필요합니다."));
-    }
-
-
-
-
 
     private OrderFormDto getOrderDtoFromSession(HttpSession session) {
         return (OrderFormDto) Optional.ofNullable(session.getAttribute(SessionConst.ORDER_IMFO)).
