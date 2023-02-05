@@ -1,31 +1,38 @@
 package com.onlyfresh.devkurly.web.controller;
 
 import com.onlyfresh.devkurly.domain.member.Member;
+import com.onlyfresh.devkurly.domain.member.MemberAuthoritiesMapping;
 import com.onlyfresh.devkurly.web.dto.jwt.TokenInfo;
-import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
 import com.onlyfresh.devkurly.web.dto.member.RegisterForm;
 import com.onlyfresh.devkurly.web.service.MemberService;
+import com.onlyfresh.devkurly.web.utils.JwtTokenProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Collection;
+import java.util.List;
 
 @Controller
 @Slf4j
 public class MemberController {
 
     private final MemberService memberService;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, JwtTokenProvider jwtTokenProvider) {
         this.memberService = memberService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @GetMapping("/register")
@@ -40,7 +47,11 @@ public class MemberController {
         }
 
         Member member = memberService.registerMember(registerForm);
-        TokenInfo tokenInfo = memberService.login(member.getUserEmail(), member.getPwd(), true);
+
+        UserDetails userDetails = new User(member.getUserEmail(), member.getPwd(), memberService.getAuthorities(member));
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication, true);
         addCookie(response, tokenInfo);
         return "members/regComplete";
     }

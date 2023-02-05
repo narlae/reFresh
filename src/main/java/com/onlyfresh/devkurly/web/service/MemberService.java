@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,33 +44,13 @@ public class MemberService {
     private final MemberAuthoritiesMappingRepository mappingRepository;
     private final MemberAuthoritiesCodeRepository codeRepository;
 
-    @Transactional
-    public TokenInfo login(String userEmail, String password, boolean allTokenRequired) {
-        Authentication authentication = getAuthentication(userEmail, password);
-
-        return jwtTokenProvider.generateToken(authentication, allTokenRequired);
+    public Collection<? extends GrantedAuthority> getAuthorities(Member member) {
+        String[] userRoles =  convert(member.getMemberAuthoritiesMappingList());
+        return AuthorityUtils.createAuthorityList(userRoles);
     }
-
-    public Authentication getAuthentication(String userEmail, String password) {
-        // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
-        // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userEmail, password);
-
-        // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분
-        // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
-        return authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-    }
-
-    public boolean isAccessTokenAndValidate(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        Optional<Cookie> optional = Arrays.stream(cookies).filter(c -> c.getName().equals("tokenInfo")).findFirst();
-        return optional.filter(cookie -> jwtTokenProvider.validateToken(cookie.getValue())).isPresent();
-    }
-
-    public boolean isRefreshTokenAndValidate(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        Optional<Cookie> optional = Arrays.stream(cookies).filter(c -> c.getName().equals("refreshTokenInfo")).findFirst();
-        return optional.filter(cookie -> jwtTokenProvider.validateToken(cookie.getValue())).isPresent();
+    public String[] convert(List<MemberAuthoritiesMapping> list) {
+        return list.stream()
+                .map(mapping -> mapping.getMemberAuthoritiesCode().getAuthority()).toArray(String[]::new);
     }
 
     public MemberMainResponseDto checkMember(LoginFormDto loginFormDto) throws LoginFormCheckException{
