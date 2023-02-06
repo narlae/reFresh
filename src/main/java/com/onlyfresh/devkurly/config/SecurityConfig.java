@@ -1,7 +1,13 @@
 package com.onlyfresh.devkurly.config;
 
 
-import com.onlyfresh.devkurly.web.utils.*;
+import com.onlyfresh.devkurly.web.auth.CustomAuthenticationManager;
+import com.onlyfresh.devkurly.web.auth.JwtTokenProvider;
+import com.onlyfresh.devkurly.web.auth.filter.JwtAuthenticationFilter;
+import com.onlyfresh.devkurly.web.auth.filter.JwtIdPwdAuthenticationFilter;
+import com.onlyfresh.devkurly.web.auth.handler.CustomAccessDeniedHandler;
+import com.onlyfresh.devkurly.web.auth.handler.CustomLoginFailureHandler;
+import com.onlyfresh.devkurly.web.auth.handler.CustomLoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -37,8 +43,6 @@ public class SecurityConfig {
         http
                 .httpBasic().disable()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
                 .authorizeRequests()
                 .mvcMatchers("/css/**", "/icon/**", "/imgs/**", "/js/**", "/category/**", "/templates/**",
                         "/product/**", "/products/**", "/", "/home", "/products/**", "/boardlist/**", "/cart/**").permitAll()
@@ -55,7 +59,6 @@ public class SecurityConfig {
                 .logout()
                 .logoutSuccessUrl("/")
                 .deleteCookies("tokenInfo")
-                .invalidateHttpSession(false)
                 .and()
                 .addFilterAt(jwtIdPwdAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), JwtIdPwdAuthenticationFilter.class);

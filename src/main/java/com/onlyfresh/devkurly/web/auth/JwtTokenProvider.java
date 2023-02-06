@@ -1,4 +1,4 @@
-package com.onlyfresh.devkurly.web.utils;
+package com.onlyfresh.devkurly.web.auth;
 
 import com.onlyfresh.devkurly.web.dto.jwt.TokenInfo;
 import io.jsonwebtoken.*;

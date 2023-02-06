@@ -1,6 +1,7 @@
-package com.onlyfresh.devkurly.web.utils;
+package com.onlyfresh.devkurly.web.auth.handler;
 
 import com.onlyfresh.devkurly.web.dto.jwt.TokenInfo;
+import com.onlyfresh.devkurly.web.auth.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseCookie;

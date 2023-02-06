@@ -5,6 +5,7 @@ import com.onlyfresh.devkurly.web.dto.ProductsByCatDto;
 import com.onlyfresh.devkurly.web.service.CategoryService;
 import com.onlyfresh.devkurly.web.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class ProductController {
 
     private final CategoryService categoryService;
@@ -27,6 +29,7 @@ public class ProductController {
     @GetMapping("/product/categories")
     @ResponseBody
     public List<CategoryDto> getCategories() {
+        log.info("===========================getCategories====================================");
         return categoryService.getCategoryForm();
     }
 

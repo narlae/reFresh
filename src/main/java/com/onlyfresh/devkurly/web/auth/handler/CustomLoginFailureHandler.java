@@ -1,4 +1,4 @@
-package com.onlyfresh.devkurly.web.utils;
+package com.onlyfresh.devkurly.web.auth.handler;
 
 import com.onlyfresh.devkurly.web.dto.member.LoginFormDto;
 import lombok.extern.slf4j.Slf4j;

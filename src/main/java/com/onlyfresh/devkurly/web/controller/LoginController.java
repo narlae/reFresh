@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -23,9 +22,12 @@ public class LoginController {
     @GetMapping("/loginForm")
     public String loginForm(LoginFormDto loginFormDto, HttpServletRequest request, String error, String loginFailMsg, Model model) {
         String URL = request.getHeader("Referer");
-        if (URL != null && !URL.contains("/login")) {
-            request.getSession().setAttribute("prevPage", URL);
+        if (request.getSession() != null) {
+            if (URL != null && !URL.contains("/login")) {
+                request.getSession(false).setAttribute("prevPage", URL);
+            }
         }
+
         model.addAttribute("error", error);
         model.addAttribute("loginFailMsg", loginFailMsg);
         return "members/login";

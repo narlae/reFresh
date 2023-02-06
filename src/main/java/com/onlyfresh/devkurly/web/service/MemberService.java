@@ -7,27 +7,20 @@ import com.onlyfresh.devkurly.domain.member.MemberAuthoritiesMapping;
 import com.onlyfresh.devkurly.repository.MemberAuthoritiesCodeRepository;
 import com.onlyfresh.devkurly.repository.MemberAuthoritiesMappingRepository;
 import com.onlyfresh.devkurly.repository.MemberRepository;
-import com.onlyfresh.devkurly.web.dto.jwt.TokenInfo;
 import com.onlyfresh.devkurly.web.dto.member.LoginFormDto;
 import com.onlyfresh.devkurly.web.dto.member.MemberMainResponseDto;
 import com.onlyfresh.devkurly.web.dto.member.RegisterForm;
 import com.onlyfresh.devkurly.web.exception.*;
-import com.onlyfresh.devkurly.web.utils.JwtTokenProvider;
+import com.onlyfresh.devkurly.web.auth.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -38,8 +31,6 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final MemberAuthoritiesMappingRepository mappingRepository;
     private final MemberAuthoritiesCodeRepository codeRepository;

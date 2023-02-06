@@ -8,6 +8,7 @@ import com.onlyfresh.devkurly.web.service.MemberService;
 import com.onlyfresh.devkurly.web.utils.SecurityUtil;
 import com.onlyfresh.devkurly.web.utils.SessionConst;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/address")
 @RequiredArgsConstructor
+@Slf4j
 public class AddressController {
 
     private final AddressService addressService;
@@ -74,6 +76,7 @@ public class AddressController {
     @GetMapping("/default")
     @ResponseBody
     public AddressForm getDefaultAddress() {
+        log.info("=========================defaultAddress================================");
         String userEmail = SecurityUtil.getCurrentMemberId();
         return addressService.getDefault(userEmail);
     }

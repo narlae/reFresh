@@ -8,6 +8,7 @@ import com.onlyfresh.devkurly.web.service.MemberService;
 import com.onlyfresh.devkurly.web.service.ProductService;
 import com.onlyfresh.devkurly.web.utils.SessionConst;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class CartController {
 
     private final ProductService productService;
@@ -55,6 +57,7 @@ public class CartController {
     @GetMapping("/cart/list")
     @ResponseBody
     public List<CartForm> getCartList(HttpSession session) {
+        log.info("===========================getCartList======================================");
         List<CartForm> list = new ArrayList<>();
         if (Optional.ofNullable(session.getAttribute(SessionConst.CART_PDT)).isPresent()) {
             CartProductsDto dto = (CartProductsDto) session.getAttribute(SessionConst.CART_PDT);
