@@ -67,6 +67,7 @@ public class MemberService {
                 .member(member)
                 .memberAuthoritiesCode(memberAuthoritiesCode)
                 .build();
+        member.getMemberAuthoritiesMappingList().add(mapping);
         mappingRepository.save(mapping);
         codeRepository.save(memberAuthoritiesCode);
 

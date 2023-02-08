@@ -3,6 +3,8 @@ package com.onlyfresh.devkurly.web.controller;
 import com.onlyfresh.devkurly.domain.order.Orders;
 import com.onlyfresh.devkurly.web.dto.order.KakaoPayApprovalVO;
 import com.onlyfresh.devkurly.web.dto.order.OrderFormDto;
+import com.onlyfresh.devkurly.web.dto.order.OrderRequiredDto;
+import com.onlyfresh.devkurly.web.dto.order.PdtQutDto;
 import com.onlyfresh.devkurly.web.exception.OrderErrorException;
 import com.onlyfresh.devkurly.web.service.KakaoPay;
 import com.onlyfresh.devkurly.web.service.MemberService;
@@ -13,14 +15,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @Slf4j
@@ -36,29 +37,43 @@ public class PaymentController {
     @PostMapping("/kakaoPay")
     public String kakaoPay(@RequestParam Map<String, String> paramMap, HttpSession session) {
         String userEmail = SecurityUtil.getCurrentMemberId();
-        Orders order = orderService.createOrder(userEmail, paramMap);
-        session.setAttribute(SessionConst.ORDER_IMFO,
-                new OrderFormDto(order.getOrderId(), order.getItem_name(),order.getQuantity(), order.getTotal_amount()));
-        return "redirect:" + kakaoPay.kakaoPayReady(order);
+        List<PdtQutDto> list = orderService.getPdtQutDtos(paramMap);
+        OrderRequiredDto orderRequiredDto = orderService.getOrderRequiredDto(list);
+        session.setAttribute(SessionConst.ORDER_INFO, orderRequiredDto);
+        String orderId = String.valueOf(UUID.randomUUID());
+        return "redirect:" + kakaoPay.kakaoPayReady(orderId, userEmail, orderRequiredDto);
     }
 
     @GetMapping("/kakaoPaySuccess")
-    public String kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model, HttpSession session) {
+    public String kakaoPaySuccess(@RequestParam("pg_token") String pg_token, String orderId, Integer total_amount, Model model, HttpSession session) {
         String userEmail = SecurityUtil.getCurrentMemberId();
-        Long userId = memberService.findMemberByEmail(userEmail).getUserId();
-        OrderFormDto orderFormDto = getOrderDtoFromSession(session);
-        KakaoPayApprovalVO kakaoPayApprovalVO = Optional.ofNullable(kakaoPay.kakaoPayInfo(pg_token, orderFormDto, userId))
+        log.info("====================================orderId==================={}", orderId);
+        KakaoPayApprovalVO kakaoPayApprovalVO = Optional.ofNullable(kakaoPay.kakaoPayInfo(pg_token, orderId, total_amount, userEmail))
                 .orElseThrow(() -> new OrderErrorException("결제가 실패했습니다."));
 
-        Orders order = orderService.orderSuccessLogic(orderFormDto);
+        OrderRequiredDto orderRequiredDto = getOrderRequiredDto(session);
+        Orders order = orderService.createOrder(orderId, userEmail, orderRequiredDto); //주문내역
 
-        model.addAttribute("info", kakaoPayApprovalVO);
+        //주문내역, 카트상품 세션 지우기
+        session.removeAttribute(SessionConst.ORDER_INFO);
+        session.removeAttribute(SessionConst.CART_PDT);
 
         return "redirect:/order/list";
     }
 
-    private OrderFormDto getOrderDtoFromSession(HttpSession session) {
-        return (OrderFormDto) Optional.ofNullable(session.getAttribute(SessionConst.ORDER_IMFO)).
-                orElseThrow(() -> new OrderErrorException("잘못된 접근입니다."));
+    private OrderRequiredDto getOrderRequiredDto(HttpSession session) {
+        return Optional.ofNullable((OrderRequiredDto) session.getAttribute(SessionConst.ORDER_INFO))
+                .orElseThrow(() -> new OrderErrorException("잘못된 접근입니다."));
+    }
+
+    @GetMapping("/kakaoPayCancel")
+    public String kakaoPayCancel() {
+        return "redirect:/cart?error=2";
+    }
+
+
+    @GetMapping("/kakaoPaySuccessFail")
+    public String kakaoPayFail() {
+        return "redirect:/cart?error=3";
     }
 }

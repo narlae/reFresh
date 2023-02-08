@@ -75,6 +75,11 @@ function App(){
 
     $("#addCart").addEventListener("click",async ()=>{
         await Api.addCart(this.pdt);
+        if (!confirm("장바구니에 성공적으로 상품이 담겼습니다. 장바구니로 가시겠습니까?")) {
+
+        } else {
+            window.location.href = "/cart";
+        }
     })
 
 

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 
 @Getter
 public class PdtQutDto {
-    private Long pdtId;
-    private Integer quantity;
+    private final Long pdtId;
+    private final Integer quantity;
 
     public PdtQutDto(Long pdtId, Integer quantity) {
         this.pdtId = pdtId;

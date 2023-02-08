@@ -90,7 +90,7 @@ const Api = {
         return requestWithoutJson(`${BASE_URL}/address/${index}`, HTTP_METHOD.DELETE(), "주소지가 삭제되었습니다.");
     },
     addCart(pdt) {
-        return requestWithoutJson(`${BASE_URL}/cart/add`, HTTP_METHOD.POST(pdt), "상품을 장바구니에 넣었습니다.");
+        return requestWithoutJson(`${BASE_URL}/cart/add`, HTTP_METHOD.POST(pdt), false);
     },
     getCartList() {
         return request(`${BASE_URL}/cart/list`);

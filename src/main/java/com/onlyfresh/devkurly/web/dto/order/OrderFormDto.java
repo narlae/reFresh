@@ -12,7 +12,6 @@ public class OrderFormDto {
     private String item_name;
     private Integer quantity;
     private Integer total_amount;
-
     private Long orderId;
     public OrderFormDto(Long orderId, String item_name, Integer quantity, Integer total_amount) {
         this.orderId = orderId;

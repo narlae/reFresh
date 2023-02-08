@@ -101,7 +101,8 @@
                             <span id="remember-payment-select" style="display: flex">
                                     <input type="checkbox" class="checkbox"
                                            id="remember-payment"
-                                           name="remember-payment">
+                                           name="remember-payment"
+                                           checked>
                                 <label for="remember-payment" class="remember-payment" style="margin-top: 5px;margin-left: 5px;">선택한 결제수단을 다음에도 사용</label>
                             </span>
                         </div>
@@ -110,28 +111,27 @@
                             <span>
                                 <div class="payment-container">
                             <div style="display: flex;" class="select-payment">
-                                <input type="text" id="payment" name="setl_cd" value="credit" hidden/>
+                                <input type="text" id="payment" name="setl_cd" value="pay" hidden/>
                                 <input
                                         type="radio"
                                         id="credit"
                                         name="payment"
-                                        checked
-                                        onclick="document.querySelector('#payment').value = 'credit'"
                                 /><label class="payment" for="credit">신용카드</label>
                                 <input
                                         type="radio"
                                         id="pay"
                                         name="payment"
-                                        onclick="document.querySelector('#payment').value = 'pay'"
+                                        checked
                                 /><label class="payment" for="pay">간편 결제</label>
                                 <input
                                         type="radio"
                                         id="phone"
                                         name="payment"
-                                        onclick="document.querySelector('#payment').value = 'phone'"
                                 /><label class="payment" for="phone">휴대폰</label>
                             </div>
-                            <div id="below-div"></div>
+                            <div id="below-div">
+
+                            </div>
                         </div>
                             </span>
                         </div>

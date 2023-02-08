@@ -64,7 +64,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public String getOrderProductPage(@PathVariable Long orderId, Model model) {
+    public String getOrderProductPage(@PathVariable String orderId, Model model) {
         String userEmail = SecurityUtil.getCurrentMemberId();
         Orders order = orderService.findOrdersByOrderId(orderId);
         if (!orderService.checkOrderNUser(order, userEmail))

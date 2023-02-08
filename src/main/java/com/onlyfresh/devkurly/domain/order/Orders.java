@@ -18,8 +18,8 @@ import java.util.List;
 public class Orders {
 
     @Id
-    @GeneratedValue
-    private Long orderId;
+    @Column(columnDefinition = "CHAR(36)")
+    private String orderId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
@@ -38,7 +38,7 @@ public class Orders {
     private Integer total_amount;
 
     @NotNull
-    private String statusCd; //주문대기 주문완료 주문취소 주문오류
+    private String statusCd; //결제대기 결제완료 결제오류
     private String reqPlcCd; //요청 수령 장소 코드
     private String reqDtls; //세부 요청사항
     private Integer usedAcamt; //사용된 포인트

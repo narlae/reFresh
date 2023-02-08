@@ -145,6 +145,10 @@ function App() {
 
         if (searchParam("error") === '1') {
             alert("결제가 실패했습니다. 다시 시도해주십시오");
+        } else if (searchParam("error") === '2') {
+            alert("결제를 취소하셨습니다.");
+        } else if (searchParam("error") === '3') {
+            alert("결제가 실패했습니다. 다시 시도해주십시오");
         }
 
     }

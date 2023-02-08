@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 @Data
 public class OrderInfoDto {
-    private Long orderId;
+    private String orderId;
     private LocalDate approved_at; //결제성공 승인 날짜
     private LocalDate availability_date; //배송 예정 날짜
     private Integer total_amount;

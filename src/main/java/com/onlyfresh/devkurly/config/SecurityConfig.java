@@ -48,7 +48,7 @@ public class SecurityConfig {
                         "/product/**", "/products/**", "/", "/home", "/products/**", "/boardlist/**", "/cart/**").permitAll()
                 .antMatchers("/resources").permitAll()
                 .antMatchers("/login", "/loginForm").permitAll()
-                .antMatchers("/register").permitAll()
+                .antMatchers("/register/**").permitAll()
                 .antMatchers("/myPage/**", "/address/**", "/order/**", "/logout", "/board/**").hasAuthority("USER")
                 .anyRequest().authenticated()
                 .and()

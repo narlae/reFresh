@@ -23,7 +23,7 @@
             <div id="mypage_content_body">
                 <div class="address_cols">
                     <div class="first_col_addr tit_colx">주문이름</div>
-                    <div class="second_col_addr tit_colx">주문번호</div>
+                    <div class="second_col_addr tit_colx">주문일시</div>
                     <div class="third_col_addr tit_colx">총금액</div>
                     <div class="fourth_col_addr tit_colx">주문상태</div>
                     <div class="fifth_col_addr tit_colx">배송상태</div>
@@ -37,7 +37,7 @@
                             </p>
                             </a>
                         </div>
-                        <div class="address_name second_col_addr colx" th:text="${OrderDto.orderId}">주문번호
+                        <div class="address_name second_col_addr colx" th:text="${#temporals.format(OrderDto.approved_at,'yyyy년 MM월 dd일 HH시 mm분')}">주문일시
                         </div>
                         <div class="address_tel third_col_addr colx" id="phone-" th:text="${#numbers.formatInteger(OrderDto.total_amount,3,'COMMA')+'원'}">총금액
                         </div>

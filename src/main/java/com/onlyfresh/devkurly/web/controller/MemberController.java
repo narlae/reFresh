@@ -48,6 +48,11 @@ public class MemberController {
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
         TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication, true);
         addCookie(response, tokenInfo);
+        return "redirect:/register/complete";
+    }
+
+    @GetMapping("/register/complete")
+    public String regComplete() {
         return "members/regComplete";
     }
 
