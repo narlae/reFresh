@@ -78,4 +78,9 @@ public class BoardService {
 
         return board;
     }
+
+    public Integer countBoardByProduct(Long pdtId) {
+        Product product = productService.findProductById(pdtId);
+        return boardRepository.countBoardsByProduct(product);
+    }
 }

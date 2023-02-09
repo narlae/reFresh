@@ -1,6 +1,5 @@
 import Api from "../api/index.js";
 import {$} from "../utils/dom.js";
-import cookieFunc from "../utils/cookie.js";
 
 function App(){
 
@@ -52,6 +51,7 @@ function App(){
         $(".menu_nav").addEventListener("click", (e)=>{
             e.preventDefault();
             let x = e.target.getAttribute("value");
+            console.log(x);
             $(x).scrollIntoView({block: "start"});
         })
     }

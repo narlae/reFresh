@@ -2,6 +2,7 @@ package com.onlyfresh.devkurly.repository;
 
 import com.onlyfresh.devkurly.domain.board.Board;
 import com.onlyfresh.devkurly.domain.board.ReviewBoard;
+import com.onlyfresh.devkurly.domain.product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,6 +19,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     Optional<ReviewBoard> findBoardByBbsId(Long bbsId);
 
+    Integer countBoardsByProduct(Product product);
 
 
 }
