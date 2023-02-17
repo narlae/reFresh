@@ -23,6 +23,6 @@ public class ProductDetailController {
         model.addAttribute("dto", productDetailDto);
         model.addAttribute(pdtId);
         model.addAttribute("totalCnt", totalCnt);
-        return "/products/product_detail";
+        return "products/product_detail";
     }
 }

@@ -33,7 +33,7 @@ public class KakaoPay {
         // 서버로 요청할 Header
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "KakaoAK " + "e086d2e854b6d780b5740387160e74f3");
-        headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
+        headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
         headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
 
         // 서버로 요청할 Body
@@ -45,10 +45,10 @@ public class KakaoPay {
         params.add("quantity", orderRequiredDto.getTotal_quantity());
         params.add("total_amount", orderRequiredDto.getTotal_amount());
         params.add("tax_free_amount", orderRequiredDto.getTotal_amount());
-        params.add("approval_url", "http://localhost:8080/payment/kakaoPaySuccess?orderId="
+        params.add("approval_url", "http://narlae0.ddns.net:8080/payment/kakaoPaySuccess?orderId="
                 + orderId + "&total_amount=" + orderRequiredDto.getTotal_amount());
-        params.add("cancel_url", "http://localhost:8080/payment/kakaoPayCancel");
-        params.add("fail_url", "http://localhost:8080/payment/kakaoPaySuccessFail");
+        params.add("cancel_url", "http://narlae0.ddns.net:8080/payment/kakaoPayCancel");
+        params.add("fail_url", "http://narlae0.ddns.net:8080/payment/kakaoPaySuccessFail");
 
         HttpEntity<MultiValueMap<String, Object>> body = new HttpEntity<MultiValueMap<String, Object>>(params, headers);
 
@@ -80,7 +80,7 @@ public class KakaoPay {
         // 서버로 요청할 Header
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "KakaoAK " + "e086d2e854b6d780b5740387160e74f3");
-        headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
+        headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
         headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
 
         // 서버로 요청할 Body
