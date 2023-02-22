@@ -22,7 +22,7 @@
 
 .board {
     flex-direction: column;
-    flex-wrap: wrap;
+    /*flex-wrap: wrap;*/
     display: flex;
     width: 100%;
 }

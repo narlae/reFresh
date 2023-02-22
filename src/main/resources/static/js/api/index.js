@@ -1,4 +1,5 @@
 const BASE_URL = "http://narlae0.ddns.net:8080"
+// const BASE_URL = "http://localhost:8080"
 
 const HTTP_METHOD = {
     POST(data) {

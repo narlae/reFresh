@@ -18,9 +18,6 @@ function App(){
     }
 
     const render = async () => {
-        if (searchParam('page') !== null) {
-            this.list.page = searchParam('page');
-        }
         getSortOption.call(this);
         this.page = await Api.getBoardList(this.list.pdtId, this.list.page - 1, this.list.sort_option);
         $("#board").innerHTML = this.page.content.map((item) => {
@@ -58,13 +55,13 @@ function App(){
             let endPage = Math.min(beginPage + naviSize - 1, totalPage);
             if (!this.page.empty) {
                 if (beginPage !=1) {
-                    temp += `<a class="page" href="/board?page=${beginPage-1}"><</a>`
+                    temp += `<a class="page" data-page="${beginPage-1}"><</a>`
                 }
                 for (let i = beginPage; i <= endPage; i++) {
-                    temp += `<a class="page ${i==page ? 'paging-active' : ''}" href="/board?page=${i}" >${i}</a>`
+                    temp += `<a class="page ${i==page ? 'paging-active' : ''}" data-page="${i}">${i}</a>`
                 }
                 if (totalPage != endPage) {
-                    temp += `<a class="page" href="/board?page=${endPage+1}">></a>`
+                    temp += `<a class="page" data-page="${endPage+1}">></a>`
                 }
 
             }
@@ -141,6 +138,13 @@ function App(){
             localStorage.setItem("sortOption", value);
             await render();
         });
+
+        $(".paging").addEventListener("click", async (e)=>{
+            if (e.target.classList.contains("page")) {
+                this.list.page = e.target.dataset.page;
+                await render();
+            }
+        })
     }
 
 
