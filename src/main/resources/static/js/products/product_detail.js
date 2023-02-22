@@ -51,7 +51,6 @@ function App(){
         $(".menu_nav").addEventListener("click", (e)=>{
             e.preventDefault();
             let x = e.target.getAttribute("value");
-            console.log(x);
             $(x).scrollIntoView({block: "start"});
         })
     }

@@ -55,7 +55,7 @@ function App(){
             let endPage = Math.min(beginPage + naviSize - 1, totalPage);
             if (!this.page.empty) {
                 if (beginPage !=1) {
-                    temp += `<a class="page" data-page="${beginPage-1}"><</a>`
+                    temp += `<a class="page" data-page="${beginPage-1}" ><</a>`
                 }
                 for (let i = beginPage; i <= endPage; i++) {
                     temp += `<a class="page ${i==page ? 'paging-active' : ''}" data-page="${i}">${i}</a>`
