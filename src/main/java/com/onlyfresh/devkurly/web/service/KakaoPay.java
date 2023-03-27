@@ -45,10 +45,10 @@ public class KakaoPay {
         params.add("quantity", orderRequiredDto.getTotal_quantity());
         params.add("total_amount", orderRequiredDto.getTotal_amount());
         params.add("tax_free_amount", orderRequiredDto.getTotal_amount());
-        params.add("approval_url", "http://narlae0.ddns.net:8080/payment/kakaoPaySuccess?orderId="
+        params.add("approval_url", "http://narlae0.ddns.net/payment/kakaoPaySuccess?orderId="
                 + orderId + "&total_amount=" + orderRequiredDto.getTotal_amount());
-        params.add("cancel_url", "http://narlae0.ddns.net:8080/payment/kakaoPayCancel");
-        params.add("fail_url", "http://narlae0.ddns.net:8080/payment/kakaoPaySuccessFail");
+        params.add("cancel_url", "http://narlae0.ddns.net/payment/kakaoPayCancel");
+        params.add("fail_url", "http://narlae0.ddns.net/payment/kakaoPaySuccessFail");
 
         HttpEntity<MultiValueMap<String, Object>> body = new HttpEntity<MultiValueMap<String, Object>>(params, headers);
 
