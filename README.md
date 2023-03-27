@@ -1,6 +1,6 @@
 ## 📋 개요
 
-> http://narlae0.ddns.net:8080
+> http://narlae0.ddns.net
 >
 - 기존 팀프로젝트 onlyfresh를 새 기술로 DB구축부터, 개발, 배포한 개인 프로젝트
 
